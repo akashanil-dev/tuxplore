@@ -1,0 +1,91 @@
+/* App styles. Everything uses the theme tokens from os.css, except the terminal, which is always dark. */
+
+/* ---------- Shared controls ---------- */
+.btn-primary, .btn-ghost, .btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary { border: 0; background: var(--accent); color: var(--accent-fg, #fff); }
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-ghost { border: 1px solid var(--line); background: var(--surface-2); color: var(--win-fg); }
+.btn-ghost:hover { filter: brightness(1.15); }
+.btn-ghost[aria-pressed='true'] { background: var(--accent); color: var(--accent-fg, #fff); border-color: transparent; }
+.btn-danger { border: 0; background: var(--danger); color: #fff; }
+body[data-theme='retro'] .btn-primary, body[data-theme='retro'] .btn-ghost, body[data-theme='retro'] .btn-danger { box-shadow: inset 1px 1px #fff, inset -1px -1px #555; border: 0; }
+.muted { color: var(--muted); }
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+
+/* ---------- Terminal ---------- */
+.app-terminal .win-body { background: #0d1117; }
+body[data-theme='tiling'] .app-terminal .win-body { background: rgba(17, 17, 27, 0.6); }
+.term {
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e6edf3;
+  cursor: text;
+}
+.term-row { white-space: pre-wrap; word-break: break-word; }
+.term-row.err { color: #ff7b72; }
+.term-row.info { color: #e3b341; }
+.term-row.dim { color: #8b949e; }
+.term-line { display: flex; align-items: baseline; }
+.term-line.busy { visibility: hidden; height: 0; }
+.term-prompt { white-space: pre; flex: none; }
+.p-user { color: #4ade80; font-weight: 700; }
+.p-path { color: #60a5fa; font-weight: 700; }
+.term-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  caret-color: #4ade80;
+}
+
+.term-overlay { position: absolute; inset: 0; z-index: 2; }
+.term-overlay.matrix { background: #000; outline: none; }
+.term-overlay.train {
+  inset: auto auto 30% 0;
+  margin: 0;
+  color: #e6edf3;
+  font-size: 13px;
+  line-height: 1.15;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.editor { display: flex; flex-direction: column; background: #0d1117; color: #e6edf3; font-family: var(--mono); font-size: 14px; }
+.ed-head { display: flex; justify-content: space-between; gap: 12px; padding: 2px 10px; background: #e6edf3; color: #0d1117; }
+.ed-text {
+  flex: 1;
+  resize: none;
+  padding: 8px 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1.5;
+}
+.editor.vim .ed-text { caret-color: #4ade80; }
+.ed-status { min-height: 1.6em; padding: 2px 10px; color: #e3b341; }
+.ed-cmd { padding: 2px 10px; border: 0; outline: none; background: #161b22; color: #e6edf3; font: inherit; }
+.ed-foot { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 4px 10px 8px; }
+.ed-key { border: 0; padding: 0; background: none; color: #e6edf3; font: inherit; }
+.ed-key b { background: #e6edf3; color: #0d1117; padding: 0 3px; }
+
