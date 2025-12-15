@@ -154,3 +154,55 @@ body[data-theme='tiling'] .app-terminal .win-body { background: rgba(17, 17, 27,
 .cheats td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .cheats code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
 
+/* ---------- Pipe Dream ---------- */
+.pd { display: flex; height: 100%; }
+.pd-side { width: 190px; flex: none; padding: 12px 10px; border-right: 1px solid var(--line); overflow-y: auto; background: var(--surface); }
+.pd-side h3 { margin: 0 0 8px 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.pd-levels { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.pd-level { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 7px 8px; border: 0; border-radius: var(--radius-sm); background: transparent; font-size: 13px; }
+.pd-level:hover { background: var(--surface-2); }
+.pd-level.active { background: var(--accent); color: var(--accent-fg, #fff); }
+.pd-check { width: 20px; height: 20px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--surface-2); font-size: 11px; font-weight: 700; }
+.pd-level.solved .pd-check { background: var(--ok); color: #fff; }
+.pd-main { flex: 1; min-width: 0; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+.pd-head h2 { margin: 0 0 4px; font-size: 19px; }
+.pd-head p { margin: 0; line-height: 1.55; color: var(--muted); }
+.pd-label { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.pd-target-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pd-target { padding: 10px 12px; border-radius: var(--radius-sm); border: 2px dashed var(--line); background: var(--surface); }
+.pd-target h4 { margin: 0 0 6px; font-size: 12px; color: var(--muted); }
+.pd-target pre { margin: 0; white-space: pre-wrap; font-size: 12.5px; }
+.pd-target.ok { border: 2px solid var(--ok); }
+.pd-target.ok h4 { color: var(--ok); }
+.pd-pipe { display: flex; align-items: flex-start; gap: 6px; overflow-x: auto; padding: 4px 2px 10px; }
+.pd-stage { display: flex; flex-direction: column; gap: 6px; flex: none; width: 150px; }
+.pd-block {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: #0e7490;
+  color: #ecfeff;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 #155e75;
+}
+.pd-stage.source .pd-block { background: #a16207; box-shadow: 0 2px 0 #713f12; color: #fefce8; }
+button.pd-block:hover { filter: brightness(1.15); }
+.pd-x { opacity: 0.7; }
+.pd-out { margin: 0; padding: 8px; height: 120px; overflow: auto; font-size: 11.5px; white-space: pre; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--line); }
+.pd-arrow { align-self: flex-start; padding-top: 7px; font-family: var(--mono); font-weight: 800; font-size: 18px; color: var(--accent); }
+.pd-ghost { opacity: 0.4; }
+.pd-slot { flex: none; padding: 8px 12px; border: 2px dashed var(--line); border-radius: var(--radius-sm); color: var(--muted); font-size: 12px; white-space: nowrap; }
+.pd-palette { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+.pd-pick:disabled { opacity: 0.4; }
+.pd-cmdline { display: block; padding: 10px 12px; border-radius: var(--radius-sm); background: #0d1117; color: #4ade80; font-size: 13px; overflow-x: auto; white-space: nowrap; }
+.pd-win { padding: 12px 14px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--ok) 18%, transparent); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pd-win p { margin: 0; }
+
