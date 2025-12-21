@@ -530,7 +530,7 @@ body[data-theme='tiling'] .win-resize { display: none; }
   gap: 8px;
   pointer-events: none;
 }
-#tux-companion > * { pointer-events: auto; }
+#tux-companion > .tux-body, #tux-companion > .tux-hide { pointer-events: auto; }
 .tux-body {
   width: 64px;
   height: 74px;
@@ -584,7 +584,7 @@ body[data-theme='tiling'] .win-resize { display: none; }
   transition: opacity 0.2s, transform 0.2s;
   pointer-events: none;
 }
-.tux-bubble.show { opacity: 1; transform: none; pointer-events: auto; }
+.tux-bubble.show { opacity: 1; transform: none; }
 
 /* ---------- Print: only the cheat sheet ---------- */
 #print-area { display: none; }
