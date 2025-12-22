@@ -85,6 +85,8 @@ OS.toast = ({ icon = '🐧', title, body = '', timeout = 4500 }) => {
     el('div', { class: 'toast-icon', text: icon }),
     el('div', { class: 'toast-text' }, el('strong', { text: title }), body && el('span', { text: body })));
   host.append(t);
+  // Keep the stack short when lots of things unlock at once.
+  while (host.children.length > 4) host.firstElementChild.remove();
   requestAnimationFrame(() => t.classList.add('show'));
   setTimeout(() => {
     t.classList.remove('show');
