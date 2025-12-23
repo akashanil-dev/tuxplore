@@ -124,7 +124,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 [hidden] { display: none !important; }
-code, pre { font-family: var(--mono); }
+code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-ligatures: none; }
 
 .c-green { color: #4ade80; }
 .c-blue { color: #60a5fa; }
@@ -373,7 +373,7 @@ body[data-theme='tiling'] #dock { border-radius: 10px; border: 2px solid #45475a
   border-radius: 0;
 }
 body[data-theme='tiling'] .window.active { border-image: linear-gradient(135deg, #89b4fa, #cba6f7) 1; border-radius: 0; }
-body[data-theme='tiling'] .window { backdrop-filter: blur(12px); transition: opacity 0.16s, left 0.2s ease, top 0.2s ease, width 0.2s ease, height 0.2s ease; }
+body[data-theme='tiling'] .window { min-height: 0; backdrop-filter: blur(12px); transition: opacity 0.16s, left 0.2s ease, top 0.2s ease, width 0.2s ease, height 0.2s ease; }
 body[data-theme='tiling'] .win-btns .min, body[data-theme='tiling'] .win-btns .max { display: none; }
 
 .win-titlebar {
