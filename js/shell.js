@@ -272,7 +272,7 @@
         return;
       }
       const names = Object.keys(OS.commands).filter((n) => !OS.commands[n].hidden);
-      const close = names.filter((n) => levenshtein(n, name) <= (name.length > 4 ? 2 : 1)).slice(0, 3);
+      const close = names.filter((n) => levenshtein(n, name) <= (name.length >= 4 ? 2 : 1)).slice(0, 3);
       this.term.print(`${name}: command not found${close.length ? `\nDid you mean: ${close.join(', ')}?` : ''}`, 'err');
       OS.bus.emit('shell:notfound', { name, suggestions: close });
     }
@@ -572,6 +572,8 @@
       const targets = rest.length ? rest : ['.'];
       const texts = [];
       const htmls = [];
+      const fileTexts = [];
+      const fileHtmls = [];
       const user = OS.fs.user;
       const fmt = (name, node) => {
         const n = lsName(name, node);
@@ -588,7 +590,7 @@
           node = OS.fs.must(abs);
           if (node.t === 'f') {
             const f = fmt(target, node);
-            texts.push(f.text); htmls.push(f.html);
+            fileTexts.push(f.text); fileHtmls.push(f.html);
             continue;
           }
           let names = OS.fs.list(abs, ctx.sudo);
@@ -602,6 +604,9 @@
         } catch (e) { ctx.fail(e, `cannot access '${target}'`); }
       }
       if (flags.a) OS.bus.emit('shell:ls-a', { cwd: ctx.shell.cwd, targets });
+      // Plain files are listed together first, then each directory as its own block.
+      const fileSep = flags.l || !ctx.tty ? '\n' : '  ';
+      if (fileTexts.length) { texts.unshift(fileTexts.join(fileSep)); htmls.unshift(fileHtmls.join(fileSep)); }
       return { text: texts.join('\n\n'), html: htmls.join('\n\n') };
     }, { more: '-a  show hidden files (names starting with a dot)\n-l  long format: permissions, owner, size\nDirectories are blue, runnable files are green.' }),
 
