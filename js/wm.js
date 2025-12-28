@@ -4,17 +4,11 @@
 OS.apps = {};
 OS.registerApp = (id, def) => { OS.apps[id] = { id, w: 720, h: 480, single: true, ...def }; };
 
-OS.icons = {
-  terminal: `<svg viewBox="0 0 48 48"><rect x="4" y="7" width="40" height="34" rx="7" fill="#1f2430"/><rect x="4" y="7" width="40" height="8" rx="4" fill="#2d3445"/><path d="M12 23l6 4-6 4" stroke="#4ade80" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 32h12" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round"/></svg>`,
-  files: `<svg viewBox="0 0 48 48"><path d="M5 13a4 4 0 0 1 4-4h10l4 4h16a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#3b82f6"/><path d="M5 19h38v18a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#60a5fa"/></svg>`,
-  pipedream: `<svg viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="32" rx="8" fill="#0e7490"/><rect x="9" y="19" width="9" height="10" rx="2.5" fill="#fde047"/><rect x="30" y="19" width="9" height="10" rx="2.5" fill="#f472b6"/><path d="M18 24h12" stroke="#e0f2fe" stroke-width="3.5"/><path d="M22 18v12" stroke="#e0f2fe" stroke-width="3.5" stroke-linecap="round"/></svg>`,
-  runner: `<svg viewBox="0 0 48 48"><rect x="4" y="6" width="40" height="36" rx="8" fill="#f59e0b"/><circle cx="24" cy="18" r="7" fill="#1b1b1f"/><ellipse cx="24" cy="30" rx="9" ry="9" fill="#1b1b1f"/><ellipse cx="24" cy="31" rx="5.5" ry="6.5" fill="#fff"/><circle cx="21.5" cy="17" r="1.6" fill="#fff"/><circle cx="26.5" cy="17" r="1.6" fill="#fff"/><path d="M21 20.5h6l-3 2.5z" fill="#f5a524"/><path d="M8 40h32" stroke="#92400e" stroke-width="3"/></svg>`,
-  journal: `<svg viewBox="0 0 48 48"><rect x="9" y="5" width="30" height="38" rx="4" fill="#a16207"/><rect x="12" y="5" width="27" height="38" rx="3" fill="#ca8a04"/><path d="M18 15h15M18 21h15M18 27h10" stroke="#fef3c7" stroke-width="2.5" stroke-linecap="round"/></svg>`,
-  settings: `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="13" fill="none" stroke="#94a3b8" stroke-width="8" stroke-dasharray="5.1 5.1"/><circle cx="24" cy="24" r="11" fill="#64748b"/><circle cx="24" cy="24" r="5" fill="#e2e8f0"/></svg>`,
-  achievements: `<svg viewBox="0 0 48 48"><path d="M14 8h20v10a10 10 0 0 1-20 0z" fill="#facc15"/><path d="M14 11H8a6 6 0 0 0 7 8M34 11h6a6 6 0 0 1-7 8" fill="none" stroke="#eab308" stroke-width="3"/><rect x="21" y="27" width="6" height="7" fill="#eab308"/><rect x="15" y="34" width="18" height="6" rx="2" fill="#a16207"/></svg>`,
-  install: `<svg viewBox="0 0 48 48"><rect x="15" y="4" width="18" height="10" rx="2" fill="#94a3b8"/><rect x="18" y="7" width="4" height="4" fill="#334155"/><rect x="26" y="7" width="4" height="4" fill="#334155"/><rect x="11" y="13" width="26" height="31" rx="5" fill="#16a34a"/><circle cx="24" cy="28" r="7" fill="none" stroke="#dcfce7" stroke-width="2.5"/><path d="M24 21v7" stroke="#dcfce7" stroke-width="2.5" stroke-linecap="round"/></svg>`,
-  lock: '🔒',
-};
+// Official GNOME app icons (see images/icons/CREDITS.md).
+OS.icons = Object.fromEntries(
+  ['terminal', 'files', 'pipedream', 'runner', 'journal', 'settings', 'achievements', 'install']
+    .map((id) => [id, `<img src="images/icons/${id}.svg" alt="" draggable="false">`]),
+);
 
 OS.wm = {
   windows: [],

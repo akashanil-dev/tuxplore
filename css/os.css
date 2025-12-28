@@ -295,8 +295,8 @@ body[data-theme='retro'] .panel-activities:hover, body[data-theme='retro'] .pane
 .desk-icon:hover, .desk-icon:focus-visible { background: rgba(255, 255, 255, 0.14); }
 .desk-icon .app-icon { width: 48px; height: 48px; }
 .desk-label { font-size: 12px; font-weight: 600; text-align: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); line-height: 1.2; }
-.app-icon { display: block; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35)); }
-.app-icon svg { width: 100%; height: 100%; display: block; }
+.app-icon { display: block; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)); }
+.app-icon svg, .app-icon img { width: 100%; height: 100%; display: block; }
 
 #dock {
   position: absolute;
@@ -396,7 +396,7 @@ body[data-theme='tiling'] .win-titlebar { height: 28px; border-bottom: 1px solid
 body[data-theme='retro'] .window { padding-bottom: 3px; }
 
 .win-icon { width: 18px; height: 18px; flex: none; }
-.win-icon svg { width: 100%; height: 100%; display: block; }
+.win-icon svg, .win-icon img { width: 100%; height: 100%; display: block; }
 .win-title { flex: 1; text-align: center; font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 body[data-theme='kde'] .win-title, body[data-theme='retro'] .win-title, body[data-theme='tiling'] .win-title { text-align: left; }
 .win-btns { display: flex; gap: 8px; }
