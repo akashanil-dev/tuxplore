@@ -269,6 +269,7 @@ body[data-theme='retro'] .panel-activities:hover, body[data-theme='retro'] .pane
 .panel-logo svg { width: 16px; height: 18px; display: block; }
 .panel-clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
 .panel-right { display: flex; gap: 2px; }
+.panel-power svg { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 
 #desktop-icons {
   position: absolute;

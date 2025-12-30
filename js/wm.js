@@ -25,7 +25,11 @@ OS.wm = {
     this.clock = el('span', { class: 'panel-clock' });
     this.questChip = el('button', { class: 'panel-chip', title: 'Quest journal', onclick: () => this.open('journal') });
     this.trophyChip = el('button', { class: 'panel-chip', title: 'Achievements', onclick: () => this.open('achievements') });
-    const power = el('button', { class: 'panel-chip', title: 'Power', 'aria-label': 'Power menu', text: '⏻', onclick: (e) => this.powerMenu(e) });
+    // Drawn as SVG: the ⏻ character isn't in most UI fonts and renders unpredictably.
+    const power = el('button', {
+      class: 'panel-chip panel-power', title: 'Power', 'aria-label': 'Power menu', onclick: (e) => this.powerMenu(e),
+      html: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5v6" /><path d="M4.4 3.6a5.5 5.5 0 1 0 7.2 0" /></svg>',
+    });
     const panel = el('header', { id: 'panel' },
       el('button', { class: 'panel-activities', onclick: () => this.toggleLauncher() }, el('span', { class: 'panel-logo', html: OS.tuxSvg() }), el('span', { text: 'Activities' })),
       this.clock,
