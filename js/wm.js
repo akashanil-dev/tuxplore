@@ -190,6 +190,7 @@ OS.wm = {
     if (next) this.focus(next);
     this.renderDock();
     this.layout();
+    this.syncMaximized();
   },
 
   focus(win) {
@@ -205,6 +206,7 @@ OS.wm = {
     win.el.classList.add('minimized');
     win.el.classList.remove('active');
     this.layout();
+    this.syncMaximized();
   },
 
   restore(win) {
@@ -212,13 +214,19 @@ OS.wm = {
     win.el.classList.remove('minimized');
     this.focus(win);
     this.layout();
+    this.syncMaximized();
   },
 
   toggleMax(win) {
     if (document.body.dataset.theme === 'tiling') return;
     win.maximized = !win.maximized;
     win.el.classList.toggle('maximized', win.maximized);
+    this.syncMaximized();
     win.api?.resized?.();
+  },
+
+  syncMaximized() {
+    document.body.classList.toggle('has-maximized', this.windows.some((w) => w.maximized && !w.minimized));
   },
 
   workArea() {

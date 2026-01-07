@@ -563,6 +563,7 @@ body[data-theme='tiling'] .win-resize { display: none; }
   transition: opacity 0.15s;
 }
 #tux-companion:hover .tux-hide, .tux-hide:focus-visible { opacity: 1; }
+body.has-maximized #tux-companion { display: none; }
 #tux-companion.hidden .tux-body { width: 28px; height: 32px; opacity: 0.6; animation: none; }
 #tux-companion.hidden .tux-hide { display: none; }
 .tux-bubble {
