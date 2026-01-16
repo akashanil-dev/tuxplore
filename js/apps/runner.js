@@ -34,6 +34,7 @@
     BlackArch: 'blackarch', ArcoLinux: 'arcolinux', Artix: 'artix', SteamOS: 'steamos',
     'Absolute Linux': 'absolute', 'Calculate Linux': 'calculate',
   };
+  const OWN_TEAM_SHARE = 0.45; // at least 40% of tiles come from the player's team
   const TEAM_COLOR = { Debian: '#d70a53', 'Red Hat': '#ee0000', Arch: '#1793d1', Slackware: '#4b5ea8', Gentoo: '#7a6bb0' };
   const SCORE_GOOD = 50;
   const SCORE_BAD = -20;
@@ -454,8 +455,10 @@
       }
 
       function spawnTile(offset) {
-        const all = Object.values(TEAMS).flat();
-        const name = pick(all);
+        // Your team's distros make up OWN_TEAM_SHARE of the tiles; the rest come from every other team.
+        const own = team && Math.random() < OWN_TEAM_SHARE;
+        const pool = own ? TEAMS[team] : TEAM_NAMES.filter((t) => t !== team).flatMap((t) => TEAMS[t]);
+        const name = pick(pool);
         const tw = Math.max(TILE, itemWidth(name));
         g.items.push({ name, correct: team ? TEAMS[team].includes(name) : false, x: W + 20 + (offset || 0), y: GROUND - TILE - rand(0, 8), w: tw, h: TILE });
       }
@@ -1290,7 +1293,7 @@
         debug: () => ({
           get g() { return g; }, get screen() { return screen; }, get score() { return score; }, get total() { return total; },
           get lives() { return lives; }, get team() { return team; }, get mode() { return mode; }, get rapidScores() { return rapidScores; },
-          chooseTeam, play, setMode, speedMultiplier,
+          chooseTeam, play, setMode, speedMultiplier, spawnTile,
         }),
       };
     },
