@@ -47,7 +47,9 @@
   const MAX_AIR_JUMPS = 3;         // extra jumps while airborne, as in the original
   const AIR_JUMP_SCALE = 0.7;
   const WALK_SPEED = 190;          // A/D walking, on the ground only
-  const TILE = 52;
+  const TILE = 60;                 // every distro tile is the same TILE x TILE square
+  // Short tile labels for the few names too long for a tile; full names are used everywhere else.
+  const TILE_LABEL = { 'Raspberry Pi OS': 'Raspberry Pi', 'Calculate Linux': 'Calculate', 'Absolute Linux': 'Absolute', 'elementary OS': 'elementary', 'Oracle Linux': 'Oracle' };
   const GAP_BASE = 330;            // distance between tile groups
   const GAP_RANGE = 170;
   const PAIR_GAP = 190;            // gap inside a pair, wide enough to land between
@@ -459,8 +461,7 @@
         const own = team && Math.random() < OWN_TEAM_SHARE;
         const pool = own ? TEAMS[team] : TEAM_NAMES.filter((t) => t !== team).flatMap((t) => TEAMS[t]);
         const name = pick(pool);
-        const tw = Math.max(TILE, itemWidth(name));
-        g.items.push({ name, correct: team ? TEAMS[team].includes(name) : false, x: W + 20 + (offset || 0), y: GROUND - TILE - rand(0, 8), w: tw, h: TILE });
+        g.items.push({ name, correct: team ? TEAMS[team].includes(name) : false, x: W + 20 + (offset || 0), y: GROUND - TILE - rand(0, 8), w: TILE, h: TILE });
       }
       function spawnPattern() {
         if (Math.random() < 0.25) { spawnTile(0); spawnTile(PAIR_GAP); } else spawnTile(0);
@@ -1071,17 +1072,23 @@
       // ---------- Distro tiles (the original's dark tile with icon + name strip) ----------
       const itemCache = {};
       const measure = document.createElement('canvas').getContext('2d');
-      function itemWidth(name) {
-        measure.font = '600 10px Inter, system-ui, sans-serif';
-        return Math.ceil(measure.measureText(name).width + 14);
+      // Largest font (10px down to 7px) at which the label fits the tile's name strip.
+      function labelFont(label) {
+        let px = 10;
+        for (; px > 7; px -= 0.5) {
+          measure.font = `600 ${px}px Inter, system-ui, sans-serif`;
+          if (measure.measureText(label).width <= TILE - 12) break;
+        }
+        return `600 ${px}px Inter, system-ui, sans-serif`;
       }
       function itemSprite(name) {
         const key = `${name}@${scale}`;
         if (itemCache[key]) return itemCache[key];
         const img = iconImage(name);
         if (!img.complete || !img.naturalWidth) return null;
-        const w = Math.max(TILE, itemWidth(name));
+        const w = TILE;
         const h = TILE;
+        const label = TILE_LABEL[name] || name;
         const L = paint(surface(w + 6, h + 8, -2), () => {
           ctx.translate(3, 0);
           ctx.shadowColor = 'rgba(0,0,0,0.35)';
@@ -1097,18 +1104,18 @@
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.roundRect(0.5, 0.5, w - 1, h - 1, 9.5); ctx.stroke();
           // icon, fitted into the top area
-          const iw = h - 22; const ih = h - 22;
+          const iw = h - 26; const ih = h - 26;
           const k = Math.min(iw / img.naturalWidth, ih / img.naturalHeight);
           const dw = img.naturalWidth * k; const dh = img.naturalHeight * k;
-          ctx.drawImage(img, (w - dw) / 2, 5 + (ih - dh) / 2, dw, dh);
+          ctx.drawImage(img, (w - dw) / 2, 6 + (ih - dh) / 2, dw, dh);
           // name strip
           ctx.fillStyle = 'rgba(0,0,0,0.35)';
           ctx.beginPath(); ctx.roundRect(4, h - 16, w - 8, 12, 5); ctx.fill();
           ctx.fillStyle = '#ffffff';
-          ctx.font = '600 10px Inter, system-ui, sans-serif';
+          ctx.font = labelFont(label);
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(name, w / 2, h - 9.5);
+          ctx.fillText(label, w / 2, h - 9.5);
         });
         itemCache[key] = L;
         return L;
