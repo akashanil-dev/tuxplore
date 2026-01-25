@@ -48,6 +48,9 @@
   const AIR_JUMP_SCALE = 0.7;
   const WALK_SPEED = 190;          // A/D walking, on the ground only
   const TILE = 60;                 // every distro tile is the same TILE x TILE square
+  const TUX_SCALE = 1.2;           // penguin drawn (and collides) 20% larger
+  const GRAVITY = 1840;            // 20% lighter than before (2300)
+  const GRAVITY_HELD = 1040;       // while the jump key is held on the way up (was 1300)
   // Short tile labels for the few names too long for a tile; full names are used everywhere else.
   const TILE_LABEL = { 'Raspberry Pi OS': 'Raspberry Pi', 'Calculate Linux': 'Calculate', 'Absolute Linux': 'Absolute', 'elementary OS': 'elementary', 'Oracle Linux': 'Oracle' };
   const GAP_BASE = 330;            // distance between tile groups
@@ -516,7 +519,7 @@
         t.buffer -= dt;
         t.coyote = t.ground ? 0.1 : t.coyote - dt;
         if (t.buffer > 0 && (t.ground || t.coyote > 0 || t.airJumps > 0)) { t.buffer = 0; jump(); }
-        t.vy += (t.vy < 0 && t.held ? 1300 : 2300) * dt;
+        t.vy += (t.vy < 0 && t.held ? GRAVITY_HELD : GRAVITY) * dt;
         t.y += t.vy * dt;
         if (t.y >= GROUND) {
           if (!t.ground && t.vy > 250) t.squash = 0.16;
@@ -533,7 +536,7 @@
         g.untilNext -= move;
         if (g.untilNext <= 0) { spawnPattern(); g.untilNext = GAP_BASE + rand(0, GAP_RANGE); }
 
-        const box = { l: t.x - 12, r: t.x + 14, t: t.y - 40, b: t.y - 3 };
+        const box = { l: t.x - 12 * TUX_SCALE, r: t.x + 14 * TUX_SCALE, t: t.y - 40 * TUX_SCALE, b: t.y - 3 };
         for (const it of g.items) {
           it.x -= move;
           if (it.done) continue;
@@ -982,11 +985,11 @@
 
         const lift = Math.max(0, GROUND - t.y);
         ctx.fillStyle = `rgba(0,0,0,${0.25 * Math.max(0.25, 1 - lift / 140)})`;
-        ctx.beginPath(); ctx.ellipse(X + 2, GROUND + 1, 17 * Math.max(0.45, 1 - lift / 220), 3.5, 0, 0, TAU); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(X + 2, GROUND + 1, 17 * TUX_SCALE * Math.max(0.45, 1 - lift / 220), 3.5, 0, 0, TAU); ctx.fill();
 
         const frame = () => {
           ctx.translate(X, t.y);
-          ctx.scale(1 + t.squash * 0.5, 1 - t.squash);
+          ctx.scale(TUX_SCALE * (1 + t.squash * 0.5), TUX_SCALE * (1 - t.squash));
           if (!t.ground) ctx.rotate(Math.max(-0.2, Math.min(0.25, t.vy / 2200)));
         };
         const foot = (dx, liftY, front) => {
