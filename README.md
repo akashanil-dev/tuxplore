@@ -1,0 +1,113 @@
+# Tuxplore 🐧
+
+**Boot a Linux desktop in your browser and learn the terminal by playing.**
+
+Play it live at **[linux.akashanil.dev](https://linux.akashanil.dev)**.
+
+Tuxplore boots *TuxOS*, a pretend Linux computer that runs entirely in a browser tab. It's made for
+people who have never used Linux: instead of reading a tutorial, you boot it, log in, and learn the
+terminal by going on quests, solving puzzles and playing games, with Tux the penguin giving hints along
+the way. Nothing is installed and nothing on your real computer is touched.
+
+## What's inside
+
+### A real-feeling boot
+- **GRUB menu** with a countdown, recovery mode and a (fake) memory test.
+- **Boot log** with kernel and systemd messages.
+- **Login screen** where you create your Linux username.
+
+### The TuxOS desktop
+- **Desktop basics:** top panel, desktop icons, dock, an Activities launcher with search, and windows you can drag, resize, minimise and maximise.
+- **Four unlockable themes:** GNOME style, KDE Plasma style, Retro CDE, and a tiling layout in the style of Hyprland that arranges windows by itself.
+- **Wallpapers, achievements and toasts,** plus Tux in the corner, who reacts to what you do and gives hints when you click him.
+- **Progress is saved** in the browser.
+
+### A terminal you can actually use
+A bash-like shell over a virtual filesystem, with about 60 commands:
+- **Navigation:** `ls`, `cd`, `pwd`, `tree`, `find`
+- **Reading and searching text:** `cat`, `grep`, `head`, `tail`, `wc`, `sort`, `uniq`, `cut`, `tr`
+- **Changing files:** `mkdir`, `cp`, `mv`, `rm`, `chmod`
+- **Admin and software:** `sudo` and the `apt` / `dnf` / `pacman` package managers
+- **Editors:** `nano`, plus `vim` (escaping it is an achievement)
+
+It supports pipes (`|`), redirection (`>`, `>>`, `<`), `&&`, wildcards, `$VARIABLES`, tab completion, history and `man` pages. Mistakes teach too:
+- **Windows commands** like `dir` get a gentle "on Linux, use `ls`".
+- **Missing programs** explain how to install them.
+- **Real safety nets are kept:** `rm -rf /` hits the same failsafe as real GNU `rm`.
+
+### Ten quests
+*Hello, Terminal → A Letter from Tux → Into the Dungeon → The Library → The Locked Gate → Goblin
+Trouble → The Superuser → The Plumber → The App Store → Graduation.*
+
+Each one teaches a real skill: hidden files, `grep -r`, file permissions, wildcards, `sudo`,
+pipes, package managers. They're wrapped in a small story about rescuing Tux's stolen crown. The
+**Quest Journal** tracks progress, gives hints and builds a printable cheat sheet of every command you've used.
+
+### Games and apps
+| App | What it is |
+|---|---|
+| **Terminal** | The shell above, with `nano`, `vim`, and a few classic easter eggs |
+| **Files** | A point-and-click file manager over the same filesystem as the terminal |
+| **Quest Journal** | Quests, hints and your personal cheat sheet |
+| **Pipe Dream** | 8 puzzles: chain commands like `sort \| uniq -c \| sort -rn` to turn an input into the target output |
+| **Know Your Distro** | An endless runner where you collect the distros of your family. Details below |
+| **Achievements** | 30 trophies, 13 of them secret |
+| **Settings** | Themes, wallpapers, and resetting your progress |
+| **Try Linux** | Unlocks at the end: a short quiz that suggests a real distro, and how to try it from a USB stick |
+
+### Know Your Distro
+Tux runs across a landscape that cycles from dawn to a starry night with aurora, through clear, snowy
+and overcast weather. Distro tiles slide toward him.
+- **Pick a team:** Debian, Red Hat, Arch, Slackware or Gentoo, 32 distros in all.
+- **Scoring:** run into your team's distros for **+50**. Every wrong one costs **−20** and a life.
+- **Speed:** starts slow and **speeds up as you score**, up to 2×. Your team's distros make up at least 40% of the tiles.
+- **Rapid mode:** three teams with 10 lives each, scores summed, ending on a finish screen. Made for running competitions at events.
+- **Infinite mode:** play forever, switch teams any time, and beat your best total.
+- **Controls:** Space / ↑ / tap to jump (up to three more times in mid-air), A / D to walk, hold **M** for the
+  distro family map, **P** to pause, **R** to reset.
+
+## Run it
+
+There's no build step and no dependencies. Pick one:
+
+```bash
+# 1. Just open the file
+xdg-open index.html
+
+# 2. Or serve the folder
+python3 -m http.server 8000      # then visit http://localhost:8000
+
+# 3. Or use Docker
+docker build -t tuxplore .
+docker run --rm -p 8080:80 tuxplore   # then visit http://localhost:8080
+```
+
+Fonts load from Google Fonts. Offline, it falls back to system fonts.
+
+## Project layout
+
+```
+index.html          page shell and script order
+css/os.css          desktop, themes, boot screens, windows
+css/apps.css        styles for each app
+js/core.js          event bus, save state, toasts, achievements, themes
+js/fs.js            virtual filesystem with owners and permissions
+js/coreutils.js     text filters shared by the shell and Pipe Dream
+js/shell.js         the bash-like shell and its commands
+js/quests.js        the quest chain
+js/tux.js           Tux, the companion
+js/wm.js            window manager, panel, dock, launcher
+js/boot.js          GRUB, boot log, login, kernel panic
+js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and the system apps
+images/icons/       app icons
+images/distros/     distro logos
+```
+
+## Credits
+
+- **Know Your Distro** started as a standalone game in this repository. The original version is kept on the
+  [`legacy`](https://github.com/akashanil-dev/know-your-distro/tree/legacy) branch.
+- **App icons** are the official GNOME app icons. See [`images/icons/CREDITS.md`](images/icons/CREDITS.md).
+- **Distro logos** come from Know Your Distro, the Papirus icon theme and Simple Icons. See
+  [`images/distros/CREDITS.md`](images/distros/CREDITS.md). They're trademarks of their projects
+  and are only used to identify them.
