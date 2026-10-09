@@ -135,6 +135,7 @@ images/distros/     distro logos
 images/wall/        wallpapers (WebP) and their Settings thumbnails
 images/app/         app icons and the link-preview image
 api/                the save API: a Cloudflare Worker and D1 database (see api/README.md)
+tests/smoke.mjs     plays the whole game in a headless browser (see CONTRIBUTING.md)
 ```
 
 ## License
