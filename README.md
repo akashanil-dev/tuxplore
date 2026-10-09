@@ -22,7 +22,8 @@ the way. Nothing is installed and nothing on your real computer is touched.
   - **GNOME:** a top bar and the Activities overview (click it, push the mouse into the top-left corner, or tap Super).
   - **CDE:** the 1990s Unix Front Panel with an analog clock, four workspaces, Motif window menus, and minimised windows that turn into desktop icons.
   - **Hyprland:** a Waybar bar, five workspaces, tiling windows with no title bars, a wofi launcher and Super-key shortcuts (Alt works too).
-- **Switch any time** in Settings, or pick a session on the login screen like you would on GDM or SDDM.
+- **Switch any time** in Settings, or pick a session on the login screen.
+- **A login screen for each:** SDDM for KDE Plasma, GDM for GNOME, CDE's dtlogin and a text-mode tuigreet for Hyprland. You get the one for the desktop you last used.
 - **Windows** you can drag, resize, minimise and maximise, in whatever style the desktop environment uses.
 - **Wallpapers, achievements and toasts,** plus Tux in the corner, who reacts to what you do and gives hints when you click him.
 - **Progress is saved** in the browser, and online too if you make an account: just a username and password, with no email and no password reset. You can also play without one.
@@ -95,6 +96,7 @@ Fonts load from Google Fonts. Offline, it falls back to system fonts.
 index.html          page shell and script order
 css/os.css          colours, boot screens, desktop, windows
 css/desktops.css    each desktop environment's panels, launchers and window buttons
+css/greeters.css    the login screens
 css/apps.css        styles for each app
 js/cloud.js         online accounts: logs in and syncs your save with the API
 js/core.js          event bus, save state, toasts, achievements, desktop environment list
@@ -105,7 +107,8 @@ js/quests.js        the quest chain
 js/tux.js           Tux, the companion
 js/wm.js            window manager, workspaces, desktop icons, menus
 js/de.js            the desktop environments: GNOME, KDE Plasma, CDE, Hyprland
-js/boot.js          GRUB, boot log, login, kernel panic
+js/boot.js          GRUB, boot log, login steps, kernel panic
+js/greeters.js      the login screens: SDDM, GDM, dtlogin, tuigreet
 js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and the system apps
 images/icons/       app icons, one set per desktop environment
 images/distros/     distro logos
