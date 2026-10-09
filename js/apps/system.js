@@ -54,7 +54,7 @@
     }
 
     const name = field({ type: 'text', value: OS.state.username, maxlength: '16', 'aria-label': 'Username', autocomplete: 'username' });
-    const pass = field({ type: 'password', placeholder: 'password (6 or more characters)', 'aria-label': 'Password', autocomplete: 'new-password' });
+    const pass = field({ type: 'password', placeholder: 'password', 'aria-label': 'Password', autocomplete: 'new-password' });
     name.addEventListener('input', () => { name.value = name.value.toLowerCase().replace(/\s/g, ''); });
     const create = el('button', { class: 'btn-primary', text: 'Create account' });
     create.addEventListener('click', async () => {

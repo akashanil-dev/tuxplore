@@ -180,7 +180,7 @@ OS.boot = {
 
     const copy = {
       unlock: { title: known, sub: linked ? '☁ Your progress syncs with your account.' : null, button: 'Log in', pass: linked ? null : 'password (anything works)' },
-      create: { title: 'Welcome to TuxOS', sub: "Create an account to save your progress online. There's no password reset, so pick a password you'll remember.", button: 'Create account', pass: 'password (6 or more characters)' },
+      create: { title: 'Welcome to TuxOS', sub: "Create an account to save your progress online. There's no password reset, so pick a password you'll remember.", button: 'Create account', pass: 'password' },
       signin: { title: 'Log in', sub: 'Log in to carry on where you left off.', button: 'Log in', pass: 'password' },
       guest: { title: 'Play without an account', sub: 'Your progress stays in this browser only. Pick a username: Linux usernames are lowercase, with no spaces.', button: 'Start', pass: 'password (anything works)' },
     }[mode];

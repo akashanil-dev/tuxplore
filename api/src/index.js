@@ -11,7 +11,6 @@
 // GET, PUT /save and /logout take "Authorization: Bearer <token>".
 
 const USERNAME = /^[a-z_][a-z0-9_-]{0,15}$/;
-const MIN_PASSWORD = 6;
 const MAX_PASSWORD = 200;
 const MAX_SAVE_BYTES = 100 * 1024;
 const PBKDF2_ITERATIONS = 100000; // the most Workers allows
@@ -101,8 +100,9 @@ async function logout(request, env) {
 // ---------- Passwords and tokens ----------
 
 function checkPassword(password) {
-  if (typeof password !== 'string' || password.length < MIN_PASSWORD) {
-    throw new HttpError(400, `Use a password of at least ${MIN_PASSWORD} characters. There's no reset, so pick one you'll remember.`);
+  // Any length is fine, but not empty: anyone could log into an account without a password.
+  if (typeof password !== 'string' || !password) {
+    throw new HttpError(400, "Pick a password. There's no reset, so pick one you'll remember.");
   }
   if (password.length > MAX_PASSWORD) throw new HttpError(400, 'That password is too long.');
 }
