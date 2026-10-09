@@ -417,6 +417,7 @@ OS.boot = {
     OS.applyWallpaper(OS.state.wallpaper);
     OS.tux.init();
     OS.quests.init();
+    OS.tracks.init();
     OS.achievements.unlock('first_boot');
 
     const q = OS.quests.current();

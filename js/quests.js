@@ -118,6 +118,9 @@
 
   OS.quests = {
     list,
+    EVENTS,
+    // For quests written elsewhere (js/tracks.js).
+    helpers: { home, dungeon, cmd, read },
 
     current() {
       return list.find((q) => !OS.state.quests.done[q.id]) || null;
@@ -179,7 +182,7 @@
 
     describe() {
       const q = this.current();
-      if (!q) return 'All quests complete! 🎓 Open the "Try Linux" app to take the next step.';
+      if (!q) return OS.tracks?.describe() || 'All quests complete! 🎓 Open the "Try Linux" app, or pick an advanced track in the Quest Journal.';
       const prog = this.progress(q);
       const idx = list.indexOf(q) + 1;
       return `Quest ${idx}/${list.length}: ${q.title}\n\n${q.story}\n\n` +
@@ -187,11 +190,14 @@
         '\n\nStuck? Type hint.';
     },
 
-    // Most steps happen in the Terminal: if the app a step needs isn't open, say how to open it first.
     hint() {
       const q = this.current();
-      if (!q) return 'No quests left. Try exploring: ls /, cat /etc/os-release, fortune...';
-      const prog = this.progress(q);
+      if (!q) return OS.tracks?.hint() || 'No quests left. Pick an advanced track in the Quest Journal, or explore: ls /, cat /etc/os-release, fortune...';
+      return this.hintFor(q, this.progress(q));
+    },
+
+    // Most steps happen in the Terminal: if the app a step needs isn't open, say how to open it first.
+    hintFor(q, prog) {
       const o = q.objectives.find((_, i) => !prog[i]) || q.objectives[0];
       const app = o.app || 'terminal';
       const open = OS.wm?.visibleWindows?.().some((w) => w.appId === app);

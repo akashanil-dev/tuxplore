@@ -51,6 +51,7 @@ function defaultState() {
     achievements: {},
     learned: {},
     quests: { done: {}, progress: {} },
+    tracks: { active: null, done: {}, progress: {} }, // js/tracks.js
     pipe: { solved: {} },
     runner: { best: 0, family: 'debian' },
     installed: {},

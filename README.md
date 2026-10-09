@@ -123,6 +123,7 @@ js/fs.js            virtual filesystem with owners and permissions
 js/coreutils.js     text filters shared by the shell and Pipe Dream
 js/shell.js         the bash-like shell and its commands
 js/quests.js        the quest chain
+js/tracks.js        advanced tracks: career paths after Graduation
 js/tux.js           Tux, the companion
 js/wm.js            window manager, workspaces, desktop icons, menus
 js/de.js            the desktop environments: GNOME, KDE Plasma, CDE, Hyprland
