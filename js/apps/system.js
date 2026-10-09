@@ -118,6 +118,25 @@
     create(win) {
       const wrap = el('div', { class: 'settings' });
       win.body.append(wrap);
+      // Like GNOME's and KDE's "About this system": the OS, then the game it lives in.
+      const aboutSystem = () => {
+        const de = OS.themes.find((t) => t.id === OS.state.theme);
+        const link = (href, text) => el('a', { class: 'about-btn', href, target: '_blank', rel: 'noopener', text });
+        return el('section', { class: 'about-system' },
+          el('h3', { text: 'About this system' }),
+          el('div', { class: 'about-head' },
+            el('div', { class: 'about-logo', html: OS.tuxSvg() }),
+            el('div', {}, el('strong', { text: 'TuxOS 1.0' }), el('span', { class: 'muted', text: 'Curious Penguin' }))),
+          el('dl', { class: 'about-specs' },
+            [['Desktop', de ? `${de.name} (${de.version})` : ''], ['Kernel', '6.10.0-tuxos'], ['Hostname', 'tuxos'],
+              ['Quests', `${Object.keys(OS.state.quests.done).length} of ${OS.quests.list.length}`]]
+              .flatMap(([k, v]) => [el('dt', { text: k }), el('dd', { text: v })])),
+          el('p', { class: 'about-blurb' }, 'TuxOS is part of ', el('strong', { text: 'Tuxplore' }),
+            ', a game that teaches Linux by letting you use it. Made by Akash A.'),
+          el('div', { class: 'about-links' },
+            link('about.html', 'About Tuxplore ↗'), link('stats.html', 'Public stats ↗'),
+            link('https://github.com/akashanil-dev/tuxplore', 'Source code ↗')));
+      };
       const render = () => {
         wrap.innerHTML = '';
         wrap.append(account(render));
@@ -159,10 +178,7 @@
             el('button', { class: 'btn-danger', text: 'Reset everything', onclick: () => {
               if (confirm('Erase everything and start from scratch?')) OS.resetSave();
             } })),
-          el('p', { class: 'muted settings-links' },
-            el('a', { href: 'about.html', target: '_blank', rel: 'noopener', text: 'About Tuxplore' }), ' · ',
-            el('a', { href: 'stats.html', target: '_blank', rel: 'noopener', text: 'Public stats' }), ' · ',
-            el('a', { href: 'https://github.com/akashanil-dev/tuxplore', target: '_blank', rel: 'noopener', text: 'Source code' })));
+          aboutSystem());
       };
       render();
     },

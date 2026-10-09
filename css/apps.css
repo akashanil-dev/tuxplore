@@ -329,8 +329,19 @@ button.pd-block:hover { filter: brightness(1.15); }
 .settings h3 { margin: 18px 0 6px; font-size: 14px; }
 .settings > p { margin: 0 0 10px; }
 .settings-note { margin: -6px 0 12px 26px; font-size: 12.5px; }
-.settings-note a, .settings-links a { color: var(--accent); }
-.settings-links { margin: 16px 0 0; text-align: center; font-size: 13px; }
+.settings-note a { color: var(--accent); }
+.about-system { margin-top: 22px; }
+.about-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.about-logo { display: grid; place-items: center; width: 64px; height: 64px; flex: none; border-radius: 50%; background: #f6f5f4; }
+.about-logo svg { width: 38px; height: 44px; }
+.about-head strong { display: block; font-size: 18px; }
+.about-specs { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 12px; padding: 12px 14px; border-radius: 8px; background: rgba(127, 127, 127, 0.1); font-size: 13px; }
+.about-specs dt { opacity: 0.65; }
+.about-specs dd { margin: 0; }
+.about-blurb { margin: 0 0 12px; font-size: 13.5px; line-height: 1.5; }
+.about-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.about-btn { padding: 6px 12px; border: 1px solid rgba(127, 127, 127, 0.35); border-radius: 6px; color: inherit; font-size: 13px; text-decoration: none; }
+.about-btn:hover, .about-btn:focus-visible { border-color: var(--accent); color: var(--accent); }
 .account p { margin: 0 0 8px; }
 .account-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .account-input { flex: 1 1 150px; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--win-fg); font: inherit; }
