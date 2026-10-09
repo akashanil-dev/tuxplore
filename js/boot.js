@@ -87,6 +87,7 @@ OS.boot = {
     return new Promise((resolve) => {
       const done = (e) => {
         if (e.type === 'keydown' && ['Shift', 'Control', 'Alt', 'Meta'].includes(e.key)) return;
+        if (e.target.closest?.('a')) return; // a link on the screen (the halted screen's About link)
         document.removeEventListener('keydown', done);
         document.removeEventListener('pointerdown', done);
         resolve();
@@ -317,7 +318,7 @@ OS.boot = {
         fields: [{ id: 'user', label: 'Username', type: 'text' }, { id: 'pass', label: 'Choose a password', type: 'password', autocomplete: 'new-password' }],
         hint: "No email needed. There's no password reset either, so pick a password you'll remember.",
         back: null,
-        links: [toSignIn, toGuest, known && [`Back to ${known}`, () => go('users')]].filter(Boolean),
+        links: [toSignIn, toGuest, known ? [`Back to ${known}`, () => go('users')] : ['New here? What is Tuxplore?', () => { location.href = ctx.about; }]],
         async submit({ user, pass }, ui) {
           const problem = OS.boot.checkUsername(user);
           if (problem) return ui.error(problem, 'user');
@@ -456,7 +457,7 @@ OS.boot = {
       await OS.util.sleep(OS.util.reducedMotion() ? 0 : 160);
     }
     await OS.util.sleep(300);
-    this.show('halted', '<p>System halted.</p><p class="c-dim">Press any key to power on.</p>');
+    this.show('halted', '<p>System halted.</p><p class="c-dim">Press any key to power on.</p><p class="halted-about"><a href="about.html">About Tuxplore</a></p>');
     document.getElementById('desktop').hidden = true;
     await this.anyKey();
     location.reload();

@@ -68,6 +68,7 @@ function buildTree(user) {
         Documents: D({
           'linux-facts.txt': F('Linux runs on all of the top 500 supercomputers.\nAndroid is built on the Linux kernel.\nThe mascot Tux was drawn by Larry Ewing in 1996.\nLinux is free: free as in price, and free as in freedom.'),
           'todo.txt': F('- learn the terminal\n- rescue the crown\n- tell friends about Linux'),
+          'about-tuxplore.txt': F('TUXPLORE\n========\n\nYou are playing Tuxplore: a game that teaches Linux by letting you use it.\nTuxOS, the system you are in now, is pretend, but the commands are real.\n\nWhat it is, what you will learn, and the FAQ:\n  https://tuxplore.akashanil.dev/about.html\n\nPublic usage stats:\n  https://tuxplore.akashanil.dev/stats.html\n\nMade by Akash A.  Liked it? Tell a friend who is curious about Linux.'),
         }),
         Pictures: D({ 'tux.txt': F('     .--.\n    |o_o |\n    |:_/ |\n   //   \\ \\\n  (|     | )\n /\'\\_   _/`\\\n \\___)=(___/') }),
         Music: D({}),

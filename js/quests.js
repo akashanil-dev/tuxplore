@@ -171,7 +171,8 @@
           this.evaluate('activate', {});
         }, 1500);
       } else {
-        setTimeout(() => OS.bus.emit('tux:say', 'You finished every quest! You are officially a Linux user. 🎓 Now go try the real thing.'), 1500);
+        setTimeout(() => OS.tux.say('You finished every quest! You are officially a Linux user. 🎓 Now go try the real thing. And if you know someone curious about Linux, send them Tuxplore!', 20000,
+          OS.util.el('a', { class: 'tux-link', href: 'about.html', target: '_blank', rel: 'noopener', text: 'Share Tuxplore ↗' })), 1500);
       }
       if (q.id === 'packages') OS.bus.emit('apps:changed');
     },

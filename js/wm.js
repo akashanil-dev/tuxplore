@@ -97,6 +97,14 @@ OS.wm = {
         icon.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.open(id); });
         this.iconsEl.append(icon);
       }
+      // Tux himself, for anyone wondering what this all is. Opens in a new tab so the game keeps running.
+      const about = el('button', { class: 'desk-icon', title: 'What is Tuxplore? Opens in a new tab' },
+        el('span', { class: 'app-icon', html: OS.tuxSvg() }), el('span', { class: 'desk-label', text: 'About Tuxplore' }));
+      const openAbout = () => window.open('about.html', '_blank', 'noopener');
+      about.addEventListener('dblclick', openAbout);
+      about.addEventListener('click', () => { if (matchMedia('(pointer: coarse)').matches) openAbout(); });
+      about.addEventListener('keydown', (e) => { if (e.key === 'Enter') openAbout(); });
+      this.iconsEl.append(about);
     } else if (this.de.icons === 'minimized') {
       // CDE style: a minimised window becomes an icon on the desktop.
       for (const win of this.windows.filter((w) => w.minimized && this.onCurrentWs(w))) {

@@ -168,6 +168,9 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 .panic-note { color: #facc15; }
 
 #boot.halted { display: grid; place-content: center; text-align: center; }
+.halted-about { position: fixed; bottom: 16px; left: 0; right: 0; margin: 0; font-size: 13px; }
+.halted-about a { color: #8a8a8a; }
+.halted-about a:hover, .halted-about a:focus-visible { color: #c0c0c0; }
 
 /* Phones get a joke kernel panic, then a rescue shell from Tux with a GRUB-style menu (js/boot.js). */
 #boot.phone { padding: max(18px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom)); color: #c0c0c0; font-size: 14px; }
@@ -483,6 +486,8 @@ body.has-maximized #tux-companion { display: none; }
 .tux-guide dd { margin: 0; }
 .tux-guide kbd { padding: 1px 6px; border: 1px solid rgba(28, 25, 23, 0.25); border-bottom-width: 2px; border-radius: 4px; background: #fff; font: 11.5px 'JetBrains Mono', monospace; }
 .tux-guide-foot { color: #57534e; font-size: 12px; }
+.tux-link { display: inline-block; margin-top: 8px; padding: 5px 12px; border-radius: 999px; background: #3584e4; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; }
+.tux-link:hover, .tux-link:focus-visible { background: #1c71d8; }
 
 /* ---------- Print: only the cheat sheet ---------- */
 #print-area { display: none; }

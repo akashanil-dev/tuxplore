@@ -957,6 +957,7 @@
         ['DE', theme],
         ['Commands learned', String(Object.keys(OS.state.learned).length)],
         ['Quests', `${done}/${OS.quests.list.length}`],
+        ['Website', 'tuxplore.akashanil.dev'],
       ];
       const text = info.map(([k, v], i) => `${art[i] ?? ''.padEnd(19)}${v ? `${k}: ${v}` : k}`).join('\n');
       const colors = ['#ef4444', '#f59e0b', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#e5e7eb'].map((c) => `<span style="color:${c}">███</span>`).join('');
