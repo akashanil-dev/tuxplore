@@ -10,6 +10,8 @@
       "database_id": "5cceb2d9-b407-40ae-bb01-ec607df16469"
     }
   ],
+  // Limits /event per visitor, in memory only (nothing is written anywhere).
+  "ratelimits": [{ "name": "EVENT_LIMIT", "namespace_id": "1001", "simple": { "limit": 30, "period": 60 } }],
   "routes": [{ "pattern": "api.tuxplore.akashanil.dev", "custom_domain": true }],
   "vars": {
     // Sites allowed to call the API. The first one is the default.

@@ -157,6 +157,7 @@
 
     complete(q) {
       OS.state.quests.done[q.id] = Date.now();
+      OS.analytics.event(`quest_complete:${q.id}`);
       OS.save();
       const n = Object.keys(OS.state.quests.done).length;
       OS.toast({ icon: '📜', title: `Quest complete: ${q.title}`, body: `${n} of ${list.length} done` });

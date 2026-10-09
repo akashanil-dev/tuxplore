@@ -8,7 +8,8 @@ OS.boot = {
 
   start() {
     this.screen = document.getElementById('boot');
-    if (this.isPhone() && !this.bootAnyway) return this.phone();
+    if (this.isPhone() && !this.bootAnyway) { OS.analytics.event('phone_screen'); return this.phone(); }
+    OS.analytics.event('boot');
     if (OS.state.fastBoot && OS.state.username) return this.login();
     this.grub();
   },
@@ -269,6 +270,7 @@ OS.boot = {
               OS.state.username = name;
               OS.state.online = true;
               OS.save();
+              OS.analytics.event('login');
               start(!data.save);
             } catch (err) {
               ui.busy(false);
@@ -309,6 +311,7 @@ OS.boot = {
             const fresh = { ...OS.defaultState(), username: user, theme: OS.state.theme, online: true };
             await OS.cloud.signup(user, pass, fresh);
             OS.loadState(fresh);
+            OS.analytics.event('account_created');
             start(true);
           } catch (err) {
             ui.busy(false);
@@ -332,6 +335,7 @@ OS.boot = {
           OS.loadState(OS.defaultState());
           OS.state.username = user;
           OS.save();
+          OS.analytics.event('guest_started');
           start(true);
         },
       }),

@@ -66,6 +66,7 @@
         await OS.cloud.signup(user, pass.value, { ...OS.state, username: user, online: true });
         OS.state.online = true;
         OS.save();
+        OS.analytics.event('account_created');
         if (user !== OS.state.username) {
           // The account got a different name: rename the player to match, and restart the session as them.
           OS.renameUser(user);
@@ -127,7 +128,7 @@
             const active = OS.state.theme === t.id;
             return el('button', {
               class: `theme-card${active ? ' active' : ''}${unlocked ? '' : ' locked'}`, 'aria-pressed': String(active), disabled: !unlocked,
-              onclick: () => { if (active) return; OS.applyTheme(t.id); OS.achievements.unlock('theme_switch'); render(); },
+              onclick: () => { if (active) return; OS.applyTheme(t.id); OS.analytics.event(`de_switch:${t.id}`); OS.achievements.unlock('theme_switch'); render(); },
             },
             el('span', { class: `theme-preview tp-${t.id}`, 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('i')),
             el('strong', { text: `${unlocked ? '' : '🔒 '}${t.name}` }),
@@ -143,6 +144,11 @@
           el('label', { class: 'toggle' },
             el('input', { type: 'checkbox', checked: OS.state.fastBoot, onchange: (e) => { OS.state.fastBoot = e.target.checked; OS.save(); } }),
             ' Skip GRUB and the boot log on startup'),
+          el('label', { class: 'toggle' },
+            el('input', { type: 'checkbox', checked: !OS.analytics.optedOut, onchange: (e) => { OS.analytics.optedOut = !e.target.checked; } }),
+            ' Share anonymous usage counts'),
+          el('p', { class: 'muted settings-note' }, 'Counts like "someone finished a quest" help improve Tuxplore. Never who you are: no cookies, no IDs. ',
+            el('a', { href: 'stats.html', target: '_blank', rel: 'noopener', text: 'See everything that\'s collected' }), '.'),
           el('div', { class: 'danger' },
             el('div', {}, el('strong', { text: 'Reset the filesystem' }), el('small', { text: 'Restores every file to how it started. Quest progress stays.' })),
             el('button', { class: 'btn-ghost', text: 'Reset files', onclick: () => {
@@ -210,6 +216,7 @@
         }
         const [bestId] = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
         const d = DISTROS[bestId];
+        OS.analytics.event(`distro_match:${bestId}`);
         OS.achievements.unlock('installer');
         wrap.append(
           el('p', { class: 'muted', text: 'Your match' }),

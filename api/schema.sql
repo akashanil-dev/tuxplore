@@ -22,3 +22,11 @@ CREATE TABLE IF NOT EXISTS attempts (
   count      INTEGER NOT NULL,
   expires_at INTEGER NOT NULL
 );
+
+-- Anonymous usage counts: how many times each event happened each day. Nothing else.
+CREATE TABLE IF NOT EXISTS events (
+  day   TEXT NOT NULL,                -- YYYY-MM-DD, UTC
+  name  TEXT NOT NULL,                -- e.g. boot, quest_complete:dungeon, de_switch:retro
+  count INTEGER NOT NULL,
+  PRIMARY KEY (day, name)
+);

@@ -73,6 +73,16 @@ and overcast weather. Distro tiles slide toward him.
 - **Controls:** Space / ↑ / tap to jump (up to three more times in mid-air), A / D to walk, hold **M** for the
   distro family map, **P** to pause, **R** to reset.
 
+## What we collect
+
+Tuxplore counts a few things so we can see what works and where players get stuck. The rules:
+
+- **Counts, not people.** No cookies, no IDs, no IP addresses, no usernames.
+- **Page views** go to [GoatCounter](https://www.goatcounter.com), an open-source analytics service. Its script is served from this site, not loaded from a third party.
+- **Game events** (TuxOS booted, a quest was finished, a desktop was switched to, which distro the quiz suggested) go to Tuxplore's own API, which only adds one to that day's count. The full list is on the stats page and in `api/src/index.js`.
+- **Off with one click:** untick "Share anonymous usage counts" in TuxOS Settings. Nothing is sent either if your browser asks sites not to track you (Do Not Track or Global Privacy Control).
+- **Public:** every number is on the [stats page](https://tuxplore.akashanil.dev/stats.html).
+
 ## Run it
 
 There's no build step and no dependencies. Pick one:
@@ -100,6 +110,8 @@ css/desktops.css    each desktop environment's panels, launchers and window butt
 css/greeters.css    the login screens
 css/apps.css        styles for each app
 js/cloud.js         online accounts: logs in and syncs your save with the API
+js/analytics.js     anonymous usage counts (see What we collect)
+js/vendor/          GoatCounter's counting script (ISC license)
 js/core.js          event bus, save state, toasts, achievements, desktop environment list
 js/fs.js            virtual filesystem with owners and permissions
 js/coreutils.js     text filters shared by the shell and Pipe Dream

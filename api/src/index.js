@@ -8,13 +8,20 @@
 //   GET  /save                                 -> {save, updatedAt}
 //   PUT  /save    {save}                       -> {updatedAt}
 //   POST /logout                               -> {}
+//   POST /event   {name}                       -> {}       anonymous usage count, see below
+//   GET  /stats                                -> daily and all-time counts, public
 // GET, PUT /save and /logout take "Authorization: Bearer <token>".
+//
+// Usage counts are just "this happened once today": no IP, username, ID or cookie is stored, and only
+// names on the EVENTS list are accepted. The public stats page (stats.html) shows everything there is.
 
 const USERNAME = /^[a-z_][a-z0-9_-]{0,15}$/;
 const MAX_PASSWORD = 200;
 const MAX_SAVE_BYTES = 100 * 1024;
 const PBKDF2_ITERATIONS = 100000; // the most Workers allows
 const LIMITS = { signup: { max: 5, windowSec: 3600 }, login: { max: 10, windowSec: 300 } };
+const EVENTS = /^(boot|phone_screen|account_created|guest_started|login|quest_complete:[a-z_]{1,24}|de_switch:(kde|gnome|retro|tiling)|distro_match:[a-z]{1,16})$/;
+const STATS_DAYS = 30;
 
 export default {
   async fetch(request, env) {
@@ -22,7 +29,7 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     try {
       const res = await route(request, env);
-      for (const [k, v] of Object.entries(cors)) res.headers.set(k, v);
+      for (const [k, v] of Object.entries(cors)) if (!res.headers.has(k)) res.headers.set(k, v);
       return res;
     } catch (err) {
       if (err instanceof HttpError) return json({ error: err.message }, err.status, cors);
@@ -40,6 +47,8 @@ async function route(request, env) {
   if (key === 'GET /save') return getSave(request, env);
   if (key === 'PUT /save') return putSave(request, env);
   if (key === 'POST /logout') return logout(request, env);
+  if (key === 'POST /event') return countEvent(request, env);
+  if (key === 'GET /stats') return stats(env);
   if (key === 'GET /') return json({ ok: true, service: 'tuxplore-api' });
   throw new HttpError(404, 'Not found.');
 }
@@ -95,6 +104,38 @@ async function logout(request, env) {
   const token = bearer(request);
   if (token) await env.DB.prepare('DELETE FROM tokens WHERE token_hash = ?1').bind(await sha256(token)).run();
   return json({});
+}
+
+// ---------- Anonymous usage counts ----------
+
+// The game sends text/plain so browsers skip the CORS preflight; the body is still JSON.
+async function countEvent(request, env) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'local';
+  // Cloudflare's rate limiter keeps its counters in memory only, so nothing about the visitor is stored.
+  if (env.EVENT_LIMIT && !(await env.EVENT_LIMIT.limit({ key: ip })).success) return json({}, 429);
+  let name;
+  try { ({ name } = JSON.parse(await request.text())); } catch { throw new HttpError(400, 'Send {"name": "..."}.'); }
+  if (typeof name !== 'string' || !EVENTS.test(name)) throw new HttpError(400, 'Unknown event.');
+  const day = new Date().toISOString().slice(0, 10);
+  await env.DB.prepare('INSERT INTO events (day, name, count) VALUES (?1, ?2, 1) ON CONFLICT (day, name) DO UPDATE SET count = count + 1')
+    .bind(day, name).run();
+  return json({});
+}
+
+async function stats(env) {
+  const from = new Date(Date.now() - (STATS_DAYS - 1) * 864e5).toISOString().slice(0, 10);
+  const [recent, allTime] = await env.DB.batch([
+    env.DB.prepare('SELECT day, name, count FROM events WHERE day >= ?1 ORDER BY day').bind(from),
+    env.DB.prepare('SELECT name, SUM(count) AS count, MIN(day) AS first FROM events GROUP BY name'),
+  ]);
+  const daily = {};
+  for (const { day, name, count } of recent.results) (daily[day] ||= {})[name] = count;
+  const totals = Object.fromEntries(allTime.results.map((r) => [r.name, r.count]));
+  const since = allTime.results.reduce((min, r) => (!min || r.first < min ? r.first : min), null);
+  return json({ from, days: STATS_DAYS, daily, totals, since }, 200, {
+    'Access-Control-Allow-Origin': '*',
+    'Cache-Control': 'public, max-age=300',
+  });
 }
 
 // ---------- Passwords and tokens ----------
