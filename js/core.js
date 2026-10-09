@@ -67,12 +67,43 @@ OS.state = (() => {
   return defaultState();
 })();
 
+OS.defaultState = defaultState;
+
+// savedAt is compared with the server's copy to decide which is newer (js/cloud.js).
 OS.save = () => {
+  OS.state.savedAt = Date.now();
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(OS.state)); } catch { /* ignore */ }
+  OS.cloud?.schedule();
+};
+
+// Replace the whole save, e.g. with one downloaded from the player's account.
+OS.loadState = (save, savedAt = Date.now()) => {
+  OS.state = Object.assign(defaultState(), save, { savedAt });
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(OS.state)); } catch { /* ignore */ }
 };
 
-OS.resetSave = () => {
-  try { localStorage.removeItem(SAVE_KEY); } catch { /* ignore */ }
+// Rename the player: their home folder and /etc/passwd follow. Used when an account name differs from the local one.
+OS.renameUser = (name) => {
+  const old = OS.state.username;
+  OS.state.username = name;
+  const home = OS.state.fs?.ch?.home?.ch;
+  if (old && home?.[old] && old !== name) {
+    home[name] = home[old];
+    delete home[old];
+    const passwd = OS.state.fs.ch.etc?.ch?.passwd;
+    if (passwd) passwd.c = passwd.c.split('\n').map((line) => (line.startsWith(`${old}:`) ? `${name}:x:1000:1000:${name}:/home/${name}:/bin/bash` : line)).join('\n');
+  }
+  OS.save();
+};
+
+// Start over. With an online account the account stays, with a fresh save under the same name.
+OS.resetSave = async () => {
+  if (OS.cloud?.linked) {
+    OS.loadState({ ...defaultState(), username: OS.state.username });
+    await OS.cloud.push();
+  } else {
+    try { localStorage.removeItem(SAVE_KEY); } catch { /* ignore */ }
+  }
   location.reload();
 };
 

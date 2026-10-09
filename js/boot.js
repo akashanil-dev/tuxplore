@@ -162,24 +162,47 @@ OS.boot = {
   },
 
   // ---------- Login ----------
-  login() {
+  // The login screen has four faces:
+  //   unlock   a player is already on this device (with or without an online account)
+  //   create   new player: make an online account (the default)
+  //   signin   log into an existing online account
+  //   guest    play without an account; progress stays in this browser
+  login(mode = OS.state.username ? 'unlock' : 'create') {
     const { el } = OS.util;
     const screen = this.show('login');
     const known = OS.state.username;
+    const linked = OS.cloud.linked;
     const clock = el('div', { class: 'login-clock' });
     const tick = () => { clock.textContent = new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }); };
     tick();
     const clockTimer = setInterval(tick, 10000);
+    const switchTo = (next) => { clearInterval(clockTimer); this.login(next); };
+
+    const copy = {
+      unlock: { title: known, sub: linked ? '☁ Your progress syncs with your account.' : null, button: 'Log in', pass: linked ? null : 'password (anything works)' },
+      create: { title: 'Welcome to TuxOS', sub: "Create an account to save your progress online. There's no password reset, so pick a password you'll remember.", button: 'Create account', pass: 'password (6 or more characters)' },
+      signin: { title: 'Log in', sub: 'Log in to carry on where you left off.', button: 'Log in', pass: 'password' },
+      guest: { title: 'Play without an account', sub: 'Your progress stays in this browser only. Pick a username: Linux usernames are lowercase, with no spaces.', button: 'Start', pass: 'password (anything works)' },
+    }[mode];
     const error = el('p', { class: 'login-error', role: 'alert' });
-    const name = el('input', { class: 'login-input', type: 'text', autocomplete: 'off', spellcheck: 'false', maxlength: '16', placeholder: 'username', 'aria-label': 'Username', value: known || '' });
-    const pass = el('input', { class: 'login-input', type: 'password', placeholder: 'password (anything works)', 'aria-label': 'Password' });
-    const go = el('button', { class: 'login-go', type: 'submit', text: known ? 'Log in' : 'Create account' });
+    const name = el('input', { class: 'login-input', type: 'text', autocomplete: 'username', spellcheck: 'false', maxlength: '16', placeholder: 'username', 'aria-label': 'Username' });
+    const pass = el('input', { class: 'login-input', type: 'password', autocomplete: mode === 'create' ? 'new-password' : 'current-password', placeholder: copy.pass || '', 'aria-label': 'Password' });
+    const go = el('button', { class: 'login-go', type: 'submit', text: copy.button });
+    const link = (text, onclick) => el('button', { class: 'login-link', type: 'button', text, onclick });
+    const links = {
+      unlock: [link('Use a different account', () => this.forgetDevice(() => switchTo('create')))],
+      create: [link('I already have an account', () => switchTo('signin')), link('Play without an account', () => switchTo('guest'))],
+      signin: [link('Create an account', () => switchTo('create')), link('Play without an account', () => switchTo('guest'))],
+      guest: [link('Create an account instead', () => switchTo('create'))],
+    }[mode];
     const form = el('form', { class: 'login-card' },
       el('div', { class: 'login-avatar', html: OS.tuxSvg() }),
-      known ? el('h1', { text: known }) : el('h1', { text: 'Welcome to TuxOS' }),
-      known ? null : el('p', { class: 'login-sub', text: 'Pick a username. Linux usernames are lowercase, with no spaces.' }),
-      known ? null : name,
-      pass, error, go);
+      el('h1', { text: copy.title }),
+      copy.sub && el('p', { class: 'login-sub', text: copy.sub }),
+      mode === 'unlock' ? null : name,
+      copy.pass ? pass : null,
+      error, go,
+      el('div', { class: 'login-links' }, links));
     // Like GDM and SDDM: pick which desktop environment the session starts.
     const unlocked = OS.themes.filter((t) => OS.state.unlockedThemes.includes(t.id));
     if (unlocked.length > 1) {
@@ -204,26 +227,62 @@ OS.boot = {
       form.append(sessionBtn);
     }
     screen.append(clock, form);
-    (known ? pass : name).focus();
+    (mode === 'unlock' ? (copy.pass ? pass : go) : name).focus();
 
     name.addEventListener('input', () => { name.value = name.value.toLowerCase().replace(/\s/g, ''); error.textContent = ''; });
-    form.addEventListener('submit', (e) => {
+    const busy = (text) => { go.disabled = !!text; go.textContent = text || copy.button; };
+    const start = (firstTime) => { clearInterval(clockTimer); this.startSession(firstTime); };
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const user = known || name.value.trim();
-      if (!/^[a-z_][a-z0-9_-]{0,15}$/.test(user)) {
-        error.textContent = 'Use lowercase letters and numbers, starting with a letter (like "alex" or "sam_42").';
-        name.focus();
-        return;
+      error.textContent = '';
+      if (mode === 'unlock') {
+        // Linked: fetch the account's save first, in case another device played since.
+        if (linked) { busy('Syncing…'); await OS.cloud.pull(); }
+        return start(false);
       }
-      if (user === 'root') {
-        error.textContent = 'Logging in as root is a bad habit. Use a normal account and sudo when you need power.';
-        return;
+      const user = name.value.trim();
+      const problem = this.checkUsername(user);
+      if (problem) { error.textContent = problem; name.focus(); return; }
+      if (mode === 'guest') {
+        OS.loadState(OS.defaultState());
+        OS.state.username = user;
+        OS.save();
+        return start(true);
       }
-      clearInterval(clockTimer);
-      OS.state.username = user;
-      OS.save();
-      this.startSession(!known);
+      try {
+        if (mode === 'create') {
+          busy('Creating account…');
+          const fresh = { ...OS.defaultState(), username: user, theme: OS.state.theme };
+          await OS.cloud.signup(user, pass.value, fresh);
+          OS.loadState(fresh);
+          return start(true);
+        }
+        busy('Logging in…');
+        const data = await OS.cloud.login(user, pass.value);
+        OS.loadState(data.save || { username: user }, data.updatedAt);
+        OS.state.username = user;
+        return start(!data.save);
+      } catch (err) {
+        error.textContent = err.message;
+        busy(null);
+        (err.status === 401 ? pass : name).focus();
+      }
     });
+  },
+
+  checkUsername(user) {
+    if (!/^[a-z_][a-z0-9_-]{0,15}$/.test(user)) return 'Use lowercase letters and numbers, starting with a letter (like "alex" or "sam_42").';
+    if (user === 'root') return 'Logging in as root is a bad habit. Use a normal account and sudo when you need power.';
+    return null;
+  },
+
+  // "Use a different account": an online account keeps its progress; a guest's would be lost, so ask first.
+  async forgetDevice(then) {
+    if (!OS.cloud.linked && !confirm('This removes the progress saved in this browser. To keep it, log in, open Settings and create an account first.\n\nRemove it and continue?')) return;
+    if (OS.cloud.linked) await OS.cloud.logout();
+    OS.loadState(OS.defaultState());
+    then();
   },
 
   startSession(firstTime) {

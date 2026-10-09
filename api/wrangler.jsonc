@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tuxplore-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tuxplore",
+      "database_id": "5cceb2d9-b407-40ae-bb01-ec607df16469"
+    }
+  ],
+  "routes": [{ "pattern": "api.tuxplore.akashanil.dev", "custom_domain": true }],
+  "vars": {
+    // Sites allowed to call the API. The first one is the default.
+    "ALLOWED_ORIGINS": "https://tuxplore.akashanil.dev,http://localhost:8000"
+  }
+}

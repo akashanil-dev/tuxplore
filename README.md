@@ -25,7 +25,7 @@ the way. Nothing is installed and nothing on your real computer is touched.
 - **Switch any time** in Settings, or pick a session on the login screen like you would on GDM or SDDM.
 - **Windows** you can drag, resize, minimise and maximise, in whatever style the desktop environment uses.
 - **Wallpapers, achievements and toasts,** plus Tux in the corner, who reacts to what you do and gives hints when you click him.
-- **Progress is saved** in the browser.
+- **Progress is saved** in the browser, and online too if you make an account: just a username and password, with no email and no password reset. You can also play without one.
 
 ### A terminal you can actually use
 A bash-like shell over a virtual filesystem, with about 60 commands:
@@ -96,6 +96,7 @@ index.html          page shell and script order
 css/os.css          colours, boot screens, desktop, windows
 css/desktops.css    each desktop environment's panels, launchers and window buttons
 css/apps.css        styles for each app
+js/cloud.js         online accounts: logs in and syncs your save with the API
 js/core.js          event bus, save state, toasts, achievements, desktop environment list
 js/fs.js            virtual filesystem with owners and permissions
 js/coreutils.js     text filters shared by the shell and Pipe Dream
@@ -109,6 +110,7 @@ js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and 
 images/icons/       app icons
 images/distros/     distro logos
 images/wall/        wallpapers (WebP) and their Settings thumbnails
+api/                the save API: a Cloudflare Worker and D1 database (see api/README.md)
 ```
 
 ## Credits

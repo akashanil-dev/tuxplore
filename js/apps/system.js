@@ -30,6 +30,83 @@
     },
   });
 
+  // ---------- Settings: account ----------
+  // Guests can move their progress into an online account (or log into one); logged-in players can sync or log out.
+  const account = (rerender) => {
+    const box = el('div', { class: 'account' });
+    const error = el('p', { class: 'login-error account-error', role: 'alert' });
+    const field = (attrs) => el('input', { class: 'account-input', spellcheck: 'false', ...attrs });
+
+    if (OS.cloud.linked) {
+      const synced = OS.cloud.lastSync ? new Date(OS.cloud.lastSync).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }) : null;
+      box.append(el('h3', { text: 'Account' }),
+        el('p', {}, '☁ Logged in as ', el('strong', { text: OS.state.username }), '. Your progress saves to your account automatically.'),
+        synced && el('p', { class: 'muted', text: `Last synced at ${synced}.` }),
+        el('div', { class: 'account-row' },
+          el('button', { class: 'btn-ghost', text: 'Sync now', onclick: async (e) => { e.target.disabled = true; await OS.cloud.push(); rerender(); } }),
+          el('button', { class: 'btn-ghost', text: 'Log out', onclick: async () => {
+            if (!confirm('Log out on this device? Your progress stays safe in your account, and this browser goes back to the login screen.')) return;
+            await OS.cloud.logout();
+            OS.loadState(OS.defaultState());
+            location.reload();
+          } })));
+      return box;
+    }
+
+    const name = field({ type: 'text', value: OS.state.username, maxlength: '16', 'aria-label': 'Username', autocomplete: 'username' });
+    const pass = field({ type: 'password', placeholder: 'password (6 or more characters)', 'aria-label': 'Password', autocomplete: 'new-password' });
+    name.addEventListener('input', () => { name.value = name.value.toLowerCase().replace(/\s/g, ''); });
+    const create = el('button', { class: 'btn-primary', text: 'Create account' });
+    create.addEventListener('click', async () => {
+      const user = name.value.trim();
+      error.textContent = OS.boot.checkUsername(user) || '';
+      if (error.textContent) return;
+      create.disabled = true;
+      try {
+        await OS.cloud.signup(user, pass.value, { ...OS.state, username: user });
+        if (user !== OS.state.username) {
+          // The account got a different name: rename the player to match, and restart the session as them.
+          OS.renameUser(user);
+          await OS.cloud.push();
+          location.reload();
+          return;
+        }
+        OS.toast({ icon: '☁️', title: 'Account created', body: 'Your progress now saves online.' });
+        rerender();
+      } catch (err) {
+        error.textContent = err.status === 409 ? `"${user}" is taken. Pick another name: your Linux username will change to match.` : err.message;
+        create.disabled = false;
+      }
+    });
+
+    const signIn = () => {
+      const lname = field({ type: 'text', placeholder: 'username', maxlength: '16', 'aria-label': 'Username', autocomplete: 'username' });
+      const lpass = field({ type: 'password', placeholder: 'password', 'aria-label': 'Password', autocomplete: 'current-password' });
+      const go = el('button', { class: 'btn-primary', text: 'Log in' });
+      go.addEventListener('click', async () => {
+        if (!confirm('Logging in replaces the progress in this browser with the progress saved in that account. Continue?')) return;
+        go.disabled = true;
+        try {
+          const data = await OS.cloud.login(lname.value.trim(), lpass.value);
+          OS.loadState(data.save || { username: lname.value.trim() }, data.updatedAt);
+          location.reload();
+        } catch (err) {
+          error.textContent = err.message;
+          go.disabled = false;
+        }
+      });
+      box.replaceChildren(el('h3', { text: 'Log in to your account' }), el('div', { class: 'account-row' }, lname, lpass, go), error,
+        el('button', { class: 'login-link account-link', text: '← Back', onclick: rerender }));
+      lname.focus();
+    };
+
+    box.append(el('h3', { text: 'Account' }),
+      el('p', { class: 'muted', text: "You're playing without an account, so your progress lives only in this browser. Create one to keep it safe and play on other devices. There's no password reset, so pick a password you'll remember." }),
+      el('div', { class: 'account-row' }, name, pass, create), error,
+      el('button', { class: 'login-link account-link', text: 'I already have an account', onclick: signIn }));
+    return box;
+  };
+
   // ---------- Settings ----------
   OS.registerApp('settings', {
     title: 'Settings',
@@ -40,6 +117,7 @@
       win.body.append(wrap);
       const render = () => {
         wrap.innerHTML = '';
+        wrap.append(account(render));
         wrap.append(el('h3', { text: 'Desktop environment' }),
           el('p', { class: 'muted', text: 'A desktop environment is everything around your apps: panels, menus, window buttons and shortcuts. On Linux you pick the one you like, and the same apps run in all of them. Unlock more by finishing quests.' }),
           el('div', { class: 'theme-grid' }, OS.themes.map((t) => {
@@ -69,7 +147,7 @@
               if (confirm('Restore every file to how it started?')) { OS.fs.reset(); OS.toast({ icon: '🧹', title: 'Filesystem restored' }); }
             } })),
           el('div', { class: 'danger' },
-            el('div', {}, el('strong', { text: 'Start over' }), el('small', { text: 'Erase your account, progress, achievements and files.' })),
+            el('div', {}, el('strong', { text: 'Start over' }), el('small', { text: OS.cloud.linked ? 'Erase your progress, achievements and files. You keep your account and username.' : 'Erase your progress, achievements and files.' })),
             el('button', { class: 'btn-danger', text: 'Reset everything', onclick: () => {
               if (confirm('Erase everything and start from scratch?')) OS.resetSave();
             } })));

@@ -328,6 +328,11 @@ button.pd-block:hover { filter: brightness(1.15); }
 .settings { padding: 6px 18px 18px; }
 .settings h3 { margin: 18px 0 6px; font-size: 14px; }
 .settings > p { margin: 0 0 10px; }
+.account p { margin: 0 0 8px; }
+.account-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.account-input { flex: 1 1 150px; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--win-fg); font: inherit; }
+.account-error { text-align: left; margin-top: 6px; }
+.account-link { color: var(--accent); padding: 0; }
 .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 .theme-card { display: flex; flex-direction: column; gap: 4px; padding: 10px; border-radius: var(--radius-sm); border: 2px solid var(--line); background: var(--surface); text-align: left; }
 .theme-card.active { border-color: var(--accent); }

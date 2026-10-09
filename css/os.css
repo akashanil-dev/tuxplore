@@ -217,6 +217,10 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
   font-size: 15px;
 }
 .login-input::placeholder { color: #94a3b8; }
+.login-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; }
+.login-link { padding: 2px 4px; border: 0; background: transparent; color: #93c5fd; font-size: 13px; }
+.login-link:hover { text-decoration: underline; }
+.login-go:disabled { opacity: 0.7; cursor: progress; }
 .login-session { align-self: center; padding: 4px 10px; border: 0; border-radius: 6px; background: transparent; color: #cbd5e1; font-size: 13px; }
 .login-session:hover { background: rgba(255, 255, 255, 0.1); }
 .login-menu { z-index: 200001; font-family: 'Inter', system-ui, sans-serif; }
