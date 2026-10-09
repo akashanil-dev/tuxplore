@@ -167,6 +167,17 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 
 #boot.halted { display: grid; place-content: center; text-align: center; }
 
+/* Phones get a joke kernel panic and a card telling them to use a computer. */
+#boot.phone { padding: 14px 14px 24px; color: #e5e5e5; font-size: 12px; }
+#boot.phone pre { margin: 0 0 18px; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+.phone-card { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 420px; margin: 0 auto; padding: 20px 18px; border-radius: 16px; background: #fffbea; color: #1c1917; font: 15px/1.5 'Inter', system-ui, sans-serif; text-align: center; animation: splash-in 0.4s ease; }
+.phone-card h1 { margin: 0; font-size: 21px; }
+.phone-card p { margin: 0; }
+.phone-tux svg { width: 64px; height: 74px; display: block; animation: tux-hop 0.8s ease 0.3s; }
+.phone-btn { width: 100%; padding: 12px; border: 2px solid #1c1917; border-radius: 12px; background: #fff; color: #1c1917; font: 600 15px 'Inter', system-ui, sans-serif; }
+.phone-btn.primary { border-color: #3584e4; background: #3584e4; color: #fff; }
+.phone-btn.ghost { border: 0; background: transparent; color: #57534e; font-weight: 500; font-size: 13.5px; text-decoration: underline; }
+
 #boot.login {
   font-family: 'Inter', 'Cantarell', system-ui, sans-serif;
   background: #1b2224;

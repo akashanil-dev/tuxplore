@@ -15,6 +15,7 @@ the way. Nothing is installed and nothing on your real computer is touched.
 - **GRUB menu** with a countdown, recovery mode and a (fake) memory test.
 - **Boot log** with kernel and systemd messages.
 - **Login screen** where you create your Linux username.
+- **Phones** get a joke kernel panic instead, with a link to open TuxOS on a computer (or boot anyway, if you insist).
 
 ### The TuxOS desktop
 - **Four desktop environments,** each with its own panels, menus, window buttons and shortcuts. KDE Plasma comes first, and quests unlock the rest:
