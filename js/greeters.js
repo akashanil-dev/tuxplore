@@ -71,7 +71,7 @@
         const power = el('button', { class: 'gdm-icons', type: 'button', 'aria-label': 'System menu', html: ICONS.a11y + ICONS.wifi + ICONS.volume + ICONS.power });
         power.addEventListener('click', () => ctx.menu(power, ctx.power));
         const main = el('form', { class: 'gdm-main', autocomplete: 'off' });
-        screen.append(el('div', { class: 'gdm-bar' }, el('span'), clock, power), main);
+        screen.append(el('div', { class: 'gdm-bar' }, el('a', { class: 'gdm-about', href: ctx.about, text: 'About Tuxplore' }), clock, power), main);
         const avatar = (size) => el('div', { class: `gdm-avatar ${size}`, html: OS.tuxSvg() });
         const links = () => el('div', { class: 'gdm-links' }, step.links.map(([label, fn]) => el('button', { class: 'gdm-link', type: 'button', text: label, onclick: fn })));
 
@@ -149,7 +149,7 @@
         const session = el('button', { class: 'sddm-session', type: 'button', text: `Desktop Session: ${active?.name || 'Plasma'} ▾` });
         session.addEventListener('click', () => ctx.menu(session, ctx.sessions.map((s) => [`${s.active ? '● ' : '○ '}${s.name}`, s.pick]), 'sddm'));
         screen.append(el('div', { class: 'sddm-clock' }, time, date), form, actions,
-          el('div', { class: 'sddm-bottom' }, session, el('span', { class: 'sddm-kbd', text: 'Keyboard Layout: US' })));
+          el('div', { class: 'sddm-bottom' }, session, el('span', {}, el('span', { class: 'sddm-kbd', text: 'Keyboard Layout: US' }), el('a', { class: 'sddm-about', href: ctx.about, text: 'About Tuxplore' }))));
         inputs[step.fields[0].id].focus();
       },
     },
@@ -187,6 +187,7 @@
           null,
           ...ctx.sessions.map((s) => [`Session: ${s.name}${s.active ? '  ✓' : ''}`, s.pick]),
           null,
+          ['About Tuxplore', () => { location.href = ctx.about; }],
           ['Reset Login Screen', () => location.reload()],
           ['Shut Down', () => OS.boot.shutdown()],
         ].filter((item, i, all) => !(item === null && (i === 0 || all[i - 1] === null))), 'dtlogin'));
@@ -205,7 +206,7 @@
             el('div', { class: 'dt-logo' }, el('div', { class: 'dt-tux', html: OS.tuxSvg() }), el('strong', { text: 'TuxOS' }), el('small', { text: 'Common Desktop Environment' })),
             el('div', { class: 'dt-main' }, el('h1', { text: greeting }), label, slot, msg)),
           el('div', { class: 'dt-buttons' }, ok, el('button', { type: 'button', text: 'Start Over', onclick: startOver }), options, help));
-        screen.append(form);
+        screen.append(form, el('a', { class: 'dt-about', href: ctx.about, text: 'About Tuxplore' }));
         ui.say(step.hint);
         show();
       },
@@ -239,11 +240,12 @@
         const accounts = step.links.length ? () => ctx.menu(bar, step.links, 'tui') : null;
         const sessions = ctx.sessions.length > 1 ? () => ctx.menu(bar, ctx.sessions.map((s) => [`${s.active ? '(*)' : '( )'} ${s.name}`, s.pick]), 'tui') : null;
         const power = () => ctx.menu(bar, ctx.power, 'tui');
+        const about = () => { location.href = ctx.about; };
         const bar = el('div', { class: 'tui-bar' },
-          key('ESC', 'Back', step.back), key('F2', 'Accounts', accounts), key('F3', 'Change session', sessions), key('F12', 'Power', power),
+          key('ESC', 'Back', step.back), key('F1', 'About', about), key('F2', 'Accounts', accounts), key('F3', 'Change session', sessions), key('F12', 'Power', power),
           el('span', { class: 'tui-session', text: `Session: ${active?.name || 'Hyprland'}` }));
         screen.onkeydown = (e) => {
-          const actions = { Escape: step.back, F2: accounts, F3: sessions, F12: power };
+          const actions = { Escape: step.back, F1: about, F2: accounts, F3: sessions, F12: power };
           if (actions[e.key] && !document.querySelector('.greeter-menu')) { e.preventDefault(); actions[e.key](); }
         };
         screen.append(now, form, bar);

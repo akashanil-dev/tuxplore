@@ -32,6 +32,8 @@
 .gdm-clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
 .gdm-icons { display: flex; align-items: center; gap: 10px; height: 26px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; color: #fff; }
 .gdm-icons:hover { background: rgba(255, 255, 255, 0.15); }
+.gdm-about { padding: 4px 10px; border-radius: 999px; color: #fff; text-decoration: none; font-weight: 600; opacity: 0.85; }
+.gdm-about:hover, .gdm-about:focus-visible { background: rgba(255, 255, 255, 0.15); opacity: 1; outline: 0; }
 .gdm-icons svg, .gdm-go svg, .gdm-back svg, .gdm-session svg { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .gdm-main { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 64px 16px 40px; }
 .gdm-avatar { display: grid; place-items: center; flex: none; border-radius: 50%; background: #f6f5f4; }
@@ -95,6 +97,8 @@
 .sddm-actions button:hover .sddm-action-icon, .sddm-actions button:focus-visible .sddm-action-icon { background: rgba(255, 255, 255, 0.18); }
 .sddm-bottom { position: fixed; left: 12px; right: 12px; bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
 .sddm-kbd { padding: 5px 10px; opacity: 0.8; }
+.sddm-about { padding: 5px 10px; border-radius: 4px; color: #fcfcfc; text-decoration: none; }
+.sddm-about:hover, .sddm-about:focus-visible { background: rgba(255, 255, 255, 0.14); outline: 0; }
 
 /* ---------- dtlogin (CDE) ---------- */
 #boot.greeter-dtlogin { display: grid; place-items: center; padding: 16px; font-family: Helvetica, Arial, sans-serif; }
@@ -120,6 +124,8 @@
 .dt-help p { margin: 0; line-height: 1.45; }
 .dt-help button { align-self: center; }
 #boot.dt-busy, #boot.dt-busy * { cursor: wait !important; }
+.dt-about { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4); }
+.dt-about:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 /* ---------- tuigreet (Hyprland) ---------- */
 #boot.greeter-tuigreet { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 56px 16px 64px; background: #000; color: #d0d0d0; font: 15px 'JetBrains Mono', ui-monospace, monospace; }

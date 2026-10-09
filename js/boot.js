@@ -361,6 +361,7 @@ OS.boot = {
     // What every greeter can offer around the form: the clock, the power menu and the session picker.
     const ctx = {
       hostname: 'tuxos',
+      about: 'about.html', // every greeter links here, for first-time visitors wondering what this is
       power: [['Restart', () => location.reload()], ['Shut Down', () => OS.boot.shutdown()]],
       sessions: OS.themes.filter((t) => OS.state.unlockedThemes.includes(t.id)).map((t) => ({
         name: t.name, active: t.id === OS.state.theme, pick: () => { OS.state.theme = t.id; OS.save(); go(mode, arg); },
