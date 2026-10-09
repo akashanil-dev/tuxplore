@@ -17,9 +17,9 @@ the way. Nothing is installed and nothing on your real computer is touched.
 - **Login screen** where you create your Linux username.
 
 ### The TuxOS desktop
-- **Four desktop environments,** each with its own panels, menus, window buttons and shortcuts. GNOME comes first, and quests unlock the rest:
+- **Four desktop environments,** each with its own panels, menus, window buttons and shortcuts. KDE Plasma comes first, and quests unlock the rest:
+  - **KDE Plasma:** a taskbar, the Kickoff app launcher, KRunner search on Alt+Space and Peek at Desktop. Everyone starts here, since it feels familiar coming from Windows.
   - **GNOME:** a top bar and the Activities overview (click it, push the mouse into the top-left corner, or tap Super).
-  - **KDE Plasma:** a taskbar, the Kickoff app launcher, KRunner search on Alt+Space and Peek at Desktop.
   - **CDE:** the 1990s Unix Front Panel with an analog clock, four workspaces, Motif window menus, and minimised windows that turn into desktop icons.
   - **Hyprland:** a Waybar bar, five workspaces, tiling windows with no title bars, a wofi launcher and Super-key shortcuts (Alt works too).
 - **Switch any time** in Settings, or pick a session on the login screen like you would on GDM or SDDM.

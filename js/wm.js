@@ -50,7 +50,7 @@ OS.wm = {
   },
 
   buildShell() {
-    this.de = OS.desktops[document.body.dataset.theme] || OS.desktops.gnome;
+    this.de = OS.desktops[document.body.dataset.theme] || OS.desktops.kde;
     this.ui = {};
     this.closeLauncher();
     document.querySelector('.popup-menu')?.remove();
@@ -67,7 +67,7 @@ OS.wm = {
   // Switching desktop environment: a short splash, the new shell, then Tux explains it.
   switchDesktop() {
     const { el } = OS.util;
-    const de = OS.desktops[document.body.dataset.theme] || OS.desktops.gnome;
+    const de = OS.desktops[document.body.dataset.theme] || OS.desktops.kde;
     const fast = OS.util.reducedMotion();
     const splash = el('div', { class: `de-splash splash-${de.id}` }, el('div', { class: 'de-splash-inner', html: de.splash || '' }));
     this.desktop.append(splash);

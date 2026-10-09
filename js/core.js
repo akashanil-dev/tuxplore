@@ -44,10 +44,10 @@ const SAVE_KEY = 'tuxos-save-v1';
 function defaultState() {
   return {
     username: null,
-    theme: 'gnome',
+    theme: 'kde',
     wallpaper: 'freedom',
     fastBoot: false,
-    unlockedThemes: ['gnome'],
+    unlockedThemes: ['kde'],
     achievements: {},
     learned: {},
     quests: { done: {}, progress: {} },
@@ -62,10 +62,16 @@ function defaultState() {
 OS.state = (() => {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
-    if (raw) return Object.assign(defaultState(), JSON.parse(raw));
+    if (raw) return withBaseDesktop(Object.assign(defaultState(), JSON.parse(raw)));
   } catch { /* storage unavailable or corrupt: start fresh */ }
   return defaultState();
 })();
+
+// KDE Plasma is the desktop everyone starts with; older saves started on GNOME, so give them KDE too.
+function withBaseDesktop(state) {
+  if (!state.unlockedThemes.includes('kde')) state.unlockedThemes.unshift('kde');
+  return state;
+}
 
 OS.defaultState = defaultState;
 
@@ -78,7 +84,7 @@ OS.save = () => {
 
 // Replace the whole save, e.g. with one downloaded from the player's account.
 OS.loadState = (save, savedAt = Date.now()) => {
-  OS.state = Object.assign(defaultState(), save, { savedAt });
+  OS.state = withBaseDesktop(Object.assign(defaultState(), save, { savedAt }));
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(OS.state)); } catch { /* ignore */ }
 };
 
@@ -176,8 +182,8 @@ OS.achievements = {
 // ---------- Desktop environments ----------
 // Saves call them "themes"; js/de.js builds each one's panels and menus.
 OS.themes = [
-  { id: 'gnome', name: 'GNOME', version: 'GNOME 47', desc: 'A top bar and the Activities overview. Calm and focused.', usedBy: 'Fedora, Ubuntu, Debian', unlock: 'Unlocked from the start' },
-  { id: 'kde', name: 'KDE Plasma', version: 'Plasma 6', desc: 'A taskbar and an app launcher, a lot like Windows.', usedBy: 'Kubuntu, KDE neon, SteamOS', unlock: 'Complete quest 3: Into the Dungeon' },
+  { id: 'kde', name: 'KDE Plasma', version: 'Plasma 6', desc: 'A taskbar and an app launcher, a lot like Windows.', usedBy: 'Kubuntu, KDE neon, SteamOS', unlock: 'Unlocked from the start' },
+  { id: 'gnome', name: 'GNOME', version: 'GNOME 47', desc: 'A top bar and the Activities overview. Calm and focused.', usedBy: 'Fedora, Ubuntu, Debian', unlock: 'Complete quest 3: Into the Dungeon' },
   { id: 'retro', name: 'CDE', version: 'CDE 2.5', desc: 'The 1990s Unix workstation desktop, with a Front Panel and four workspaces.', usedBy: 'Solaris, HP-UX, AIX', unlock: 'Complete quest 6: Goblin Trouble' },
   { id: 'tiling', name: 'Hyprland', version: 'Hyprland 0.45', desc: 'A tiling window manager you drive from the keyboard.', usedBy: 'Arch and other DIY setups', unlock: 'Complete every quest' },
 ];

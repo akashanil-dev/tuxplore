@@ -37,7 +37,7 @@
       id: 'dungeon',
       title: 'Into the Dungeon',
       story: 'Folders are called directories. You move between them with cd (change directory). Some files are hidden: their names start with a dot, and plain ls does not show them.',
-      reward: { theme: 'kde' },
+      reward: { theme: 'gnome' },
       objectives: [
         { text: 'Enter the dungeon: cd dungeon', hint: 'From your home folder, type cd dungeon. Type cd .. to go back up.', check: (t, d) => (t === 'shell:cwd' || t === 'shell:cmd') && d.cwd === dungeon() },
         { text: 'Reveal hidden files: ls -a', hint: 'The -a option means "all". Type ls -a inside the dungeon.', check: (t) => t === 'shell:ls-a' },

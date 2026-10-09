@@ -356,7 +356,7 @@ OS.boot = {
     this.screen.hidden = true;
     this.screen.innerHTML = '';
     OS.fs.init(OS.state.username);
-    document.body.dataset.theme = OS.state.unlockedThemes.includes(OS.state.theme) ? OS.state.theme : 'gnome';
+    document.body.dataset.theme = OS.state.unlockedThemes.includes(OS.state.theme) ? OS.state.theme : 'kde';
     OS.wm.init();
     OS.applyWallpaper(OS.state.wallpaper);
     OS.tux.init();
