@@ -2,7 +2,7 @@
 
 **Boot a Linux desktop in your browser and learn the terminal by playing.**
 
-Play it live at **[linux.akashanil.dev](https://linux.akashanil.dev)**.
+Play it live at **[tuxplore.akashanil.dev](https://tuxplore.akashanil.dev)**.
 
 Tuxplore boots *TuxOS*, a pretend Linux computer that runs entirely in a browser tab. It's made for
 people who have never used Linux: instead of reading a tutorial, you boot it, log in, and learn the
@@ -101,6 +101,7 @@ js/boot.js          GRUB, boot log, login, kernel panic
 js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and the system apps
 images/icons/       app icons
 images/distros/     distro logos
+images/wall/        wallpapers (WebP) and their Settings thumbnails
 ```
 
 ## Credits
