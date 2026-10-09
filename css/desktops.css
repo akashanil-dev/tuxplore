@@ -99,12 +99,12 @@ body[data-theme='gnome'] #toasts { left: 50%; right: auto; transform: translateX
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 50px 16px 16px;
+  padding: 72px 16px 16px;
   background: rgba(0, 0, 0, 0.62);
   backdrop-filter: blur(14px);
   animation: splash-in 0.2s ease;
 }
-.ov-inner { flex: 1; min-height: 0; width: min(980px, 100%); display: flex; flex-direction: column; align-items: center; gap: 28px; overflow: auto; }
+.ov-inner { flex: 1; min-height: 0; width: min(980px, 100%); display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 6px; overflow: auto; }
 .ov-main { width: 100%; }
 .launcher-search {
   width: min(420px, 100%);
