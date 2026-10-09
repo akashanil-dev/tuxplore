@@ -33,7 +33,8 @@ OS.wm = {
 
     OS.bus.on('achievement', () => this.updateChips());
     OS.bus.on('quest:update', () => this.updateChips());
-    OS.bus.on('apps:changed', () => { this.renderIcons(); this.refresh(); });
+    // An app unlocked (Try Linux): rebuild the panels too, since some list apps (CDE's Front Panel).
+    OS.bus.on('apps:changed', () => this.buildShell());
     OS.bus.on('theme', () => this.switchDesktop());
     window.addEventListener('resize', () => this.layout());
 
