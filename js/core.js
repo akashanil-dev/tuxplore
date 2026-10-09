@@ -45,7 +45,7 @@ function defaultState() {
   return {
     username: null,
     theme: 'gnome',
-    wallpaper: 'aurora',
+    wallpaper: 'freedom',
     fastBoot: false,
     unlockedThemes: ['gnome'],
     achievements: {},
@@ -150,13 +150,20 @@ OS.themes = [
   { id: 'tiling', name: 'Tiling (Hyprland style)', desc: 'Windows arrange themselves. Gaps included.', unlock: 'Complete every quest' },
 ];
 
+// Each wallpaper has a full-size image and a small thumbnail for Settings, both in images/wall/.
 OS.wallpapers = {
-  aurora: 'radial-gradient(ellipse at 20% 20%, #3b82f6 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, #a855f7 0%, transparent 55%), linear-gradient(160deg, #0f172a, #1e1b4b)',
-  sunset: 'linear-gradient(160deg, #f97316 0%, #db2777 45%, #4c1d95 100%)',
-  forest: 'radial-gradient(ellipse at 70% 10%, #84cc16 0%, transparent 45%), linear-gradient(170deg, #14532d, #052e16)',
-  ocean: 'radial-gradient(ellipse at 30% 80%, #06b6d4 0%, transparent 50%), linear-gradient(200deg, #0c4a6e, #082f49)',
-  terminal: 'repeating-linear-gradient(0deg, rgba(0,255,100,0.04) 0 2px, transparent 2px 4px), #0a0f0a',
+  freedom: 'Free as in freedom',
+  command: 'At your command',
+  root: 'I am root',
+  rabbit: 'White rabbit',
+  tux: 'Tux',
+  linus: 'Linus',
+  topo: 'Contours',
+  'gnu-zen': 'GNU zen',
+  gnu: 'GNU',
 };
+// Absolute, because a url() inside --wallpaper would otherwise resolve against css/os.css.
+OS.wallpaperUrl = (id, thumb = false) => new URL(`images/wall/${thumb ? 'thumbs/' : ''}${id}.webp`, document.baseURI).href;
 
 OS.unlockTheme = (id) => {
   if (OS.state.unlockedThemes.includes(id)) return;
@@ -174,8 +181,9 @@ OS.applyTheme = (id) => {
 };
 
 OS.applyWallpaper = (id) => {
+  if (!OS.wallpapers[id]) id = 'freedom'; // saves from before the image wallpapers used gradient ids
   const desktop = document.getElementById('desktop');
-  if (desktop) desktop.style.setProperty('--wallpaper', OS.wallpapers[id] || OS.wallpapers.aurora);
+  if (desktop) desktop.style.setProperty('--wallpaper', `url('${OS.wallpaperUrl(id)}') center / cover no-repeat`);
   OS.state.wallpaper = id;
   OS.save();
 };

@@ -54,10 +54,10 @@
             el('small', { text: unlocked ? t.desc : t.unlock }));
           })),
           el('h3', { text: 'Wallpaper' }),
-          el('div', { class: 'wall-grid' }, Object.entries(OS.wallpapers).map(([id, css]) => el('button', {
-            class: `wall${OS.state.wallpaper === id ? ' active' : ''}`, 'aria-label': `Wallpaper: ${id}`, 'aria-pressed': String(OS.state.wallpaper === id),
-            style: { background: css }, onclick: () => { OS.applyWallpaper(id); render(); },
-          }, el('span', { text: id })))),
+          el('div', { class: 'wall-grid' }, Object.entries(OS.wallpapers).map(([id, name]) => el('button', {
+            class: `wall${OS.state.wallpaper === id ? ' active' : ''}`, 'aria-label': `Wallpaper: ${name}`, 'aria-pressed': String(OS.state.wallpaper === id),
+            style: { background: `url('${OS.wallpaperUrl(id, true)}') center / cover no-repeat` }, onclick: () => { OS.applyWallpaper(id); render(); },
+          }, el('span', { text: name })))),
           el('h3', { text: 'System' }),
           el('label', { class: 'toggle' },
             el('input', { type: 'checkbox', checked: OS.state.fastBoot, onchange: (e) => { OS.state.fastBoot = e.target.checked; OS.save(); } }),

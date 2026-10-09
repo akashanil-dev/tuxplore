@@ -350,7 +350,7 @@ button.pd-block:hover { filter: brightness(1.15); }
 .tp-tiling i:nth-child(2) { left: 4px; top: 13px; width: calc(55% - 6px); height: calc(100% - 17px); border: 2px solid #cba6f7; border-radius: 3px; background: #1e1e2e; }
 .tp-tiling i:nth-child(3) { left: 55%; top: 13px; width: calc(45% - 4px); height: calc(100% - 17px); border: 2px solid #45475a; border-radius: 3px; background: #1e1e2e; }
 .wall-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
-.wall { height: 64px; border-radius: var(--radius-sm); border: 2px solid transparent; display: flex; align-items: flex-end; padding: 4px 8px; color: #fff; font-size: 11px; font-weight: 600; text-transform: capitalize; text-shadow: 0 1px 3px #000; }
+.wall { height: 64px; border-radius: var(--radius-sm); border: 2px solid transparent; display: flex; align-items: flex-end; padding: 4px 8px; color: #fff; font-size: 11px; font-weight: 600; text-shadow: 0 1px 3px #000; }
 .wall.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
 .toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .danger { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--line); margin-top: 8px; }

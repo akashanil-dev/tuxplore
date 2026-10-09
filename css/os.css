@@ -225,7 +225,7 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 #desktop {
   position: fixed;
   inset: 0;
-  background: var(--wallpaper, #1e1b4b);
+  background: var(--wallpaper, #1b2224);
   background-size: cover;
   user-select: none;
 }
