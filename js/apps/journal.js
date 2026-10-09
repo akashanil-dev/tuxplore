@@ -31,7 +31,7 @@
           const hintBox = el('p', { class: 'quest-hint', hidden: true });
           content.append(el('article', { class: `quest${isDone ? ' done' : ' current'}` },
             el('header', {}, el('span', { class: 'quest-num', text: isDone ? '✓' : String(i + 1) }), el('h3', { text: q.title }),
-              q.reward?.theme && el('span', { class: 'badge', text: `🎨 ${OS.themes.find((t) => t.id === q.reward.theme).name}` })),
+              q.reward?.theme && el('span', { class: 'badge', text: `🖥️ ${OS.themes.find((t) => t.id === q.reward.theme).name}` })),
             isCur && el('p', { text: q.story }),
             el('ul', { class: 'objectives' }, q.objectives.map((o, j) =>
               el('li', { class: prog[j] ? 'ok' : '' }, el('span', { class: 'tick', 'aria-hidden': 'true', text: prog[j] ? '✓' : '' }), o.text))),

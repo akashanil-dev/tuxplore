@@ -944,7 +944,7 @@
 
     neofetch: C('system', 'Show system info with a logo', 'neofetch', 'neofetch', (ctx) => {
       const art = ['        .--.       ', '       |o_o |      ', '       |:_/ |      ', '      //   \\ \\     ', '     (|     | )    ', "    /'\\_   _/`\\    ", '    \\___)=(___/    ', '', ''];
-      const theme = OS.themes.find((t) => t.id === OS.state.theme)?.name;
+      const theme = OS.themes.find((t) => t.id === OS.state.theme)?.version;
       const done = Object.keys(OS.state.quests.done).length;
       const info = [
         [`${OS.fs.user}@tuxos`, ''],

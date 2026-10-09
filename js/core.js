@@ -111,7 +111,7 @@ OS.achievements = {
     { id: 'runner_combo', icon: '✨', name: 'Family Reunion', desc: 'Pick 10 of your team\'s distros in a row in Know Your Distro.' },
     { id: 'runner_map', icon: '🗺️', name: 'Cartographer', desc: 'Open the distro family map in Know Your Distro.' },
     { id: 'runner_rapid', icon: '🏁', name: 'Three for Three', desc: 'Finish all three rounds of Rapid mode.' },
-    { id: 'theme_switch', icon: '🎨', name: 'Ricer', desc: 'Switch your desktop theme.' },
+    { id: 'theme_switch', icon: '🖥️', name: 'Desktop Hopper', desc: 'Switch to another desktop environment.' },
     { id: 'files_terminal', icon: '🌉', name: 'Bridge Builder', desc: 'Open a terminal from the file manager.' },
     { id: 'installer', icon: '💿', name: 'Ready for the Real Thing', desc: 'Find your distro in the installer.' },
     // Hidden ones
@@ -142,12 +142,13 @@ OS.achievements = {
   },
 };
 
-// ---------- Themes ----------
+// ---------- Desktop environments ----------
+// Saves call them "themes"; js/de.js builds each one's panels and menus.
 OS.themes = [
-  { id: 'gnome', name: 'GNOME style', desc: 'Clean, rounded and calm.', unlock: 'Unlocked from the start' },
-  { id: 'kde', name: 'KDE Plasma style', desc: 'Breeze blues and sharp edges.', unlock: 'Complete quest 3: Into the Dungeon' },
-  { id: 'retro', name: 'Retro CDE', desc: 'Unix workstations, circa 1995.', unlock: 'Complete quest 6: Goblin Trouble' },
-  { id: 'tiling', name: 'Tiling (Hyprland style)', desc: 'Windows arrange themselves. Gaps included.', unlock: 'Complete every quest' },
+  { id: 'gnome', name: 'GNOME', version: 'GNOME 47', desc: 'A top bar and the Activities overview. Calm and focused.', usedBy: 'Fedora, Ubuntu, Debian', unlock: 'Unlocked from the start' },
+  { id: 'kde', name: 'KDE Plasma', version: 'Plasma 6', desc: 'A taskbar and an app launcher, a lot like Windows.', usedBy: 'Kubuntu, KDE neon, SteamOS', unlock: 'Complete quest 3: Into the Dungeon' },
+  { id: 'retro', name: 'CDE', version: 'CDE 2.5', desc: 'The 1990s Unix workstation desktop, with a Front Panel and four workspaces.', usedBy: 'Solaris, HP-UX, AIX', unlock: 'Complete quest 6: Goblin Trouble' },
+  { id: 'tiling', name: 'Hyprland', version: 'Hyprland 0.45', desc: 'A tiling window manager you drive from the keyboard.', usedBy: 'Arch and other DIY setups', unlock: 'Complete every quest' },
 ];
 
 // Each wallpaper has a full-size image and a small thumbnail for Settings, both in images/wall/.
@@ -170,7 +171,7 @@ OS.unlockTheme = (id) => {
   OS.state.unlockedThemes.push(id);
   OS.save();
   const theme = OS.themes.find((t) => t.id === id);
-  OS.toast({ icon: '🎨', title: 'New theme unlocked', body: `${theme.name}. Try it in Settings.` });
+  OS.toast({ icon: '🖥️', title: 'New desktop environment unlocked', body: `${theme.name}. Switch to it in Settings, or pick it when you log in.` });
 };
 
 OS.applyTheme = (id) => {

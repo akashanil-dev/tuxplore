@@ -89,7 +89,7 @@
       title: 'The Plumber',
       story: 'The real power of Linux: small tools that each do one thing well, chained with pipes |. The output of one command flows into the next. Practise in Pipe Dream, then try it for real.',
       objectives: [
-        { text: 'Solve 3 levels in the Pipe Dream app', hint: 'Open Pipe Dream from the dock or desktop.', check: () => Object.keys(OS.state.pipe.solved).length >= 3 },
+        { text: 'Solve 3 levels in the Pipe Dream app', hint: 'Open Pipe Dream from your app launcher.', check: () => Object.keys(OS.state.pipe.solved).length >= 3 },
         { text: 'Count the ERROR lines in /var/log/syslog with a pipe', hint: 'grep finds the lines and wc -l counts them: grep ERROR /var/log/syslog | wc -l', check: (t, d) => t === 'shell:line' && d.piped && d.output.trim() === String(errorCount()) },
       ],
     },
@@ -105,11 +105,11 @@
     {
       id: 'graduate',
       title: 'Graduation',
-      story: 'You did it! You know more terminal than most people ever will. Show off your system with neofetch, then open the new "Try Linux" app on your desktop to take the next step: the real thing.',
+      story: 'You did it! You know more terminal than most people ever will. Show off your system with neofetch, then open the new "Try Linux" app to take the next step: the real thing.',
       reward: { theme: 'tiling' },
       objectives: [
         { text: 'Show off: neofetch', hint: 'Just type neofetch.', check: cmd('neofetch') },
-        { text: 'Open the Try Linux app', hint: 'It just appeared on your desktop and dock.', check: (t, d) => t === 'app:open' && d.id === 'install' },
+        { text: 'Open the Try Linux app', hint: 'It just appeared with your other apps.', check: (t, d) => t === 'app:open' && d.id === 'install' },
       ],
     },
   ];

@@ -33,25 +33,26 @@
   // ---------- Settings ----------
   OS.registerApp('settings', {
     title: 'Settings',
-    blurb: 'Themes, wallpapers and more',
+    blurb: 'Desktop environments, wallpapers and more',
     w: 680, h: 560,
     create(win) {
       const wrap = el('div', { class: 'settings' });
       win.body.append(wrap);
       const render = () => {
         wrap.innerHTML = '';
-        wrap.append(el('h3', { text: 'Desktop theme' }),
-          el('p', { class: 'muted', text: 'On Linux you can change everything about how your desktop looks. People call it "ricing". Unlock more themes by finishing quests.' }),
+        wrap.append(el('h3', { text: 'Desktop environment' }),
+          el('p', { class: 'muted', text: 'A desktop environment is everything around your apps: panels, menus, window buttons and shortcuts. On Linux you pick the one you like, and the same apps run in all of them. Unlock more by finishing quests.' }),
           el('div', { class: 'theme-grid' }, OS.themes.map((t) => {
             const unlocked = OS.state.unlockedThemes.includes(t.id);
             const active = OS.state.theme === t.id;
             return el('button', {
               class: `theme-card${active ? ' active' : ''}${unlocked ? '' : ' locked'}`, 'aria-pressed': String(active), disabled: !unlocked,
-              onclick: () => { OS.applyTheme(t.id); OS.achievements.unlock('theme_switch'); render(); },
+              onclick: () => { if (active) return; OS.applyTheme(t.id); OS.achievements.unlock('theme_switch'); render(); },
             },
-            el('span', { class: `theme-preview tp-${t.id}`, 'aria-hidden': 'true' }, el('i'), el('i'), el('i')),
+            el('span', { class: `theme-preview tp-${t.id}`, 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('i')),
             el('strong', { text: `${unlocked ? '' : '🔒 '}${t.name}` }),
-            el('small', { text: unlocked ? t.desc : t.unlock }));
+            el('small', { text: unlocked ? t.desc : t.unlock }),
+            unlocked && el('small', { class: 'theme-used', text: `Used by ${t.usedBy}` }));
           })),
           el('h3', { text: 'Wallpaper' }),
           el('div', { class: 'wall-grid' }, Object.entries(OS.wallpapers).map(([id, name]) => el('button', {

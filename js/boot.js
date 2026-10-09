@@ -180,6 +180,29 @@ OS.boot = {
       known ? null : el('p', { class: 'login-sub', text: 'Pick a username. Linux usernames are lowercase, with no spaces.' }),
       known ? null : name,
       pass, error, go);
+    // Like GDM and SDDM: pick which desktop environment the session starts.
+    const unlocked = OS.themes.filter((t) => OS.state.unlockedThemes.includes(t.id));
+    if (unlocked.length > 1) {
+      const current = () => (unlocked.find((t) => t.id === OS.state.theme) || unlocked[0]);
+      const sessionBtn = el('button', { class: 'login-session', type: 'button', title: 'Choose a desktop environment' });
+      const label = () => { sessionBtn.textContent = `⚙ ${current().name}`; };
+      label();
+      sessionBtn.addEventListener('click', () => {
+        const r = sessionBtn.getBoundingClientRect();
+        const menu = el('div', { class: 'popup-menu login-menu', role: 'menu' }, unlocked.map((t) => el('button', {
+          role: 'menuitemradio', 'aria-checked': String(t.id === current().id), text: `${t.id === current().id ? '● ' : '○ '}${t.name}`,
+          onclick: () => { OS.state.theme = t.id; OS.save(); label(); menu.remove(); },
+        })));
+        screen.append(menu);
+        const h = menu.offsetHeight;
+        menu.style.left = `${r.left}px`;
+        menu.style.top = `${r.bottom + 6 + h < window.innerHeight ? r.bottom + 6 : r.top - h - 6}px`;
+        setTimeout(() => document.addEventListener('pointerdown', function off(e) {
+          if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener('pointerdown', off); }
+        }), 0);
+      });
+      form.append(sessionBtn);
+    }
     screen.append(clock, form);
     (known ? pass : name).focus();
 
@@ -217,7 +240,7 @@ OS.boot = {
     const q = OS.quests.current();
     setTimeout(() => {
       if (firstTime) {
-        OS.tux.say(`Hi ${OS.state.username}! I'm Tux. 🐧 Your quest journal is open. Start by opening the Terminal (double-click it, or press Ctrl+Alt+T).`, 12000);
+        OS.tux.say(`Hi ${OS.state.username}! I'm Tux. 🐧 Your quest journal is open. Start by opening the Terminal: press Ctrl+Alt+T, or ${OS.wm.de.openHint}.`, 14000);
         OS.wm.open('journal');
       } else if (q) {
         OS.tux.say(`Welcome back! Current quest: ${q.title}. Click me any time for a hint.`, 7000);

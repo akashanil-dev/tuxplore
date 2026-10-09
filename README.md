@@ -17,8 +17,13 @@ the way. Nothing is installed and nothing on your real computer is touched.
 - **Login screen** where you create your Linux username.
 
 ### The TuxOS desktop
-- **Desktop basics:** top panel, desktop icons, dock, an Activities launcher with search, and windows you can drag, resize, minimise and maximise.
-- **Four unlockable themes:** GNOME style, KDE Plasma style, Retro CDE, and a tiling layout in the style of Hyprland that arranges windows by itself.
+- **Four desktop environments,** each with its own panels, menus, window buttons and shortcuts. GNOME comes first, and quests unlock the rest:
+  - **GNOME:** a top bar and the Activities overview (click it, push the mouse into the top-left corner, or tap Super).
+  - **KDE Plasma:** a taskbar, the Kickoff app launcher, KRunner search on Alt+Space and Peek at Desktop.
+  - **CDE:** the 1990s Unix Front Panel with an analog clock, four workspaces, Motif window menus, and minimised windows that turn into desktop icons.
+  - **Hyprland:** a Waybar bar, five workspaces, tiling windows with no title bars, a wofi launcher and Super-key shortcuts (Alt works too).
+- **Switch any time** in Settings, or pick a session on the login screen like you would on GDM or SDDM.
+- **Windows** you can drag, resize, minimise and maximise, in whatever style the desktop environment uses.
 - **Wallpapers, achievements and toasts,** plus Tux in the corner, who reacts to what you do and gives hints when you click him.
 - **Progress is saved** in the browser.
 
@@ -52,7 +57,7 @@ pipes, package managers. They're wrapped in a small story about rescuing Tux's s
 | **Pipe Dream** | 8 puzzles: chain commands like `sort \| uniq -c \| sort -rn` to turn an input into the target output |
 | **Know Your Distro** | An endless runner where you collect the distros of your family. Details below |
 | **Achievements** | 30 trophies, 13 of them secret |
-| **Settings** | Themes, wallpapers, and resetting your progress |
+| **Settings** | Desktop environments, wallpapers, and resetting your progress |
 | **Try Linux** | Unlocks at the end: a short quiz that suggests a real distro, and how to try it from a USB stick |
 
 ### Know Your Distro
@@ -88,15 +93,17 @@ Fonts load from Google Fonts. Offline, it falls back to system fonts.
 
 ```
 index.html          page shell and script order
-css/os.css          desktop, themes, boot screens, windows
+css/os.css          colours, boot screens, desktop, windows
+css/desktops.css    each desktop environment's panels, launchers and window buttons
 css/apps.css        styles for each app
-js/core.js          event bus, save state, toasts, achievements, themes
+js/core.js          event bus, save state, toasts, achievements, desktop environment list
 js/fs.js            virtual filesystem with owners and permissions
 js/coreutils.js     text filters shared by the shell and Pipe Dream
 js/shell.js         the bash-like shell and its commands
 js/quests.js        the quest chain
 js/tux.js           Tux, the companion
-js/wm.js            window manager, panel, dock, launcher
+js/wm.js            window manager, workspaces, desktop icons, menus
+js/de.js            the desktop environments: GNOME, KDE Plasma, CDE, Hyprland
 js/boot.js          GRUB, boot log, login, kernel panic
 js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and the system apps
 images/icons/       app icons

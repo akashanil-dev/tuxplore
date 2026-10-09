@@ -333,18 +333,26 @@ button.pd-block:hover { filter: brightness(1.15); }
 .theme-card.active { border-color: var(--accent); }
 .theme-card.locked { opacity: 0.55; }
 .theme-card small { color: var(--muted); line-height: 1.35; }
+.theme-card .theme-used { font-size: 11px; opacity: 0.85; }
 .theme-preview { position: relative; display: block; height: 64px; border-radius: 6px; margin-bottom: 4px; overflow: hidden; background: linear-gradient(160deg, #1e293b, #4c1d95); }
 .theme-preview i { position: absolute; display: block; }
-.theme-preview i:nth-child(1) { inset: 0 0 auto 0; height: 8px; }
-.theme-preview i:nth-child(2) { left: 10%; top: 22%; width: 55%; height: 60%; }
-.theme-preview i:nth-child(3) { left: 45%; top: 35%; width: 45%; height: 55%; }
-.tp-gnome i:nth-child(1) { background: #000; }
+.theme-preview i:nth-child(4) { display: none; }
+/* Each preview sketches its desktop's layout: where the panel sits and how windows look. */
+.tp-gnome i:nth-child(1) { inset: 0 0 auto 0; height: 7px; background: #000; }
 .tp-gnome i:nth-child(2), .tp-gnome i:nth-child(3) { background: #242424; border-radius: 5px; border-top: 6px solid #303030; }
-.tp-kde i:nth-child(1) { background: #20232a; }
-.tp-kde i:nth-child(2), .tp-kde i:nth-child(3) { background: #2a2e32; border-top: 6px solid #3daee9; border-radius: 2px; }
+.tp-gnome i:nth-child(2) { left: 10%; top: 20%; width: 52%; height: 60%; }
+.tp-gnome i:nth-child(3) { left: 42%; top: 34%; width: 48%; height: 56%; }
+.tp-kde i:nth-child(1) { inset: auto 0 0 0; height: 9px; background: #20232a; border-top: 1px solid #3daee9; }
+.tp-kde i:nth-child(2), .tp-kde i:nth-child(3) { background: #2a2e32; border-top: 6px solid #31363b; border-radius: 3px; }
+.tp-kde i:nth-child(2) { left: 22%; top: 10%; width: 46%; height: 58%; }
+.tp-kde i:nth-child(3) { left: 48%; top: 22%; width: 46%; height: 56%; }
+.tp-kde i:nth-child(4) { display: block; left: 5%; top: 12%; width: 9px; height: 30px; background: repeating-linear-gradient(#e2e8f0 0 7px, transparent 7px 11px); opacity: 0.8; }
 .tp-retro { background: #5f7f9f !important; }
-.tp-retro i:nth-child(1) { background: #a8acbd; }
+.tp-retro i:nth-child(1) { left: 14%; bottom: 2px; width: 72%; height: 11px; background: #a8acbd; box-shadow: inset 1px 1px #e5e5e5, inset -1px -1px #5a5a5a; }
 .tp-retro i:nth-child(2), .tp-retro i:nth-child(3) { background: #c6c6c6; border-top: 6px solid #4b6a8c; box-shadow: inset 1px 1px #fff, inset -1px -1px #555; }
+.tp-retro i:nth-child(2) { left: 18%; top: 8%; width: 46%; height: 56%; }
+.tp-retro i:nth-child(3) { left: 46%; top: 18%; width: 44%; height: 52%; }
+.tp-retro i:nth-child(4) { display: block; left: 4%; top: 12%; width: 9px; height: 9px; background: #c6c6c6; box-shadow: inset 1px 1px #fff, inset -1px -1px #555; }
 .tp-tiling { background: #11111b !important; }
 .tp-tiling i:nth-child(1) { inset: 3px 4px auto 4px; height: 6px; border-radius: 3px; background: #313244; }
 .tp-tiling i:nth-child(2) { left: 4px; top: 13px; width: calc(55% - 6px); height: calc(100% - 17px); border: 2px solid #cba6f7; border-radius: 3px; background: #1e1e2e; }

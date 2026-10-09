@@ -1,11 +1,10 @@
-/* TuxOS shell: themes, boot screens, panel, dock, windows. */
+/* TuxOS: theme colours, boot screens, desktop, windows. Each desktop environment's panels live in desktops.css. */
 
 :root {
   --mono: 'JetBrains Mono', 'Ubuntu Mono', ui-monospace, monospace;
-  --panel-h: 34px;
 }
 
-/* ---------- Themes ---------- */
+/* ---------- Desktop environment colours ---------- */
 body,
 body[data-theme='gnome'] {
   --font: 'Inter', 'Cantarell', system-ui, sans-serif;
@@ -218,6 +217,9 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
   font-size: 15px;
 }
 .login-input::placeholder { color: #94a3b8; }
+.login-session { align-self: center; padding: 4px 10px; border: 0; border-radius: 6px; background: transparent; color: #cbd5e1; font-size: 13px; }
+.login-session:hover { background: rgba(255, 255, 255, 0.1); }
+.login-menu { z-index: 200001; font-family: 'Inter', system-ui, sans-serif; }
 .login-error { margin: 0; color: #fca5a5; font-size: 13px; min-height: 1em; text-align: center; }
 .login-go {
   width: 100%;
@@ -233,6 +235,8 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 
 /* ---------- Desktop ---------- */
 #desktop {
+  --area-top: 0px;
+  --area-bottom: 0px;
   position: fixed;
   inset: 0;
   background: var(--wallpaper, #1b2224);
@@ -242,50 +246,11 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 #desktop.barrel-roll { animation: roll 1.2s ease-in-out; }
 @keyframes roll { to { transform: rotate(360deg); } }
 
-#panel {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: var(--panel-h);
-  z-index: 90000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  background: var(--panel-bg);
-  color: var(--panel-fg);
-  font-size: 13px;
-  font-weight: 600;
-}
-body[data-theme='retro'] #panel { box-shadow: inset 0 -2px #5a5a5a, inset 0 2px #e5e5e5; }
-body[data-theme='tiling'] #panel { inset: 6px 8px auto 8px; border-radius: 10px; border: 2px solid #45475a; height: 30px; }
-body[data-theme='kde'] #panel { border-bottom: 1px solid #1b1e20; }
-
-.panel-activities,
-.panel-chip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 26px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: inherit;
-  font-weight: 600;
-  font-size: 13px;
-}
-.panel-activities:hover, .panel-chip:hover { background: rgba(255, 255, 255, 0.14); }
-body[data-theme='retro'] .panel-activities:hover, body[data-theme='retro'] .panel-chip:hover { background: rgba(0, 0, 0, 0.1); }
-.panel-logo svg { width: 16px; height: 18px; display: block; }
-.panel-clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
-.panel-right { display: flex; gap: 2px; }
-.panel-power svg { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
-
 #desktop-icons {
   position: absolute;
-  top: calc(var(--panel-h) + 16px);
+  top: calc(var(--area-top) + 16px);
   left: 12px;
-  bottom: 110px;
+  bottom: calc(var(--area-bottom) + 16px);
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(auto-fill, 96px);
@@ -308,49 +273,6 @@ body[data-theme='retro'] .panel-activities:hover, body[data-theme='retro'] .pane
 .desk-label { font-size: 12px; font-weight: 600; text-align: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); line-height: 1.2; }
 .app-icon { display: block; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)); }
 .app-icon svg, .app-icon img { width: 100%; height: 100%; display: block; }
-
-#dock {
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
-  z-index: 90000;
-  display: flex;
-  gap: 6px;
-  padding: 7px;
-  border-radius: 20px;
-  background: var(--dock-bg);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  max-width: calc(100vw - 16px);
-  overflow-x: auto;
-}
-body[data-theme='retro'] #dock { border-radius: 0; box-shadow: inset 2px 2px #e5e5e5, inset -2px -2px #5a5a5a; border: 0; }
-body[data-theme='tiling'] #dock { border-radius: 10px; border: 2px solid #45475a; }
-.dock-item {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  flex: none;
-  padding: 5px;
-  border: 0;
-  border-radius: 13px;
-  background: transparent;
-  transition: transform 0.15s ease, background 0.15s;
-}
-.dock-item .app-icon { width: 40px; height: 40px; }
-.dock-item:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-3px); }
-.dock-item.running::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 1px;
-  width: 5px;
-  height: 5px;
-  margin-left: -2.5px;
-  border-radius: 50%;
-  background: var(--panel-fg, #fff);
-}
 
 /* ---------- Windows ---------- */
 #windows { position: absolute; inset: 0; pointer-events: none; }
@@ -375,17 +297,14 @@ body[data-theme='tiling'] #dock { border-radius: 10px; border: 2px solid #45475a
 }
 .window.open { opacity: 1; transform: none; }
 .window.closing { opacity: 0; transform: scale(0.96); }
-.window.minimized { display: none; }
+.window.minimized, .window.offws { display: none; }
 .window.maximized {
   left: 0 !important;
-  top: var(--panel-h) !important;
+  top: var(--area-top) !important;
   width: 100% !important;
-  height: calc(100% - var(--panel-h) - 78px) !important;
+  height: calc(100% - var(--area-top) - var(--area-bottom)) !important;
   border-radius: 0;
 }
-body[data-theme='tiling'] .window.active { border-image: linear-gradient(135deg, #89b4fa, #cba6f7) 1; border-radius: 0; }
-body[data-theme='tiling'] .window { min-height: 0; backdrop-filter: blur(12px); transition: opacity 0.16s, left 0.2s ease, top 0.2s ease, width 0.2s ease, height 0.2s ease; }
-body[data-theme='tiling'] .win-btns .min, body[data-theme='tiling'] .win-btns .max { display: none; }
 
 .win-titlebar {
   display: flex;
@@ -402,14 +321,10 @@ body[data-theme='tiling'] .win-btns .min, body[data-theme='tiling'] .win-btns .m
   border-bottom: 1px solid var(--line);
 }
 .window.active .win-titlebar { background: var(--title-bg); }
-body[data-theme='retro'] .win-titlebar { height: 26px; margin: 3px 3px 0; border: 0; }
-body[data-theme='tiling'] .win-titlebar { height: 28px; border-bottom: 1px solid var(--line); }
-body[data-theme='retro'] .window { padding-bottom: 3px; }
 
 .win-icon { width: 18px; height: 18px; flex: none; }
 .win-icon svg, .win-icon img { width: 100%; height: 100%; display: block; }
 .win-title { flex: 1; text-align: center; font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-body[data-theme='kde'] .win-title, body[data-theme='retro'] .win-title, body[data-theme='tiling'] .win-title { text-align: left; }
 .win-btns { display: flex; gap: 8px; }
 .win-btn {
   position: relative;
@@ -427,38 +342,13 @@ body[data-theme='kde'] .win-title, body[data-theme='retro'] .win-title, body[dat
 .win-btn.close::before { content: '×'; font-size: 18px; }
 .win-btn:hover { background: rgba(255, 255, 255, 0.2); }
 .win-btn.close { background: var(--winbtn-close); }
-body[data-theme='kde'] .win-btn.close:hover { background: #da4453; }
-body[data-theme='retro'] .win-btn { width: 18px; height: 18px; border-radius: 0; color: #000; box-shadow: inset 1px 1px #fff, inset -1px -1px #555; }
-body[data-theme='tiling'] .win-btn { width: 18px; height: 18px; }
+.win-btn.menu { display: none; }
 
 .win-body { position: relative; flex: 1; min-height: 0; overflow: auto; }
-body[data-theme='retro'] .win-body { margin: 3px; box-shadow: inset 1px 1px #5a5a5a, inset -1px -1px #fff; }
 .win-resize { position: absolute; right: 0; bottom: 0; width: 16px; height: 16px; cursor: nwse-resize; touch-action: none; }
-body[data-theme='tiling'] .win-resize { display: none; }
 
-/* ---------- Launcher ---------- */
-#launcher {
-  position: absolute;
-  inset: 0;
-  z-index: 95000;
-  display: grid;
-  place-items: start center;
-  padding: 80px 16px 16px;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
-  overflow: auto;
-}
-.launcher-inner { width: min(760px, 100%); display: flex; flex-direction: column; gap: 24px; align-items: center; }
-.launcher-search {
-  width: min(420px, 100%);
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font: inherit;
-  font-size: 15px;
-}
+/* ---------- Launcher overlay (each desktop environment styles its own) ---------- */
+#launcher { position: absolute; inset: 0; z-index: 95000; }
 .launcher-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; width: 100%; }
 .launcher-app {
   display: flex;
@@ -500,10 +390,12 @@ body[data-theme='tiling'] .win-resize { display: none; }
   background: transparent;
 }
 .popup-menu button:hover, .popup-menu button:focus-visible { background: var(--surface-2); }
+.popup-menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 6px; }
+.popup-title { margin: 0 0 4px; padding: 6px 12px; font-weight: 700; text-align: center; border-bottom: 1px solid var(--line); }
 
 #toasts {
   position: fixed;
-  top: calc(var(--panel-h) + 10px);
+  top: calc(var(--area-top) + 10px);
   right: 12px;
   z-index: 99500;
   display: flex;
@@ -534,7 +426,7 @@ body[data-theme='tiling'] .win-resize { display: none; }
 #tux-companion {
   position: fixed;
   right: 14px;
-  bottom: 84px;
+  bottom: calc(var(--area-bottom) + 20px);
   z-index: 92000;
   display: flex;
   align-items: flex-end;
@@ -612,19 +504,17 @@ body.has-maximized #tux-companion { display: none; }
 
 /* ---------- Small screens ---------- */
 @media (max-width: 719px) {
-  .panel-clock { display: none; }
-  .panel-activities span:last-child { display: none; }
   #desktop-icons { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, 84px); grid-template-rows: none; grid-auto-rows: 96px; right: 12px; }
   .window {
     left: 0 !important;
-    top: var(--panel-h) !important;
+    top: var(--area-top) !important;
     width: 100% !important;
-    height: calc(100% - var(--panel-h) - 76px) !important;
+    height: calc(100% - var(--area-top) - var(--area-bottom)) !important;
     border-radius: 0;
     min-width: 0;
   }
   .win-resize, .win-btn.max { display: none; }
-  #tux-companion { bottom: 80px; right: 8px; }
+  #tux-companion { bottom: calc(var(--area-bottom) + 12px); right: 8px; }
   .tux-body { width: 46px; height: 54px; }
   .tux-bubble { right: 54px; }
 }
