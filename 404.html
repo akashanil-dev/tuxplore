@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found · Tuxplore</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- Absolute paths: this page is served for any missing URL, at any depth. -->
+  <link rel="stylesheet" href="/css/page.css">
+</head>
+<body>
+  <main class="notfound">
+    <img src="/favicon.svg" alt="" width="64" height="74" style="margin: 0 auto">
+    <h1>404: no such file or directory</h1>
+    <pre><span class="prompt">tux@tuxos:~$</span> cd <span id="path">/that-page</span>
+<span class="err">bash: cd: <span id="path2">/that-page</span>: No such file or directory</span>
+<span class="prompt">tux@tuxos:~$</span> cd ~
+<span class="prompt">tux@tuxos:~$</span> ▌</pre>
+    <p>Tux looked everywhere, even in the hidden files. Let's go back home.</p>
+    <p class="links"><a class="cta" href="/">Boot TuxOS</a></p>
+    <p class="links"><a href="/about.html">About Tuxplore</a> · <a href="/stats.html">Stats</a></p>
+  </main>
+  <script>
+    // Show the path they actually asked for.
+    const path = decodeURIComponent(location.pathname).slice(0, 60);
+    document.getElementById('path').textContent = path;
+    document.getElementById('path2').textContent = path;
+  </script>
+</body>
+</html>

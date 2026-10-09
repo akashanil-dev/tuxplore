@@ -329,7 +329,8 @@ button.pd-block:hover { filter: brightness(1.15); }
 .settings h3 { margin: 18px 0 6px; font-size: 14px; }
 .settings > p { margin: 0 0 10px; }
 .settings-note { margin: -6px 0 12px 26px; font-size: 12.5px; }
-.settings-note a { color: var(--accent); }
+.settings-note a, .settings-links a { color: var(--accent); }
+.settings-links { margin: 16px 0 0; text-align: center; font-size: 13px; }
 .account p { margin: 0 0 8px; }
 .account-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .account-input { flex: 1 1 150px; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--win-fg); font: inherit; }

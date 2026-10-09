@@ -1,0 +1,7 @@
+# Tuxplore: everything public is welcome to be crawled.
+User-agent: *
+Allow: /
+# Source of the save API, not pages.
+Disallow: /api/
+
+Sitemap: https://tuxplore.akashanil.dev/sitemap.xml

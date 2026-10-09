@@ -158,7 +158,11 @@
             el('div', {}, el('strong', { text: 'Start over' }), el('small', { text: OS.cloud.linked ? 'Erase your progress, achievements and files. You keep your account and username.' : 'Erase your progress, achievements and files.' })),
             el('button', { class: 'btn-danger', text: 'Reset everything', onclick: () => {
               if (confirm('Erase everything and start from scratch?')) OS.resetSave();
-            } })));
+            } })),
+          el('p', { class: 'muted settings-links' },
+            el('a', { href: 'about.html', target: '_blank', rel: 'noopener', text: 'About Tuxplore' }), ' · ',
+            el('a', { href: 'stats.html', target: '_blank', rel: 'noopener', text: 'Public stats' }), ' · ',
+            el('a', { href: 'https://github.com/akashanil-dev/tuxplore', target: '_blank', rel: 'noopener', text: 'Source code' })));
       };
       render();
     },

@@ -2,7 +2,7 @@
 
 **Boot a Linux desktop in your browser and learn the terminal by playing.**
 
-Play it live at **[tuxplore.akashanil.dev](https://tuxplore.akashanil.dev)**.
+Play it live at **[tuxplore.akashanil.dev](https://tuxplore.akashanil.dev)** ([about](https://tuxplore.akashanil.dev/about.html) · [stats](https://tuxplore.akashanil.dev/stats.html)).
 
 Tuxplore boots *TuxOS*, a pretend Linux computer that runs entirely in a browser tab. It's made for
 people who have never used Linux: instead of reading a tutorial, you boot it, log in, and learn the
@@ -105,11 +105,14 @@ Fonts load from Google Fonts. Offline, it falls back to system fonts.
 
 ```
 index.html          page shell and script order
+about.html          what Tuxplore is, for people and search engines
 stats.html          public usage stats
+404.html            page not found
+robots.txt, sitemap.xml, site.webmanifest, favicon.*   for search engines, browsers and phones
 css/os.css          colours, boot screens, desktop, windows
 css/desktops.css    each desktop environment's panels, launchers and window buttons
 css/greeters.css    the login screens
-css/page.css        the stats page
+css/page.css        the about, stats and 404 pages
 css/apps.css        styles for each app
 js/cloud.js         online accounts: logs in and syncs your save with the API
 js/analytics.js     anonymous usage counts (see What we collect)
@@ -129,6 +132,7 @@ js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and 
 images/icons/       app icons, one set per desktop environment
 images/distros/     distro logos
 images/wall/        wallpapers (WebP) and their Settings thumbnails
+images/app/         app icons and the link-preview image
 api/                the save API: a Cloudflare Worker and D1 database (see api/README.md)
 ```
 

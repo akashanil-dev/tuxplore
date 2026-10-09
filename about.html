@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Tuxplore: a Free Game That Teaches Linux in Your Browser</title>
+  <meta name="description" content="Tuxplore is a free browser game for Linux beginners: learn ls, cd, grep, chmod and sudo through ten quests, and try four desktop environments.">
+  <link rel="canonical" href="https://tuxplore.akashanil.dev/about.html">
+  <meta name="theme-color" content="#1b2224">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/app/icon-180.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Tuxplore">
+  <meta property="og:url" content="https://tuxplore.akashanil.dev/about.html">
+  <meta property="og:title" content="About Tuxplore: learn Linux by playing">
+  <meta property="og:description" content="A free game that runs a whole Linux desktop in your browser and teaches the terminal through quests.">
+  <meta property="og:image" content="https://tuxplore.akashanil.dev/images/app/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tuxplore.akashanil.dev/images/app/og.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Tuxplore", "item": "https://tuxplore.akashanil.dev/" },
+      { "@type": "ListItem", "position": 2, "name": "About", "item": "https://tuxplore.akashanil.dev/about.html" }
+    ]
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+  <main class="about">
+    <header class="hero">
+      <img class="hero-tux" src="favicon.svg" alt="" width="64" height="74">
+      <h1>Learn Linux by playing</h1>
+      <p class="lead">Tuxplore is a free game that boots <strong>TuxOS</strong>, a pretend Linux computer, right in your browser. You learn the terminal by going on quests, solving puzzles and playing games, with Tux the penguin giving hints along the way. Nothing is installed and nothing on your real computer is touched.</p>
+      <p><a class="cta" href="./">Boot TuxOS</a></p>
+      <img class="hero-shot" src="images/app/desktop.webp" alt="The TuxOS desktop on KDE Plasma, with the Quest Journal open next to a terminal running neofetch" width="1600" height="1000">
+    </header>
+
+    <section class="card">
+      <h2>Who it's for</h2>
+      <p>People who have never used Linux, students who keep hearing about the terminal, and teachers who want a safe, hands-on way to introduce it. If you can type and click, you can play. You don't need to know anything about Linux first.</p>
+    </section>
+
+    <section class="card">
+      <h2>What you'll learn</h2>
+      <p>TuxOS has a bash-like terminal with about 60 real commands, pipes, redirection, wildcards, tab completion, history and <code>man</code> pages. Everything you practise works the same on a real Linux computer.</p>
+      <div class="cols">
+        <div><h3>Moving around</h3><p><code>ls</code>, <code>cd</code>, <code>pwd</code>, <code>tree</code>, <code>find</code>, and what <code>/</code>, <code>~</code> and <code>..</code> mean.</p></div>
+        <div><h3>Reading and searching text</h3><p><code>cat</code>, <code>grep</code>, <code>head</code>, <code>tail</code>, <code>wc</code>, <code>sort</code>, <code>uniq</code>, <code>cut</code>, <code>tr</code>.</p></div>
+        <div><h3>Changing files</h3><p><code>mkdir</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, and permissions with <code>chmod</code>.</p></div>
+        <div><h3>Being the administrator</h3><p><code>sudo</code>, the root account, and installing software with <code>apt</code>, <code>dnf</code> and <code>pacman</code>.</p></div>
+        <div><h3>Pipes</h3><p>Chaining small tools, like <code>grep ERROR syslog | wc -l</code>, in the terminal and in the Pipe Dream puzzle game.</p></div>
+        <div><h3>Editors</h3><p><code>nano</code>, and <code>vim</code> (escaping it is an achievement).</p></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Ten quests</h2>
+      <p>A short story about rescuing Tux's stolen crown, where each quest teaches one real skill.</p>
+      <ol class="quests">
+        <li><strong>Hello, Terminal:</strong> your first commands, <code>whoami</code>, <code>pwd</code> and <code>ls</code>.</li>
+        <li><strong>A Letter from Tux:</strong> reading files with <code>cat</code>, and tab completion.</li>
+        <li><strong>Into the Dungeon:</strong> directories with <code>cd</code>, and hidden files with <code>ls -a</code>.</li>
+        <li><strong>The Library:</strong> searching inside files with <code>grep -r</code>.</li>
+        <li><strong>The Locked Gate:</strong> scripts and execute permission with <code>chmod +x</code>.</li>
+        <li><strong>Goblin Trouble:</strong> deleting with <code>rm</code> and the <code>*</code> wildcard.</li>
+        <li><strong>The Superuser:</strong> <code>sudo</code>, root, <code>mkdir</code> and <code>cp</code>.</li>
+        <li><strong>The Plumber:</strong> pipes, in the Pipe Dream game and for real.</li>
+        <li><strong>The App Store:</strong> package managers: <code>apt</code>, <code>dnf</code> and <code>pacman</code>.</li>
+        <li><strong>Graduation:</strong> show off with <code>neofetch</code>, then find your first real distro.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Four desktop environments</h2>
+      <p>On Linux you choose how your desktop looks and works. TuxOS lets you try four of them, each with its own panels, menus, window buttons, icons, shortcuts and login screen. You start on KDE Plasma and unlock the rest by finishing quests.</p>
+      <dl class="des">
+        <dt>KDE Plasma</dt><dd>A taskbar and an app launcher, a lot like Windows. Used by Kubuntu, KDE neon and the Steam Deck.</dd>
+        <dt>GNOME</dt><dd>A top bar and the Activities overview. The default on Fedora and Ubuntu.</dd>
+        <dt>CDE</dt><dd>The Common Desktop Environment of 1990s Unix workstations, with its Front Panel and four workspaces.</dd>
+        <dt>Hyprland</dt><dd>A modern tiling window manager: windows arrange themselves and you drive it from the keyboard.</dd>
+      </dl>
+    </section>
+
+    <section class="card">
+      <h2>Know Your Distro</h2>
+      <p>An endless runner where Tux collects Linux distributions from the family you pick: Debian, Red Hat, Arch, Slackware or Gentoo, 32 distros in all. It's a fun way to learn that Ubuntu comes from Debian, Fedora from Red Hat and Manjaro from Arch.</p>
+    </section>
+
+    <section class="card">
+      <h2>Then try the real thing</h2>
+      <p>When you graduate, the Try Linux app asks four questions and suggests a real distro to start with, such as Linux Mint, Ubuntu or Fedora. It then shows how to try it from a USB stick without changing anything on your computer.</p>
+    </section>
+
+    <section class="card faq">
+      <h2>Questions</h2>
+      <details open><summary>Is Tuxplore free?</summary><p>Yes, completely, with no ads. The code is open on <a href="https://github.com/akashanil-dev/tuxplore">GitHub</a>.</p></details>
+      <details><summary>Do I need to install anything?</summary><p>No. It runs in any modern browser on a laptop or desktop computer.</p></details>
+      <details><summary>Does it work on a phone?</summary><p>Not really: an operating system needs a keyboard and a big screen. Phones get a friendly message with a link to open it on a computer.</p></details>
+      <details><summary>Is it real Linux?</summary><p>No. TuxOS is a simulation: a bash-like shell over a pretend file system, made for learning. Nothing you type can harm your computer. Even <code>sudo rm -rf --no-preserve-root /</code> only crashes TuxOS, and a reload brings it back.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. You can play without one and your progress stays in your browser. A free account (just a username and password, no email) saves your progress online so you can carry on from another computer.</p></details>
+      <details><summary>What data do you collect?</summary><p>Only anonymous counts, like "a quest was finished", with no cookies or IDs, and you can turn it off. Every number is on the <a href="stats.html">public stats page</a>.</p></details>
+    </section>
+
+    <footer class="links"><a href="./">Play Tuxplore</a> · <a href="stats.html">Stats</a> · <a href="https://github.com/akashanil-dev/tuxplore">Source code</a></footer>
+  </main>
+</body>
+</html>
