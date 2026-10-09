@@ -63,7 +63,9 @@
       if (error.textContent) return;
       create.disabled = true;
       try {
-        await OS.cloud.signup(user, pass.value, { ...OS.state, username: user });
+        await OS.cloud.signup(user, pass.value, { ...OS.state, username: user, online: true });
+        OS.state.online = true;
+        OS.save();
         if (user !== OS.state.username) {
           // The account got a different name: rename the player to match, and restart the session as them.
           OS.renameUser(user);
@@ -88,7 +90,7 @@
         go.disabled = true;
         try {
           const data = await OS.cloud.login(lname.value.trim(), lpass.value);
-          OS.loadState(data.save || { username: lname.value.trim() }, data.updatedAt);
+          OS.loadState({ ...(data.save || {}), username: lname.value.trim(), online: true }, data.updatedAt);
           location.reload();
         } catch (err) {
           error.textContent = err.message;

@@ -99,7 +99,7 @@ OS.renameUser = (name) => {
 // Start over. With an online account the account stays, with a fresh save under the same name.
 OS.resetSave = async () => {
   if (OS.cloud?.linked) {
-    OS.loadState({ ...defaultState(), username: OS.state.username });
+    OS.loadState({ ...defaultState(), username: OS.state.username, online: true });
     await OS.cloud.push();
   } else {
     try { localStorage.removeItem(SAVE_KEY); } catch { /* ignore */ }

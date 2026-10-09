@@ -2,6 +2,17 @@
 // Boot flow: GRUB menu -> kernel/systemd log -> login screen -> desktop session.
 // Also the kernel panic and shutdown screens.
 
+// Icons for the login screen.
+const ICONS = {
+  a11y: '<svg viewBox="0 0 16 16"><circle cx="8" cy="2.8" r="1.3" fill="currentColor" stroke="none"/><path d="M2.5 5.5 8 6.6l5.5-1.1M8 6.6v3.4M8 10l-2.5 4.5M8 10l2.5 4.5"/></svg>',
+  wifi: '<svg viewBox="0 0 16 16"><path d="M1.5 6a9.5 9.5 0 0 1 13 0M3.8 8.6a6.2 6.2 0 0 1 8.4 0M6.1 11.1a2.9 2.9 0 0 1 3.8 0"/><circle cx="8" cy="13.4" r=".9" fill="currentColor" stroke="none"/></svg>',
+  volume: '<svg viewBox="0 0 16 16"><path d="M2 6h2.5L8 3v10l-3.5-3H2z" fill="currentColor" stroke="none"/><path d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.4 3.6a6.2 6.2 0 0 1 0 8.8"/></svg>',
+  power: '<svg viewBox="0 0 16 16"><path d="M8 1.5v6"/><path d="M4.4 3.6a5.5 5.5 0 1 0 7.2 0"/></svg>',
+  arrow: '<svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>',
+  back: '<svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg>',
+  gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+};
+
 OS.boot = {
   screen: null,
 
@@ -162,127 +173,183 @@ OS.boot = {
   },
 
   // ---------- Login ----------
-  // The login screen has four faces:
-  //   unlock   a player is already on this device (with or without an online account)
-  //   create   new player: make an online account (the default)
-  //   signin   log into an existing online account
-  //   guest    play without an account; progress stays in this browser
-  login(mode = OS.state.username ? 'unlock' : 'create') {
+  // ---------- Login (styled after GDM, GNOME's login screen) ----------
+  //   users     the player saved in this browser, plus "Not listed?"
+  //   password  a password for a user: checked by the server for online accounts, anything for guests
+  //   username  "Not listed?": type a username, then a password
+  //   create    make an online account (the default on a new device)
+  //   guest     play without an account; progress stays in this browser
+  login(mode = OS.state.username ? 'users' : 'create', arg = {}) {
     const { el } = OS.util;
     const screen = this.show('login');
     const known = OS.state.username;
-    const linked = OS.cloud.linked;
-    const clock = el('div', { class: 'login-clock' });
-    const tick = () => { clock.textContent = new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }); };
-    tick();
-    const clockTimer = setInterval(tick, 10000);
-    const switchTo = (next) => { clearInterval(clockTimer); this.login(next); };
-
-    const copy = {
-      unlock: { title: known, sub: linked ? '☁ Your progress syncs with your account.' : null, button: 'Log in', pass: linked ? null : 'password (anything works)' },
-      create: { title: 'Welcome to TuxOS', sub: "Create an account to save your progress online. There's no password reset, so pick a password you'll remember.", button: 'Create account', pass: 'password' },
-      signin: { title: 'Log in', sub: 'Log in to carry on where you left off.', button: 'Log in', pass: 'password' },
-      guest: { title: 'Play without an account', sub: 'Your progress stays in this browser only. Pick a username: Linux usernames are lowercase, with no spaces.', button: 'Start', pass: 'password (anything works)' },
-    }[mode];
-    const error = el('p', { class: 'login-error', role: 'alert' });
-    const name = el('input', { class: 'login-input', type: 'text', autocomplete: 'username', spellcheck: 'false', maxlength: '16', placeholder: 'username', 'aria-label': 'Username' });
-    const pass = el('input', { class: 'login-input', type: 'password', autocomplete: mode === 'create' ? 'new-password' : 'current-password', placeholder: copy.pass || '', 'aria-label': 'Password' });
-    const go = el('button', { class: 'login-go', type: 'submit', text: copy.button });
-    const link = (text, onclick) => el('button', { class: 'login-link', type: 'button', text, onclick });
-    const links = {
-      unlock: [link('Use a different account', () => this.forgetDevice(() => switchTo('create')))],
-      create: [link('I already have an account', () => switchTo('signin')), link('Play without an account', () => switchTo('guest'))],
-      signin: [link('Create an account', () => switchTo('create')), link('Play without an account', () => switchTo('guest'))],
-      guest: [link('Create an account instead', () => switchTo('create'))],
-    }[mode];
-    const form = el('form', { class: 'login-card' },
-      el('div', { class: 'login-avatar', html: OS.tuxSvg() }),
-      el('h1', { text: copy.title }),
-      copy.sub && el('p', { class: 'login-sub', text: copy.sub }),
-      mode === 'unlock' ? null : name,
-      copy.pass ? pass : null,
-      error, go,
-      el('div', { class: 'login-links' }, links));
-    // Like GDM and SDDM: pick which desktop environment the session starts.
-    const unlocked = OS.themes.filter((t) => OS.state.unlockedThemes.includes(t.id));
-    if (unlocked.length > 1) {
-      const current = () => (unlocked.find((t) => t.id === OS.state.theme) || unlocked[0]);
-      const sessionBtn = el('button', { class: 'login-session', type: 'button', title: 'Choose a desktop environment' });
-      const label = () => { sessionBtn.textContent = `⚙ ${current().name}`; };
-      label();
-      sessionBtn.addEventListener('click', () => {
-        const r = sessionBtn.getBoundingClientRect();
-        const menu = el('div', { class: 'popup-menu login-menu', role: 'menu' }, unlocked.map((t) => el('button', {
-          role: 'menuitemradio', 'aria-checked': String(t.id === current().id), text: `${t.id === current().id ? '● ' : '○ '}${t.name}`,
-          onclick: () => { OS.state.theme = t.id; OS.save(); label(); menu.remove(); },
-        })));
-        screen.append(menu);
-        const h = menu.offsetHeight;
-        menu.style.left = `${r.left}px`;
-        menu.style.top = `${r.bottom + 6 + h < window.innerHeight ? r.bottom + 6 : r.top - h - 6}px`;
-        setTimeout(() => document.addEventListener('pointerdown', function off(e) {
-          if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener('pointerdown', off); }
-        }), 0);
-      });
-      form.append(sessionBtn);
-    }
-    screen.append(clock, form);
-    (mode === 'unlock' ? (copy.pass ? pass : go) : name).focus();
-
-    name.addEventListener('input', () => { name.value = name.value.toLowerCase().replace(/\s/g, ''); error.textContent = ''; });
-    const busy = (text) => { go.disabled = !!text; go.textContent = text || copy.button; };
+    const online = !!OS.state.online || OS.cloud.linked; // saves from before the flag existed only have the token
+    const go = (next, nextArg) => { clearInterval(clockTimer); this.login(next, nextArg); };
     const start = (firstTime) => { clearInterval(clockTimer); this.startSession(firstTime); };
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      error.textContent = '';
-      if (mode === 'unlock') {
-        // Linked: fetch the account's save first, in case another device played since.
-        if (linked) { busy('Syncing…'); await OS.cloud.pull(); }
-        return start(false);
-      }
-      const user = name.value.trim();
-      const problem = this.checkUsername(user);
-      if (problem) { error.textContent = problem; name.focus(); return; }
-      if (mode === 'guest') {
-        OS.loadState(OS.defaultState());
-        OS.state.username = user;
-        OS.save();
-        return start(true);
-      }
-      try {
-        if (mode === 'create') {
-          busy('Creating account…');
-          const fresh = { ...OS.defaultState(), username: user, theme: OS.state.theme };
-          await OS.cloud.signup(user, pass.value, fresh);
-          OS.loadState(fresh);
-          return start(true);
+    // Top bar: clock in the middle, status icons and a power menu on the right.
+    const clock = el('span', { class: 'gdm-clock' });
+    const tick = () => { const d = new Date(); clock.textContent = `${d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}  ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`; };
+    tick();
+    const clockTimer = setInterval(tick, 10000);
+    const power = el('button', { class: 'gdm-icons', type: 'button', 'aria-label': 'System menu', html: ICONS.a11y + ICONS.wifi + ICONS.volume + ICONS.power });
+    power.addEventListener('click', () => this.loginMenu(power, [['Restart', () => location.reload()], ['Power Off', () => OS.boot.shutdown()]]));
+    const main = el('form', { class: 'gdm-main', autocomplete: 'off' });
+    screen.append(el('div', { class: 'gdm-bar' }, el('span'), clock, power), main);
+
+    // Pieces every step is built from.
+    const avatar = (size) => el('div', { class: `gdm-avatar ${size}`, html: OS.tuxSvg() });
+    const msg = el('p', { class: 'gdm-msg', role: 'status' });
+    const say = (text, isError) => { msg.textContent = text || ''; msg.classList.toggle('error', !!isError); };
+    const link = (text, onclick) => el('button', { class: 'gdm-link', type: 'button', text, onclick });
+    const field = (placeholder, type = 'text', withGo = true) => {
+      const input = el('input', { type, placeholder, 'aria-label': placeholder, spellcheck: 'false', autocomplete: type === 'password' ? 'current-password' : 'username' });
+      if (type === 'text') input.addEventListener('input', () => { input.value = input.value.toLowerCase().replace(/\s/g, ''); });
+      const next = withGo ? el('button', { class: 'gdm-go', type: 'submit', 'aria-label': 'Next', html: ICONS.arrow }) : null;
+      return { input, box: el('div', { class: 'gdm-entry' }, input, next), next };
+    };
+    const row = (back, entry) => el('div', { class: 'gdm-row' },
+      back ? el('button', { class: 'gdm-back', type: 'button', 'aria-label': 'Back', html: ICONS.back, onclick: back }) : null, entry);
+    const busy = (field, on) => { field.input.disabled = on; field.next?.classList.toggle('busy', on); };
+    const checkName = (input) => {
+      const problem = this.checkUsername(input.value.trim());
+      if (problem) { say(problem, true); input.focus(); }
+      return !problem;
+    };
+    // Replacing a different player saved in this browser: ask first (a guest's progress exists nowhere else).
+    const okToReplace = (name) => !known || known === name
+      || confirm(online ? `This replaces ${known}'s progress in this browser. It's safe in their account.` : `This browser has progress for ${known}, who has no account, so it would be lost.\n\nTo keep it, log in as ${known} and create an account from Settings.\n\nContinue anyway?`);
+
+    if (mode === 'users') {
+      main.append(
+        el('button', { class: 'gdm-user', type: 'button', onclick: () => go('password', { name: known, back: 'users' }) },
+          avatar('small'), el('span', {}, el('strong', { text: known }), el('small', { text: online ? 'Online account' : 'Guest: this browser only' }))),
+        link('Not listed?', () => go('username')));
+    }
+
+    if (mode === 'password') {
+      const { name } = arg;
+      const local = name === known;
+      const needsServer = !local || online;
+      const pass = field('Password', 'password');
+      main.append(avatar('big'), el('h1', { class: 'gdm-name', text: name }), row(arg.back ? () => go(arg.back) : null, pass.box), msg);
+      say(needsServer ? 'No password reset here: if you forget it, the only way back in is a new account.' : 'Guest account: any password works.');
+      pass.input.focus();
+      main.onsubmit = async (e) => {
+        e.preventDefault();
+        if (!needsServer) return start(false);
+        if (!pass.input.value) return say('Type your password.', true);
+        if (!local && !okToReplace(name)) return;
+        busy(pass, true);
+        try {
+          const data = await OS.cloud.login(name, pass.input.value);
+          // Keep this browser's copy if it's newer than the account's (played offline, say); the next save syncs it.
+          if (local && (OS.state.savedAt || 0) > (data.updatedAt || 0)) OS.cloud.schedule();
+          else OS.loadState(data.save || { username: name }, data.updatedAt);
+          OS.state.username = name;
+          OS.state.online = true;
+          OS.save();
+          start(!data.save);
+        } catch (err) {
+          busy(pass, false);
+          pass.input.value = '';
+          pass.input.focus();
+          say(err.status === 401 ? "Sorry, that didn't work. Please try again." : err.message, true);
         }
-        busy('Logging in…');
-        const data = await OS.cloud.login(user, pass.value);
-        OS.loadState(data.save || { username: user }, data.updatedAt);
-        OS.state.username = user;
-        return start(!data.save);
-      } catch (err) {
-        error.textContent = err.message;
-        busy(null);
-        (err.status === 401 ? pass : name).focus();
-      }
-    });
+      };
+    }
+
+    if (mode === 'username') {
+      const user = field('Username');
+      main.append(el('h1', { class: 'gdm-title', text: 'Log in' }), row(known ? () => go('users') : null, user.box), msg,
+        el('div', { class: 'gdm-links' }, link('Create an account', () => go('create')), link('Play without an account', () => go('guest'))));
+      say('Log in to your online account to carry on where you left off.');
+      if (arg.name) user.input.value = arg.name;
+      user.input.focus();
+      main.onsubmit = (e) => {
+        e.preventDefault();
+        if (checkName(user.input)) go('password', { name: user.input.value.trim(), back: 'username' });
+      };
+    }
+
+    if (mode === 'create') {
+      const user = field('Username', 'text', false);
+      const pass = field('Choose a password', 'password');
+      pass.input.autocomplete = 'new-password';
+      main.append(avatar('big'), el('h1', { class: 'gdm-title', text: 'Create an account' }),
+        row(null, user.box), row(null, pass.box), msg,
+        el('div', { class: 'gdm-links' }, link('I already have an account', () => go('username')), link('Play without an account', () => go('guest')), known && link(`Back to ${known}`, () => go('users'))));
+      say("No email needed. There's no password reset either, so pick a password you'll remember.");
+      user.input.focus();
+      main.onsubmit = async (e) => {
+        e.preventDefault();
+        if (!checkName(user.input)) return;
+        if (!pass.input.value) { say('Choose a password.', true); pass.input.focus(); return; }
+        const name = user.input.value.trim();
+        if (!okToReplace(name)) return;
+        busy(pass, true);
+        try {
+          const fresh = { ...OS.defaultState(), username: name, theme: OS.state.theme, online: true };
+          await OS.cloud.signup(name, pass.input.value, fresh);
+          OS.loadState(fresh);
+          start(true);
+        } catch (err) {
+          busy(pass, false);
+          say(err.message, true);
+          (err.status === 409 ? user : pass).input.focus();
+        }
+      };
+    }
+
+    if (mode === 'guest') {
+      const user = field('Pick a username');
+      main.append(avatar('big'), el('h1', { class: 'gdm-title', text: 'Play without an account' }), row(null, user.box), msg,
+        el('div', { class: 'gdm-links' }, link('Create an account instead', () => go('create'))));
+      say('Your progress stays in this browser only. You can create an account later in Settings.');
+      user.input.focus();
+      main.onsubmit = (e) => {
+        e.preventDefault();
+        if (!checkName(user.input)) return;
+        const name = user.input.value.trim();
+        if (!okToReplace(name)) return;
+        OS.cloud.token = null;
+        OS.loadState(OS.defaultState());
+        OS.state.username = name;
+        OS.save();
+        start(true);
+      };
+    }
+
+    // GDM's session gear, bottom-right: pick which desktop environment the session starts.
+    const unlocked = OS.themes.filter((t) => OS.state.unlockedThemes.includes(t.id));
+    if (unlocked.length > 1 && mode !== 'users') {
+      const gear = el('button', { class: 'gdm-session', type: 'button', title: 'Choose a desktop environment', 'aria-label': 'Choose a desktop environment', html: ICONS.gear });
+      gear.addEventListener('click', () => this.loginMenu(gear, unlocked.map((t) => [`${t.id === OS.state.theme ? '● ' : '○ '}${t.name}`, () => { OS.state.theme = t.id; OS.save(); }])));
+      screen.append(gear);
+    }
+  },
+
+  // A small menu for the login screen's power button and session gear.
+  loginMenu(anchor, items) {
+    const { el } = OS.util;
+    document.querySelector('.gdm-menu')?.remove();
+    const menu = el('div', { class: 'gdm-menu', role: 'menu' }, items.map(([label, fn]) => el('button', { role: 'menuitem', type: 'button', text: label, onclick: () => { menu.remove(); fn(); } })));
+    this.screen.append(menu);
+    const r = anchor.getBoundingClientRect();
+    const h = menu.offsetHeight;
+    const w = menu.offsetWidth;
+    menu.style.left = `${Math.max(8, Math.min(r.right - w, window.innerWidth - w - 8))}px`;
+    menu.style.top = `${r.bottom + 6 + h < window.innerHeight ? r.bottom + 6 : r.top - h - 6}px`;
+    menu.querySelector('button')?.focus();
+    setTimeout(() => document.addEventListener('pointerdown', function off(e) {
+      if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener('pointerdown', off); }
+    }), 0);
   },
 
   checkUsername(user) {
     if (!/^[a-z_][a-z0-9_-]{0,15}$/.test(user)) return 'Use lowercase letters and numbers, starting with a letter (like "alex" or "sam_42").';
     if (user === 'root') return 'Logging in as root is a bad habit. Use a normal account and sudo when you need power.';
     return null;
-  },
-
-  // "Use a different account": an online account keeps its progress; a guest's would be lost, so ask first.
-  async forgetDevice(then) {
-    if (!OS.cloud.linked && !confirm('This removes the progress saved in this browser. To keep it, log in, open Settings and create an account first.\n\nRemove it and continue?')) return;
-    if (OS.cloud.linked) await OS.cloud.logout();
-    OS.loadState(OS.defaultState());
-    then();
   },
 
   startSession(firstTime) {

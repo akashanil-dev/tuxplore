@@ -1,7 +1,7 @@
 'use strict';
 // Online accounts: a username and password, no email, no reset (see api/). The game still saves to
 // localStorage first; when the player is logged in, each save is also pushed to the server a few
-// seconds later, and logging in on another device pulls it back down.
+// seconds later. The login screen asks for the password every time and downloads the save with it.
 
 OS.cloud = {
   // For local testing: localStorage.setItem('tuxos-api', 'http://localhost:8787') points the game at `npm run dev`.
@@ -48,8 +48,11 @@ OS.cloud = {
   },
 
   // Returns the account's save; the caller decides what to do with the local one.
+  // The password is asked for at every login, so the previous login's token is retired.
   async login(username, password) {
+    const old = this.token;
     const data = await this.request('POST', '/login', { username, password });
+    if (old && old !== data.token) fetch(`${this.api}/logout`, { method: 'POST', headers: { Authorization: `Bearer ${old}` } }).catch(() => {});
     this.token = data.token;
     this.lastSync = data.updatedAt;
     return data;
@@ -79,26 +82,6 @@ OS.cloud = {
       if (err.status === 401) this.expired();
       // Otherwise (offline, server down) the next save tries again.
     }
-  },
-
-  // At login on a device that's already linked: take the server's save if it's newer than ours.
-  async pull() {
-    if (!this.linked) return false;
-    try {
-      const data = await Promise.race([
-        this.request('GET', '/save'),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
-      ]);
-      this.lastSync = data.updatedAt;
-      if (data.save && data.updatedAt > (OS.state.savedAt || 0)) {
-        OS.loadState(data.save, data.updatedAt);
-        return true;
-      }
-      this.schedule();
-    } catch (err) {
-      if (err.status === 401) this.expired();
-    }
-    return false;
   },
 
   expired() {
