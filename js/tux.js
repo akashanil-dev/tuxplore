@@ -1,20 +1,32 @@
 'use strict';
 // Tux, the companion who lives in the corner, gives hints and reacts to what you do.
 
+// Tux, drawn flat (no gradients: the same ids would repeat everywhere this SVG is inserted).
+// A faint light outline keeps his black body visible on dark wallpapers.
 OS.tuxSvg = (cls = '') => `
 <svg class="tux-svg ${cls}" viewBox="0 0 64 74" aria-hidden="true">
-  <ellipse cx="11" cy="46" rx="5" ry="14" fill="#1b1b1f" transform="rotate(18 11 46)" class="tux-wing-l"/>
-  <ellipse cx="53" cy="46" rx="5" ry="14" fill="#1b1b1f" transform="rotate(-18 53 46)" class="tux-wing-r"/>
-  <ellipse cx="32" cy="46" rx="21" ry="25" fill="#1b1b1f"/>
-  <ellipse cx="32" cy="50" rx="14.5" ry="19" fill="#f4f1ea"/>
-  <circle cx="32" cy="21" r="15.5" fill="#1b1b1f"/>
-  <ellipse cx="26.5" cy="19" rx="4.6" ry="5.6" fill="#fff"/>
-  <ellipse cx="37.5" cy="19" rx="4.6" ry="5.6" fill="#fff"/>
-  <circle class="tux-pupil" cx="27.5" cy="20" r="2.3" fill="#111"/>
-  <circle class="tux-pupil" cx="36.5" cy="20" r="2.3" fill="#111"/>
-  <path d="M24.5 26.5 Q32 22.5 39.5 26.5 Q32 33.5 24.5 26.5Z" fill="#f5a524"/>
-  <ellipse cx="22" cy="71" rx="9" ry="3.5" fill="#f5a524"/>
-  <ellipse cx="42" cy="71" rx="9" ry="3.5" fill="#f5a524"/>
+  <g fill="#1d1d23" stroke="rgba(255,255,255,0.28)" stroke-width="0.9">
+    <path class="tux-wing-l" d="M17 35 C10 40 5.5 50 6.5 58 C7 61.5 10.5 61.5 12.5 58.5 C15 55 16.5 46 17 35Z"/>
+    <path class="tux-wing-r" d="M47 35 C54 40 58.5 50 57.5 58 C57 61.5 53.5 61.5 51.5 58.5 C49 55 47.5 46 47 35Z"/>
+    <path d="M32 3.5 C21.5 3.5 16.5 12 17 22 C17.3 28 14 33 11.8 40 C8.5 50 9.5 61.5 16.5 66.5 C22 70 42 70 47.5 66.5 C54.5 61.5 55.5 50 52.2 40 C50 33 46.7 28 47 22 C47.5 12 42.5 3.5 32 3.5Z"/>
+  </g>
+  <ellipse cx="25.5" cy="9.5" rx="5" ry="2.4" fill="#fff" opacity="0.13" transform="rotate(-24 25.5 9.5)"/>
+  <path d="M32 29.5 C24 29.5 18.5 39.5 18.5 50.5 C18.5 61 24.5 67.5 32 67.5 C39.5 67.5 45.5 61 45.5 50.5 C45.5 39.5 40 29.5 32 29.5Z" fill="#f6f2e9"/>
+  <ellipse cx="32" cy="61" rx="10.5" ry="5.5" fill="#d8d0bf" opacity="0.55"/>
+  <g class="tux-eye">
+    <ellipse cx="27" cy="18" rx="5" ry="6.6" fill="#f6f2e9"/>
+    <g class="tux-pupil"><circle cx="28.2" cy="19" r="2.7" fill="#16161a"/><circle cx="29.1" cy="17.9" r="0.95" fill="#fff"/></g>
+  </g>
+  <g class="tux-eye">
+    <ellipse cx="37" cy="18" rx="5" ry="6.6" fill="#f6f2e9"/>
+    <g class="tux-pupil"><circle cx="35.8" cy="19" r="2.7" fill="#16161a"/><circle cx="36.7" cy="17.9" r="0.95" fill="#fff"/></g>
+  </g>
+  <path d="M26.5 26.8 Q32 32.2 37.5 26.8 Q32 28.8 26.5 26.8Z" fill="#dc8a0e"/>
+  <path d="M24.8 25.2 Q32 21 39.2 25.2 Q35.5 28 32 28.1 Q28.5 28 24.8 25.2Z" fill="#fbb631"/>
+  <g fill="#f5a524" stroke="#d58410" stroke-width="0.8" stroke-linejoin="round">
+    <path d="M13.5 69.3 C13.5 65.6 18.5 64.3 23.2 65.3 C27.4 66.2 29.2 69.3 27.2 71 C24.2 72.9 15.2 72.7 13.5 69.3Z"/>
+    <path d="M50.5 69.3 C50.5 65.6 45.5 64.3 40.8 65.3 C36.6 66.2 34.8 69.3 36.8 71 C39.8 72.9 48.8 72.7 50.5 69.3Z"/>
+  </g>
 </svg>`;
 
 OS.tux = {

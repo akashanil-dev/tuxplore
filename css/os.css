@@ -170,7 +170,8 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 
 #boot.login {
   font-family: 'Inter', system-ui, sans-serif;
-  background: radial-gradient(ellipse at 20% 20%, #3b82f6 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, #a855f7 0%, transparent 55%), linear-gradient(160deg, #0f172a, #1e1b4b);
+  background: #1b2224;
+  isolation: isolate;
   color: #fff;
   display: flex;
   flex-direction: column;
