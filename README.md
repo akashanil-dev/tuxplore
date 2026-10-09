@@ -107,7 +107,7 @@ js/wm.js            window manager, workspaces, desktop icons, menus
 js/de.js            the desktop environments: GNOME, KDE Plasma, CDE, Hyprland
 js/boot.js          GRUB, boot log, login, kernel panic
 js/apps/*.js        Terminal, Files, Journal, Pipe Dream, Know Your Distro, and the system apps
-images/icons/       app icons
+images/icons/       app icons, one set per desktop environment
 images/distros/     distro logos
 images/wall/        wallpapers (WebP) and their Settings thumbnails
 api/                the save API: a Cloudflare Worker and D1 database (see api/README.md)
@@ -117,7 +117,7 @@ api/                the save API: a Cloudflare Worker and D1 database (see api/R
 
 - **Know Your Distro** started as a standalone game in this repository. The original version is kept on the
   [`legacy`](https://github.com/akashanil-dev/know-your-distro/tree/legacy) branch.
-- **App icons** are the official GNOME app icons. See [`images/icons/CREDITS.md`](images/icons/CREDITS.md).
+- **App icons** come from each desktop's own icon theme: GNOME's Adwaita app icons, KDE's Breeze and Papirus for Hyprland, plus hand-drawn retro icons for CDE. See [`images/icons/CREDITS.md`](images/icons/CREDITS.md).
 - **Distro logos** come from Know Your Distro, the Papirus icon theme and Simple Icons. See
   [`images/distros/CREDITS.md`](images/distros/CREDITS.md). They're trademarks of their projects
   and are only used to identify them.

@@ -4,11 +4,9 @@
 OS.apps = {};
 OS.registerApp = (id, def) => { OS.apps[id] = { id, w: 720, h: 480, single: true, ...def }; };
 
-// Official GNOME app icons (see images/icons/CREDITS.md).
-OS.icons = Object.fromEntries(
-  ['terminal', 'files', 'pipedream', 'runner', 'journal', 'settings', 'achievements', 'install']
-    .map((id) => [id, `<img src="images/icons/${id}.svg" alt="" draggable="false">`]),
-);
+// Each desktop environment has its own icon theme, as on real Linux (see images/icons/CREDITS.md):
+// GNOME uses Adwaita, KDE Plasma uses Breeze, CDE has retro Motif-style icons, Hyprland uses Papirus.
+OS.icon = (id) => `<img src="images/icons/${OS.wm?.de?.id || document.body.dataset.theme || 'kde'}/${id}.svg" alt="" draggable="false">`;
 
 OS.wm = {
   windows: [],
@@ -58,6 +56,7 @@ OS.wm = {
     this.desktop.style.setProperty('--area-top', `${this.de.area.top}px`);
     this.desktop.style.setProperty('--area-bottom', `${this.de.area.bottom}px`);
     this.de.build(this, this.shell);
+    this.windows.forEach((w) => { w.el.querySelector('.win-icon').innerHTML = OS.icon(w.appId); });
     this.renderIcons();
     this.updateChips();
     this.tickClock();
@@ -91,7 +90,7 @@ OS.wm = {
         if (this.isLocked(id)) continue;
         const app = OS.apps[id];
         const icon = el('button', { class: 'desk-icon', title: `Open ${app.title}` },
-          el('span', { class: 'app-icon', html: OS.icons[id] }), el('span', { class: 'desk-label', text: app.title }));
+          el('span', { class: 'app-icon', html: OS.icon(id) }), el('span', { class: 'desk-label', text: app.title }));
         icon.addEventListener('dblclick', () => this.open(id));
         icon.addEventListener('click', () => { if (matchMedia('(pointer: coarse)').matches) this.open(id); });
         icon.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.open(id); });
@@ -101,7 +100,7 @@ OS.wm = {
       // CDE style: a minimised window becomes an icon on the desktop.
       for (const win of this.windows.filter((w) => w.minimized && this.onCurrentWs(w))) {
         this.iconsEl.append(el('button', { class: 'desk-icon', title: `Restore ${win.getTitle()}`, onclick: () => this.restore(win) },
-          el('span', { class: 'app-icon', html: OS.icons[win.appId] }), el('span', { class: 'desk-label', text: win.getTitle() })));
+          el('span', { class: 'app-icon', html: OS.icon(win.appId) }), el('span', { class: 'desk-label', text: win.getTitle() })));
       }
     }
   },
@@ -121,7 +120,7 @@ OS.wm = {
     const active = wins.some((w) => w.el.classList.contains('active') && !w.minimized && this.onCurrentWs(w));
     return el('button', {
       class: `${cls}${wins.length ? ' running' : ''}${active ? ' focused' : ''}`, title: app.title, 'aria-label': app.title,
-      html: `<span class="app-icon">${OS.icons[id]}</span>`,
+      html: `<span class="app-icon">${OS.icon(id)}</span>`,
       onclick: () => this.activate(id),
     });
   },
@@ -147,7 +146,7 @@ OS.wm = {
         const app = OS.apps[id];
         const locked = this.isLocked(id);
         return el('button', { class: `launcher-app${locked ? ' locked' : ''}`, onclick: () => this.open(id) },
-          el('span', { class: 'app-icon', html: OS.icons[id] }),
+          el('span', { class: 'app-icon', html: OS.icon(id) }),
           el('span', { text: locked ? `🔒 ${app.title}` : app.title }),
           app.blurb && el('small', { text: app.blurb }));
       }));
@@ -222,7 +221,7 @@ OS.wm = {
     const menuBtn = btn('menu', 'Window menu', (e) => this.windowMenu(win, e));
     menuBtn.addEventListener('dblclick', (e) => { e.stopPropagation(); this.close(win); });
     const bar = el('div', { class: 'win-titlebar' },
-      menuBtn, el('span', { class: 'win-icon', html: OS.icons[appId] }), title,
+      menuBtn, el('span', { class: 'win-icon', html: OS.icon(appId) }), title,
       el('div', { class: 'win-btns' }, btn('min', 'Minimize', () => this.minimize(win)), btn('max', 'Maximize', () => this.toggleMax(win)), btn('close', 'Close', () => this.close(win))));
     const body = el('div', { class: 'win-body' });
     const resize = el('div', { class: 'win-resize', 'aria-hidden': 'true' });
@@ -452,7 +451,7 @@ OS.wm = {
       ids.forEach((id, i) => list.append(el('button', {
         class: `${cls}-row${i === sel ? ' sel' : ''}${this.isLocked(id) ? ' locked' : ''}`, role: 'option',
         onclick: () => this.open(id),
-      }, el('span', { class: 'app-icon', html: OS.icons[id] }), el('span', { text: OS.apps[id].title }), el('small', { text: OS.apps[id].blurb || '' }))));
+      }, el('span', { class: 'app-icon', html: OS.icon(id) }), el('span', { text: OS.apps[id].title }), el('small', { text: OS.apps[id].blurb || '' }))));
     };
     input.addEventListener('input', () => { sel = 0; render(); });
     input.addEventListener('keydown', (e) => {

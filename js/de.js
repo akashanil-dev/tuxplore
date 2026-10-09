@@ -65,7 +65,7 @@
           main.append(el('div', { class: 'ov-windows' }, wm.windows.map((w) => el('button', {
             class: `ov-win${w.el.classList.contains('active') ? ' active' : ''}`,
             onclick: () => { wm.closeLauncher(); if (w.minimized) wm.restore(w); else wm.focus(w); },
-          }, el('span', { class: 'ov-thumb' }, el('span', { class: 'app-icon', html: OS.icons[w.appId] })),
+          }, el('span', { class: 'ov-thumb' }, el('span', { class: 'app-icon', html: OS.icon(w.appId) })),
           el('span', { class: 'ov-label', text: w.getTitle() })))));
         };
         const showApps = () => { main.innerHTML = ''; main.append(wm.appGrid(search.value)); };
@@ -133,7 +133,7 @@
             : cat === 'Favorites' ? FAVORITES.filter((id) => OS.apps[id])
               : cat === 'All Applications' ? wm.appsInOrder() : wm.appsInOrder().filter((id) => (CATEGORY[id] || 'System') === cat);
           list.replaceChildren(...ids.map((id) => el('button', { class: `kick-app${wm.isLocked(id) ? ' locked' : ''}`, onclick: () => wm.open(id) },
-            el('span', { class: 'app-icon', html: OS.icons[id] }),
+            el('span', { class: 'app-icon', html: OS.icon(id) }),
             el('span', {}, el('strong', { text: OS.apps[id].title }), el('small', { text: OS.apps[id].blurb || '' })))));
         };
         search.addEventListener('input', render);
@@ -180,7 +180,7 @@
       welcome: 'Welcome to CDE, the desktop of 1990s Unix workstations from Sun, HP and IBM. Everything lives in the Front Panel at the bottom, including four workspaces: put different windows on each. A minimised window turns into an icon on the desktop.',
       splash: '<p>Starting the Common Desktop Environment…</p>',
       build(wm, shell) {
-        const launch = (id) => (wm.isLocked(id) ? null : el('button', { class: 'cde-tile cde-launch', title: OS.apps[id].title, 'aria-label': OS.apps[id].title, html: `<span class="app-icon">${OS.icons[id]}</span>`, onclick: () => wm.activate(id) }));
+        const launch = (id) => (wm.isLocked(id) ? null : el('button', { class: 'cde-tile cde-launch', title: OS.apps[id].title, 'aria-label': OS.apps[id].title, html: `<span class="app-icon">${OS.icon(id)}</span>`, onclick: () => wm.activate(id) }));
         wm.ui.ws = this.workspaces.map((name, i) => el('button', { class: 'cde-ws', text: name, onclick: () => wm.switchWs(i + 1) }));
         shell.append(el('footer', { class: 'cde-panel' },
           el('div', { class: 'cde-tile', title: 'Clock' }, analogClock()),
