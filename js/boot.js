@@ -63,8 +63,6 @@ OS.boot = {
       list.innerHTML = '';
       items.forEach((it, i) => {
         const li = el('li', { class: i === sel ? 'sel' : '', role: 'option', 'aria-selected': String(i === sel), text: `${i === sel ? '*' : ' '}${it.label}` });
-        li.addEventListener('click', () => { sel = i; choose(); });
-        li.addEventListener('mouseenter', () => { sel = i; stopCountdown(); render(); });
         list.append(li);
       });
       foot.textContent = 'Use the ↑ and ↓ keys to select which entry is highlighted.\nPress enter to boot the selected OS, \'e\' to edit the commands\nbefore booting or \'c\' for a command-line.' +
