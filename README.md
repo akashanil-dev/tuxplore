@@ -21,7 +21,7 @@ the way. Nothing is installed and nothing on your real computer is touched.
   - **KDE Plasma:** a taskbar, the Kickoff app launcher, KRunner search on Alt+Space and Peek at Desktop. Everyone starts here, since it feels familiar coming from Windows.
   - **GNOME:** a top bar and the Activities overview (click it, push the mouse into the top-left corner, or tap Super).
   - **CDE:** the 1990s Unix Front Panel with an analog clock, four workspaces, Motif window menus, and minimised windows that turn into desktop icons.
-  - **Hyprland:** a Waybar bar, five workspaces, tiling windows with no title bars, a wofi launcher and Super-key shortcuts (Alt works too).
+  - **Hyprland:** a Waybar bar, five workspaces, tiling windows with no title bars, a wofi launcher and keyboard shortcuts on Alt (real Hyprland uses Super, but in a browser your own system catches that key first).
 - **Switch any time** in Settings, or pick a session on the login screen.
 - **A login screen for each:** SDDM for KDE Plasma, GDM for GNOME, CDE's dtlogin and a text-mode tuigreet for Hyprland. You get the one for the desktop you last used.
 - **Windows** you can drag, resize, minimise and maximise, in whatever style the desktop environment uses.

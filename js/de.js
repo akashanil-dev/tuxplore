@@ -215,26 +215,26 @@
       icons: false,
       workspaces: ['1', '2', '3', '4', '5'],
       tiling: true,
-      openHow: (title) => (title === 'Terminal' ? 'press Super+Q (or Alt+Q)' : `press Super+R (or Alt+R) and type ${title}`),
-      welcome: 'Welcome to Hyprland, a tiling window manager. Windows arrange themselves, and you drive it from the keyboard: Super+Q opens a terminal, Super+R the app launcher, Super+C closes a window, Super+1 to 5 switch workspaces and Super+Shift+1 to 5 move a window there. If your computer grabs the Super key, use Alt.',
+      openHow: (title) => (title === 'Terminal' ? 'press Alt+Q' : `press Alt+R and type ${title}`),
+      welcome: 'Welcome to Hyprland, a tiling window manager. Windows arrange themselves, and you drive it from the keyboard: Alt+Q opens a terminal, Alt+R the app launcher, Alt+C closes a window, Alt+1 to 5 switch workspaces and Alt+Shift+1 to 5 move a window there. Click me any time for the full list.',
       splash: '<strong class="hypr-logo">Hyprland</strong>',
       // Tux shows this with every hint here: Hyprland works nothing like the other desktops.
       guide: {
         title: 'Getting around Hyprland',
         intro: 'No title bars, taskbar or desktop icons here. Windows tile themselves, and you drive it with the keyboard.',
         keys: [
-          ['Super+Q', 'Open a terminal'],
-          ['Super+R', 'Find and open any app'],
-          ['Super+E', 'Open Files'],
-          ['Super+C', 'Close the focused window'],
-          ['Super+← →', 'Move between windows'],
-          ['Super+1…5', 'Switch workspace'],
-          ['Super+Shift+1…5', 'Send the window to a workspace'],
+          ['Alt+Q', 'Open a terminal'],
+          ['Alt+R', 'Find and open any app'],
+          ['Alt+E', 'Open Files'],
+          ['Alt+C', 'Close the focused window'],
+          ['Alt+← →', 'Move between windows'],
+          ['Alt+1…5', 'Switch workspace'],
+          ['Alt+Shift+1…5', 'Send the window to a workspace'],
         ],
-        foot: "Super is the Windows key; if your computer grabs it, use Alt. With the mouse: the numbers in the top-left are workspaces, the Tux there opens your apps, and the window title in the middle has window actions.",
+        foot: "Real Hyprland uses the Super (Windows) key for these. TuxOS uses Alt, because your own computer catches Super first: on Windows it opens the Start menu, and on a real tiling setup Super+Q might close your browser. With the mouse: the numbers in the top-left are workspaces, the Tux there opens your apps, and the window title in the middle has window actions.",
       },
       build(wm, shell) {
-        wm.ui.ws = this.workspaces.map((name, i) => el('button', { class: 'hypr-ws', text: name, title: `Workspace ${name} (Super+${name})`, onclick: () => wm.switchWs(i + 1) }));
+        wm.ui.ws = this.workspaces.map((name, i) => el('button', { class: 'hypr-ws', text: name, title: `Workspace ${name} (Alt+${name})`, onclick: () => wm.switchWs(i + 1) }));
         wm.ui.title = el('button', {
           class: 'hypr-title', title: 'Window actions',
           onclick: (e) => {
@@ -243,12 +243,12 @@
             const r = e.currentTarget.getBoundingClientRect();
             wm.popup(r.left, r.bottom + 6, [
               ...this.workspaces.map((name, i) => [`Move to workspace ${name}`, () => wm.moveToWs(win, i + 1)]),
-              null, ['Close window (Super+C)', () => wm.close(win)]]);
+              null, ['Close window (Alt+C)', () => wm.close(win)]]);
           },
         });
         shell.append(el('header', { class: 'waybar' },
           el('div', { class: 'wb-side' },
-            el('button', { class: 'wb-launch', title: 'Apps (Super+R)', 'aria-label': 'Apps', html: OS.tuxSvg(), onclick: () => wm.toggleLauncher() }),
+            el('button', { class: 'wb-launch', title: 'Apps (Alt+R)', 'aria-label': 'Apps', html: OS.tuxSvg(), onclick: () => wm.toggleLauncher() }),
             el('div', { class: 'wb-ws' }, wm.ui.ws)),
           wm.ui.title,
           el('div', { class: 'wb-side wb-right' }, wm.chip('quest'), wm.chip('trophy'), status(),
@@ -271,6 +271,7 @@
         wm.showOverlay('hypr-wofi', el('div', { class: 'wofi' }, input, list));
         input.focus();
       },
+      // Alt is the advertised modifier (see the guide); Super still works where the system lets it through.
       keydown(e, wm) {
         const mod = e.metaKey || (e.altKey && !e.ctrlKey);
         if (!mod || e.key === 'Meta' || e.key === 'Alt') return false;
