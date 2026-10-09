@@ -136,6 +136,16 @@ images/app/         app icons and the link-preview image
 api/                the save API: a Cloudflare Worker and D1 database (see api/README.md)
 ```
 
+## License
+
+Tuxplore's code is **source-available** under the [PolyForm Noncommercial License 1.0.0](LICENSE). You may
+use, change and share it for any noncommercial purpose: learning, teaching, personal projects, and use by
+schools, colleges and other noncommercial organizations. Commercial use needs permission: get in touch.
+
+Some files belong to other projects and keep their own licenses: the app icons
+([`images/icons/CREDITS.md`](images/icons/CREDITS.md)), the distro logos
+([`images/distros/CREDITS.md`](images/distros/CREDITS.md)) and GoatCounter's script (`js/vendor/`, ISC).
+
 ## Credits
 
 - **Know Your Distro** started as a standalone game in this repository. The original version is kept on the
