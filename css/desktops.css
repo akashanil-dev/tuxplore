@@ -405,3 +405,4 @@ body[data-theme='tiling'] .win-resize { display: none; }
   /* On a phone there's no Super key, so Hyprland windows get a title bar to close them. */
   body[data-theme='tiling'] .win-titlebar { display: flex; }
 }
+

@@ -77,7 +77,7 @@ OS.wm = {
   },
 
   appsInOrder() {
-    return ['terminal', 'files', 'journal', 'pipedream', 'runner', 'achievements', 'settings', 'install'].filter((id) => OS.apps[id]);
+    return ['terminal', 'challenge', 'files', 'journal', 'pipedream', 'runner', 'achievements', 'settings', 'install'].filter((id) => OS.apps[id]);
   },
 
   isLocked(id) { return !!OS.apps[id]?.locked?.(); },

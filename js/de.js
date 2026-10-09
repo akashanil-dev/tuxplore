@@ -33,7 +33,7 @@
   });
 
   // KDE's Kickoff sorts apps into categories.
-  const CATEGORY = { terminal: 'System', files: 'System', install: 'System', journal: 'Education', pipedream: 'Games', runner: 'Games', achievements: 'Games', settings: 'Settings' };
+  const CATEGORY = { terminal: 'System', challenge: 'Education', files: 'System', install: 'System', journal: 'Education', pipedream: 'Games', runner: 'Games', achievements: 'Games', settings: 'Settings' };
   const FAVORITES = ['terminal', 'files', 'journal', 'settings'];
 
   OS.desktops = {
@@ -209,6 +209,9 @@
     },
 
     // ---------- Hyprland ----------
+    
+
+
     tiling: {
       id: 'tiling',
       area: { top: 44, bottom: 0 },
