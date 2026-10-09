@@ -187,10 +187,12 @@ OS.themes = [
   { id: 'gnome', name: 'GNOME', version: 'GNOME 47', desc: 'A top bar and the Activities overview. Calm and focused.', usedBy: 'Fedora, Ubuntu, Debian', unlock: 'Complete quest 3: Into the Dungeon' },
   { id: 'retro', name: 'CDE', version: 'CDE 2.5', desc: 'The 1990s Unix workstation desktop, with a Front Panel and four workspaces.', usedBy: 'Solaris, HP-UX, AIX', unlock: 'Complete quest 6: Goblin Trouble' },
   { id: 'tiling', name: 'Hyprland', version: 'Hyprland 0.45', desc: 'A tiling window manager you drive from the keyboard.', usedBy: 'Arch and other DIY setups', unlock: 'Complete every quest' },
+  { id: 'zen', name: 'Zenitsu Rice', version: 'Custom Waybar', desc: 'A gorgeous custom desktop with tiling and pill bars.', usedBy: 'Ricing Enthusiasts', unlock: 'Unlocked from the start' },
 ];
 
 // Each wallpaper has a full-size image and a small thumbnail for Settings, both in images/wall/.
 OS.wallpapers = {
+  zen: 'Zenitsu Rice',
   freedom: 'Free as in freedom',
   command: 'At your command',
   root: 'I am root',

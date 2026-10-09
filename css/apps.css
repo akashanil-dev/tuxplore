@@ -420,3 +420,10 @@ button.pd-block:hover { filter: brightness(1.15); }
   .pd-target-wrap { grid-template-columns: 1fr; }
   .journey { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Theme preview for Zenitsu */
+.tp-zen { background: #141414 !important; }
+.tp-zen i:nth-child(1) { left: 4px; top: 4px; width: 14px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); }
+.tp-zen i:nth-child(2) { left: 22px; right: 22px; top: 4px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); }
+.tp-zen i:nth-child(3) { right: 4px; top: 4px; width: 14px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); }
+.tp-zen i:nth-child(4) { left: 4px; top: 14px; width: calc(50% - 6px); height: calc(100% - 18px); border: 1px solid #f59e0b; border-radius: 4px; background: #222; }

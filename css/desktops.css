@@ -405,3 +405,136 @@ body[data-theme='tiling'] .win-resize { display: none; }
   /* On a phone there's no Super key, so Hyprland windows get a title bar to close them. */
   body[data-theme='tiling'] .win-titlebar { display: flex; }
 }
+
+/* ---------- Zenitsu Rice ---------- */
+body[data-theme='zen'] {
+  --zen-bg: rgba(20, 20, 20, 0.85);
+  --zen-fg: #f5f5f5;
+  --zen-accent: #f59e0b; /* Yellow/orange for Zenitsu */
+  --zen-border: rgba(255, 255, 255, 0.1);
+  --font: 'Inter', system-ui, sans-serif;
+}
+
+.zen-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.zen-pill {
+  background: var(--zen-bg);
+  color: var(--zen-fg);
+  border: 1px solid var(--zen-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.zen-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--zen-fg);
+}
+
+.zen-text {
+  font-weight: 600;
+  color: #fff;
+}
+
+.zen-workspaces {
+  display: flex;
+  gap: 4px;
+}
+
+.zen-ws {
+  background: transparent;
+  color: #999;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zen-ws:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.zen-ws.active {
+  background: var(--zen-accent);
+  color: #000;
+}
+
+.zen-media {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.zen-media span {
+  background: #333;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.zen-sep {
+  color: #555;
+}
+
+.zen-status {
+  background: transparent;
+  border: none;
+  color: var(--zen-fg);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+.zen-status svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+.zen-status:hover svg {
+  opacity: 1;
+}
+
+/* Hide default title since we have tiling windows */
+.zen-title {
+  display: none;
+}
+
+body[data-theme='zen'] .window {
+  border-radius: 8px;
+  border: 1px solid var(--zen-border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  background: rgba(30, 30, 30, 0.95);
+}
+body[data-theme='zen'] .titlebar {
+  display: none; /* Tiling usually removes titlebars */
+}

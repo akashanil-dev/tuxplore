@@ -33,7 +33,7 @@
   });
 
   // KDE's Kickoff sorts apps into categories.
-  const CATEGORY = { terminal: 'System', files: 'System', install: 'System', journal: 'Education', pipedream: 'Games', runner: 'Games', achievements: 'Games', settings: 'Settings' };
+  const CATEGORY = { terminal: 'System', challenge: 'Education', files: 'System', install: 'System', journal: 'Education', pipedream: 'Games', runner: 'Games', achievements: 'Games', settings: 'Settings' };
   const FAVORITES = ['terminal', 'files', 'journal', 'settings'];
 
   OS.desktops = {
@@ -209,6 +209,53 @@
     },
 
     // ---------- Hyprland ----------
+    
+    // ---------- Zenitsu Rice ----------
+    zen: {
+      id: 'zen',
+      area: { top: 54, bottom: 0 },
+      icons: false,
+      workspaces: ['1', '2', '3', '4', '5'],
+      tiling: true,
+      openHow: (title) => (title === 'Terminal' ? 'press Alt+Q' : `press Alt+R and type ${title}`),
+      welcome: 'Welcome to your Zenitsu rice! This uses tiling like Hyprland, but with a custom pill-styled Waybar.',
+      splash: '<strong class="hypr-logo">Zenitsu Rice</strong>',
+      guide: {
+        title: 'Getting around Zenitsu Rice',
+        intro: 'Like Hyprland, windows tile themselves. Use Alt+Q for terminal, Alt+R for launcher.',
+        keys: [
+          ['Alt+Q', 'Open a terminal'],
+          ['Alt+R', 'Find and open any app'],
+          ['Alt+C', 'Close the focused window'],
+          ['Alt+1…5', 'Switch workspace'],
+        ],
+        foot: "Enjoy the rice!",
+      },
+      build(wm, shell) {
+        wm.ui.ws = this.workspaces.map((name, i) => el('button', { class: 'zen-ws', text: name, title: `Workspace ${name}`, onclick: () => wm.switchWs(i + 1) }));
+        
+        const leftPill = el('div', { class: 'zen-pill zen-left' }, 
+            el('span', { class: 'zen-icon', html: ICON.tux }), 
+            el('span', { class: 'zen-text', text: 'Desktop' }),
+            el('div', { class: 'zen-workspaces' }, ...wm.ui.ws)
+        );
+
+        wm.ui.title = el('div', { class: 'zen-title' });
+        const centerPill = el('div', { class: 'zen-pill zen-center' },
+            el('span', { class: 'zen-media', html: '<span>▶</span> That nickname suits ...' }),
+            el('span', { class: 'zen-clock', 'data-clock': 'zen' })
+        );
+
+        const rightPill = el('div', { class: 'zen-pill zen-right' },
+            wm.chip('quest'), wm.chip('trophy'),
+            el('button', { class: 'zen-status', onclick: (e) => wm.powerMenu(e), html: ICON.wifi + ICON.volume + ICON.power })
+        );
+
+        const bar = el('div', { class: 'zen-bar' }, leftPill, centerPill, rightPill);
+        shell.append(bar);
+      },
+    },
+
     tiling: {
       id: 'tiling',
       area: { top: 44, bottom: 0 },
