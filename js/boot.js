@@ -21,40 +21,57 @@ OS.boot = {
   },
 
   // ---------- Phones: a joke kernel panic, then the way out ----------
+  // Drawn like the rest of the boot: the panic scrolls past, then Tux opens a rescue shell with a
+  // GRUB-style menu of what to do instead.
   async phone() {
-    const { el } = OS.util;
+    const { el, sleep } = OS.util;
+    const pause = (ms) => sleep(OS.util.reducedMotion() ? 0 : ms);
     const screen = this.show('phone');
-    const pre = el('pre');
-    screen.append(pre);
+    const log = el('pre', { class: 'phone-log' });
+    screen.append(log);
     const inches = (Math.hypot(window.screen.width, window.screen.height) / 160).toFixed(1);
     const lines = [
-      '[    0.000000] Linux version 6.10.0-tuxos (tux@igloo) #1 SMP PREEMPT',
-      '[    0.004201] DMI: Pocket-Sized Glass Rectangle, BIOS "swipe up to unlock"',
-      `[    0.011000] Detecting screen... ${inches} inches. Hmm.`,
-      '[    0.013370] Detecting keyboard... not found',
-      '[    0.013371] Detecting mouse... found a thumb instead',
-      '[    0.020000] tux-wm: trying to fit 4 desktop environments into a phone...',
-      '[    0.020001] tux-wm: windows are now 3 pixels wide',
-      '[    0.042000] <span class="c-red">Kernel panic - not syncing: Attempted to run a whole operating system inside a phone browser</span>',
-      '[    0.042001] ---[ end Kernel panic - not syncing ]---',
+      ['0.000000', 'Linux version 6.10.0-tuxos (tux@igloo) #1 SMP PREEMPT'],
+      ['0.004201', 'DMI: Pocket-Sized Glass Rectangle, BIOS "swipe up to unlock"'],
+      ['0.011000', `Detecting screen... ${inches} inches. Hmm.`],
+      ['0.013370', 'Detecting keyboard... not found'],
+      ['0.013371', 'Detecting mouse... found a thumb instead'],
+      ['0.020000', 'tux-wm: trying to fit 4 desktop environments into a phone...'],
+      ['0.020001', 'tux-wm: windows are now 3 pixels wide'],
+      ['0.042000', 'Kernel panic - not syncing: Attempted to run a whole operating system inside a phone browser', 'panic'],
+      ['0.042001', '---[ end Kernel panic - not syncing ]---', 'panic'],
     ];
-    for (const line of lines) {
-      pre.innerHTML += `${line}\n`;
-      await OS.util.sleep(OS.util.reducedMotion() ? 0 : 160);
+    for (const [time, text, cls] of lines) {
+      log.append(el('span', { class: `phone-line ${cls || ''}` }, el('span', { class: 'phone-time', text: `[${time}]` }), ` ${text}`));
+      await pause(140);
     }
+    await pause(500);
+
     const url = location.origin + location.pathname;
-    const copy = el('button', { class: 'phone-btn primary', text: 'Copy the link' });
-    copy.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(url); copy.textContent = 'Copied! Now open it on a computer'; } catch { copy.textContent = url; }
+    const item = (label, note, onclick, attrs = {}) => el(attrs.href ? 'a' : 'button', { class: 'phone-item', type: attrs.href ? null : 'button', onclick, ...attrs },
+      el('span', { class: 'phone-item-label', text: label }), el('span', { class: 'phone-item-note', text: note }));
+    const copy = item('Copy the link', 'Paste it into a browser on your computer', async () => {
+      const label = copy.querySelector('.phone-item-label');
+      try { await navigator.clipboard.writeText(url); label.textContent = 'Copied!'; copy.classList.add('done'); } catch { label.textContent = url; }
     });
-    const share = navigator.share && el('button', { class: 'phone-btn', text: 'Send it to my computer', onclick: () => navigator.share({ title: 'Tuxplore', text: 'Learn Linux by playing, in a desktop browser:', url }).catch(() => {}) });
-    screen.append(el('div', { class: 'phone-card' },
-      el('div', { class: 'phone-tux', html: OS.tuxSvg() }),
-      el('h1', { text: 'Whoa, that\'s a phone!' }),
-      el('p', { text: "TuxOS is a whole operating system: windows, a terminal, keyboard shortcuts and four desktops. Your phone tried its best, but Linux needs a real keyboard and a bigger screen." }),
-      el('p', {}, 'Open ', el('strong', { text: location.host || 'Tuxplore' }), ' in a browser on a laptop or desktop computer.'),
+    copy.classList.add('sel');
+    const share = navigator.share && item('Send it to my computer', 'Share the link to yourself', () => navigator.share({ title: 'Tuxplore', text: 'Learn Linux by playing, in a desktop browser:', url }).catch(() => {}));
+    const menu = el('div', { class: 'phone-menu', role: 'group', 'aria-label': 'What now?' },
+      el('span', { class: 'phone-menu-title', text: ' What now? ' }),
       copy, share || null,
-      el('button', { class: 'phone-btn ghost', text: 'Boot anyway (it will be cramped)', onclick: () => { this.bootAnyway = true; this.start(); } })));
+      item('Read about Tuxplore', 'What it is and what you\'ll learn', null, { href: 'about.html' }),
+      item('Boot anyway', 'It will be very cramped', () => { this.bootAnyway = true; this.start(); }));
+
+    screen.append(el('section', { class: 'phone-rescue' },
+      el('p', { class: 'phone-prompt' }, el('span', { class: 'c-green', text: 'tux@rescue' }), ':', el('span', { class: 'c-blue', text: '~' }), '$ cat /etc/motd'),
+      el('div', { class: 'phone-motd' },
+        el('div', { class: 'phone-tux', html: OS.tuxSvg() }),
+        el('div', {},
+          el('h1', { text: 'Whoa, that\'s a phone!' }),
+          el('p', { text: 'TuxOS is a whole operating system: windows, a terminal, keyboard shortcuts and four desktops. Your phone tried its best, but Linux needs a real keyboard and a bigger screen.' }))),
+      el('p', { class: 'phone-fix' }, 'Open ', el('strong', { text: location.host || 'Tuxplore' }), ' on a laptop or desktop computer.'),
+      menu,
+      el('p', { class: 'phone-foot' }, el('span', { class: 'c-dim', text: 'Tablets and computers boot straight in.' }))));
   },
 
   show(cls, html = '') {

@@ -169,16 +169,32 @@ code, pre, .term, .editor, .pd-block { font-family: var(--mono); font-variant-li
 
 #boot.halted { display: grid; place-content: center; text-align: center; }
 
-/* Phones get a joke kernel panic and a card telling them to use a computer. */
-#boot.phone { padding: 14px 14px 24px; color: #e5e5e5; font-size: 12px; }
-#boot.phone pre { margin: 0 0 18px; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
-.phone-card { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 420px; margin: 0 auto; padding: 20px 18px; border-radius: 16px; background: #fffbea; color: #1c1917; font: 15px/1.5 'Inter', system-ui, sans-serif; text-align: center; animation: splash-in 0.4s ease; }
-.phone-card h1 { margin: 0; font-size: 21px; }
-.phone-card p { margin: 0; }
-.phone-tux svg { width: 64px; height: 74px; display: block; animation: tux-hop 0.8s ease 0.3s; }
-.phone-btn { width: 100%; padding: 12px; border: 2px solid #1c1917; border-radius: 12px; background: #fff; color: #1c1917; font: 600 15px 'Inter', system-ui, sans-serif; }
-.phone-btn.primary { border-color: #3584e4; background: #3584e4; color: #fff; }
-.phone-btn.ghost { border: 0; background: transparent; color: #57534e; font-weight: 500; font-size: 13.5px; text-decoration: underline; }
+/* Phones get a joke kernel panic, then a rescue shell from Tux with a GRUB-style menu (js/boot.js). */
+#boot.phone { padding: max(18px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom)); color: #c0c0c0; font-size: 14px; }
+.phone-log { margin: 0; font-size: 11px; line-height: 1.6; color: #8a8a8a; white-space: pre-wrap; word-break: break-word; }
+.phone-line { display: block; padding-left: 11ch; text-indent: -11ch; }
+.phone-time { color: #555; }
+.phone-line.panic { color: #f87171; }
+.phone-rescue { max-width: 480px; margin: 26px auto 0; animation: splash-in 0.4s ease; }
+.phone-prompt { margin: 0 0 14px; font-size: 13px; }
+.phone-motd { display: flex; gap: 14px; align-items: flex-start; }
+.phone-tux svg { width: 52px; height: 60px; display: block; flex: none; animation: tux-hop 0.8s ease 0.3s; }
+.phone-motd h1 { margin: 2px 0 6px; color: #fff; font-size: 19px; line-height: 1.25; }
+.phone-motd p { margin: 0; font-size: 13.5px; line-height: 1.6; }
+.phone-fix { margin: 16px 0 26px; padding-left: 10px; border-left: 2px solid #4ade80; font-size: 13.5px; line-height: 1.6; }
+.phone-fix strong { color: #4ade80; font-weight: 600; word-break: break-all; }
+.phone-menu { position: relative; display: flex; flex-direction: column; padding: 18px 6px 6px; border: 1px solid #c0c0c0; }
+.phone-menu-title { position: absolute; top: -0.75em; left: 12px; padding: 0 4px; background: #000; color: #fff; line-height: 1.5; }
+.phone-item { display: flex; flex-direction: column; gap: 2px; min-height: 48px; padding: 8px 10px 8px 26px; border: 0; background: transparent; color: #c0c0c0; font: inherit; text-align: left; text-decoration: none; position: relative; -webkit-tap-highlight-color: transparent; }
+.phone-item::before { content: ' '; position: absolute; left: 10px; top: 8px; }
+.phone-item.sel, .phone-item:active, .phone-item:focus-visible { background: #c0c0c0; color: #000; outline: 0; }
+.phone-item.sel::before, .phone-item:active::before, .phone-item:focus-visible::before { content: '*'; }
+.phone-item-label { font-weight: 700; }
+.phone-item-note { font-size: 12px; opacity: 0.7; }
+.phone-item.done { background: #4ade80; color: #000; }
+.phone-menu:has(.phone-item:active, .phone-item:focus-visible) .phone-item.sel:not(:active, :focus-visible, .done) { background: transparent; color: #c0c0c0; }
+.phone-menu:has(.phone-item:active, .phone-item:focus-visible) .phone-item.sel:not(:active, :focus-visible)::before { content: ' '; }
+.phone-foot { margin: 14px 0 0; font-size: 12px; text-align: center; }
 
 #boot.login {
   font-family: 'Inter', 'Cantarell', system-ui, sans-serif;
