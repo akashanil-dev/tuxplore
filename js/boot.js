@@ -366,7 +366,7 @@ OS.boot = {
     const q = OS.quests.current();
     setTimeout(() => {
       if (firstTime) {
-        OS.tux.say(`Hi ${OS.state.username}! I'm Tux. 🐧 Your quest journal is open. Start by opening the Terminal: press Ctrl+Alt+T, or ${OS.wm.de.openHint}.`, 14000);
+        OS.tux.say(`Hi ${OS.state.username}! I'm Tux. 🐧 Your quest journal is open. Start by opening the Terminal: press Ctrl+Alt+T, or ${OS.wm.de.openHow('Terminal')}.`, 14000);
         OS.wm.open('journal');
       } else if (q) {
         OS.tux.say(`Welcome back! Current quest: ${q.title}. Click me any time for a hint.`, 7000);

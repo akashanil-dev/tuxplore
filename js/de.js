@@ -5,6 +5,7 @@
 // A desktop environment is an object with:
 //   area        space its panels take at the top and bottom, which windows stay out of
 //   icons       'apps' (desktop icons), 'minimized' (CDE: minimised windows become icons) or false
+//   openHow()   how to open an app here, in words, for Tux's hints
 //   workspaces  names of its workspaces, or false
 //   tiling      windows tile themselves (Hyprland)
 //   build()     draws the panels; refresh() updates them when windows change
@@ -42,7 +43,7 @@
       icons: false,
       workspaces: false,
       minimize: false,
-      openHint: 'click Activities in the top-left corner and pick it from the dash at the bottom',
+      openHow: (title) => `click Activities in the top-left corner, then ${title} in the dash at the bottom`,
       welcome: 'This is GNOME, the desktop on Fedora and Ubuntu. It keeps things calm: no desktop icons, no taskbar. Click Activities in the top-left corner (or push your mouse into that corner) to see your windows and apps.',
       splash: '',
       build(wm, shell) {
@@ -97,7 +98,7 @@
       area: { top: 0, bottom: 44 },
       icons: 'apps',
       workspaces: false,
-      openHint: 'double-click it on the desktop, or open the app launcher in the bottom-left corner',
+      openHow: (title) => `double-click ${title} on the desktop, or open the app launcher in the bottom-left corner and pick it`,
       welcome: 'Welcome to KDE Plasma! It works a lot like Windows: the app launcher is in the bottom-left corner, open apps sit in the taskbar, and the clock is on the right. Press Alt+Space to search with KRunner.',
       splash: '<div class="plasma-logo"></div><strong>Plasma</strong><span class="plasma-bar"><i></i></span>',
       build(wm, shell) {
@@ -175,7 +176,7 @@
       area: { top: 0, bottom: 86 },
       icons: 'minimized',
       workspaces: ['One', 'Two', 'Three', 'Four'],
-      openHint: 'click its button in the Front Panel at the bottom',
+      openHow: (title) => `click the ${title} button in the Front Panel at the bottom`,
       welcome: 'Welcome to CDE, the desktop of 1990s Unix workstations from Sun, HP and IBM. Everything lives in the Front Panel at the bottom, including four workspaces: put different windows on each. A minimised window turns into an icon on the desktop.',
       splash: '<p>Starting the Common Desktop Environment…</p>',
       build(wm, shell) {
@@ -213,7 +214,7 @@
       icons: false,
       workspaces: ['1', '2', '3', '4', '5'],
       tiling: true,
-      openHint: 'press Super+Q (or Alt+Q)',
+      openHow: (title) => (title === 'Terminal' ? 'press Super+Q (or Alt+Q)' : `press Super+R (or Alt+R) and type ${title}`),
       welcome: 'Welcome to Hyprland, a tiling window manager. Windows arrange themselves, and you drive it from the keyboard: Super+Q opens a terminal, Super+R the app launcher, Super+C closes a window, Super+1 to 5 switch workspaces and Super+Shift+1 to 5 move a window there. If your computer grabs the Super key, use Alt.',
       splash: '<strong class="hypr-logo">Hyprland</strong>',
       build(wm, shell) {

@@ -28,6 +28,8 @@
             return;
           }
           const prog = OS.quests.progress(q);
+          // The button opens whatever the next unfinished step happens in (Pipe Dream, Try Linux, or the Terminal).
+          const nextApp = q.objectives.find((_, j) => !prog[j])?.app || 'terminal';
           const hintBox = el('p', { class: 'quest-hint', hidden: true });
           content.append(el('article', { class: `quest${isDone ? ' done' : ' current'}` },
             el('header', {}, el('span', { class: 'quest-num', text: isDone ? '✓' : String(i + 1) }), el('h3', { text: q.title }),
@@ -36,7 +38,7 @@
             el('ul', { class: 'objectives' }, q.objectives.map((o, j) =>
               el('li', { class: prog[j] ? 'ok' : '' }, el('span', { class: 'tick', 'aria-hidden': 'true', text: prog[j] ? '✓' : '' }), o.text))),
             isCur && el('div', { class: 'quest-actions' },
-              el('button', { class: 'btn-primary', text: 'Open Terminal', onclick: () => OS.wm.open('terminal') }),
+              el('button', { class: 'btn-primary', text: `Open ${OS.apps[nextApp].title}`, onclick: () => OS.wm.open(nextApp) }),
               el('button', { class: 'btn-ghost', text: '💡 Hint', onclick: () => { hintBox.hidden = false; hintBox.textContent = OS.quests.hint(); } })),
             hintBox));
         });

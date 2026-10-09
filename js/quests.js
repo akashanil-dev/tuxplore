@@ -89,7 +89,7 @@
       title: 'The Plumber',
       story: 'The real power of Linux: small tools that each do one thing well, chained with pipes |. The output of one command flows into the next. Practise in Pipe Dream, then try it for real.',
       objectives: [
-        { text: 'Solve 3 levels in the Pipe Dream app', hint: 'Open Pipe Dream from your app launcher.', check: () => Object.keys(OS.state.pipe.solved).length >= 3 },
+        { text: 'Solve 3 levels in the Pipe Dream app', app: 'pipedream', hint: 'Solve levels by chaining commands with |.', check: () => Object.keys(OS.state.pipe.solved).length >= 3 },
         { text: 'Count the ERROR lines in /var/log/syslog with a pipe', hint: 'grep finds the lines and wc -l counts them: grep ERROR /var/log/syslog | wc -l', check: (t, d) => t === 'shell:line' && d.piped && d.output.trim() === String(errorCount()) },
       ],
     },
@@ -109,7 +109,7 @@
       reward: { theme: 'tiling' },
       objectives: [
         { text: 'Show off: neofetch', hint: 'Just type neofetch.', check: cmd('neofetch') },
-        { text: 'Open the Try Linux app', hint: 'It just appeared with your other apps.', check: (t, d) => t === 'app:open' && d.id === 'install' },
+        { text: 'Open the Try Linux app', app: 'install', hint: 'It just appeared with your other apps.', check: (t, d) => t === 'app:open' && d.id === 'install' },
       ],
     },
   ];
@@ -185,11 +185,19 @@
         '\n\nStuck? Type hint.';
     },
 
+    // Most steps happen in the Terminal: if the app a step needs isn't open, say how to open it first.
     hint() {
       const q = this.current();
       if (!q) return 'No quests left. Try exploring: ls /, cat /etc/os-release, fortune...';
       const prog = this.progress(q);
       const o = q.objectives.find((_, i) => !prog[i]) || q.objectives[0];
+      const app = o.app || 'terminal';
+      const open = OS.wm?.visibleWindows?.().some((w) => w.appId === app);
+      if (OS.wm?.de && !open && OS.apps[app] && !OS.wm.isLocked(app)) {
+        const title = OS.apps[app].title;
+        const shortcut = app === 'terminal' ? 'press Ctrl+Alt+T, or ' : '';
+        return `💡 First open the ${title}: ${shortcut}${OS.wm.de.openHow(title)}.`;
+      }
       return `💡 ${o.hint}`;
     },
   };
