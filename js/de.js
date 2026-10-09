@@ -6,6 +6,7 @@
 //   area        space its panels take at the top and bottom, which windows stay out of
 //   icons       'apps' (desktop icons), 'minimized' (CDE: minimised windows become icons) or false
 //   openHow()   how to open an app here, in words, for Tux's hints
+//   guide       optional cheat sheet Tux adds to every hint ({title, intro, keys, foot})
 //   workspaces  names of its workspaces, or false
 //   tiling      windows tile themselves (Hyprland)
 //   build()     draws the panels; refresh() updates them when windows change
@@ -217,6 +218,21 @@
       openHow: (title) => (title === 'Terminal' ? 'press Super+Q (or Alt+Q)' : `press Super+R (or Alt+R) and type ${title}`),
       welcome: 'Welcome to Hyprland, a tiling window manager. Windows arrange themselves, and you drive it from the keyboard: Super+Q opens a terminal, Super+R the app launcher, Super+C closes a window, Super+1 to 5 switch workspaces and Super+Shift+1 to 5 move a window there. If your computer grabs the Super key, use Alt.',
       splash: '<strong class="hypr-logo">Hyprland</strong>',
+      // Tux shows this with every hint here: Hyprland works nothing like the other desktops.
+      guide: {
+        title: 'Getting around Hyprland',
+        intro: 'No title bars, taskbar or desktop icons here. Windows tile themselves, and you drive it with the keyboard.',
+        keys: [
+          ['Super+Q', 'Open a terminal'],
+          ['Super+R', 'Find and open any app'],
+          ['Super+E', 'Open Files'],
+          ['Super+C', 'Close the focused window'],
+          ['Super+← →', 'Move between windows'],
+          ['Super+1…5', 'Switch workspace'],
+          ['Super+Shift+1…5', 'Send the window to a workspace'],
+        ],
+        foot: "Super is the Windows key; if your computer grabs it, use Alt. With the mouse: the numbers in the top-left are workspaces, the Tux there opens your apps, and the window title in the middle has window actions.",
+      },
       build(wm, shell) {
         wm.ui.ws = this.workspaces.map((name, i) => el('button', { class: 'hypr-ws', text: name, title: `Workspace ${name} (Super+${name})`, onclick: () => wm.switchWs(i + 1) }));
         wm.ui.title = el('button', {

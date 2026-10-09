@@ -445,6 +445,15 @@ body.has-maximized #tux-companion { display: none; }
   pointer-events: none;
 }
 .tux-bubble.show { opacity: 1; transform: none; }
+.tux-bubble p { margin: 0; }
+.tux-bubble.has-guide { max-width: min(380px, calc(100vw - 110px)); }
+.tux-guide { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(28, 25, 23, 0.15); font-size: 12.5px; }
+.tux-guide strong { display: block; margin-bottom: 4px; font-size: 13px; }
+.tux-guide dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; margin: 8px 0; }
+.tux-guide dt { white-space: nowrap; }
+.tux-guide dd { margin: 0; }
+.tux-guide kbd { padding: 1px 6px; border: 1px solid rgba(28, 25, 23, 0.25); border-bottom-width: 2px; border-radius: 4px; background: #fff; font: 11.5px 'JetBrains Mono', monospace; }
+.tux-guide-foot { color: #57534e; font-size: 12px; }
 
 /* ---------- Print: only the cheat sheet ---------- */
 #print-area { display: none; }

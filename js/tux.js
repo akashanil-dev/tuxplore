@@ -44,7 +44,8 @@ OS.tux = {
 
     body.addEventListener('click', () => {
       if (this.node.classList.contains('hidden')) { this.node.classList.remove('hidden'); return; }
-      this.say(OS.quests.hint(), 9000);
+      const guide = OS.wm?.de?.guide;
+      this.say(OS.quests.hint(), guide ? 30000 : 9000, guide && this.guideNode(guide));
       this.hop();
     });
     hide.addEventListener('click', (e) => {
@@ -70,12 +71,24 @@ OS.tux = {
     });
   },
 
-  say(text, ms) {
+  // extra: an optional element shown under the text, like a desktop's guide.
+  say(text, ms, extra) {
     if (!this.bubble || this.node.classList.contains('hidden')) return;
-    this.bubble.textContent = text;
+    this.bubble.replaceChildren(OS.util.el('p', { text }), extra || '');
+    this.bubble.classList.toggle('has-guide', !!extra);
     this.bubble.classList.add('show');
     clearTimeout(this.hideTimer);
     this.hideTimer = setTimeout(() => this.bubble.classList.remove('show'), ms || Math.min(14000, 3500 + text.length * 45));
+  },
+
+  // A desktop's cheat sheet: what's different, then its shortcuts.
+  guideNode({ title, intro, keys, foot }) {
+    const { el } = OS.util;
+    return el('div', { class: 'tux-guide' },
+      el('strong', { text: title }),
+      el('p', { text: intro }),
+      el('dl', {}, keys.flatMap(([combo, what]) => [el('dt', {}, el('kbd', { text: combo })), el('dd', { text: what })])),
+      el('p', { class: 'tux-guide-foot', text: foot }));
   },
 
   hop() {
