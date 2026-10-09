@@ -105,12 +105,15 @@ Fonts load from Google Fonts. Offline, it falls back to system fonts.
 
 ```
 index.html          page shell and script order
+stats.html          public usage stats
 css/os.css          colours, boot screens, desktop, windows
 css/desktops.css    each desktop environment's panels, launchers and window buttons
 css/greeters.css    the login screens
+css/page.css        the stats page
 css/apps.css        styles for each app
 js/cloud.js         online accounts: logs in and syncs your save with the API
 js/analytics.js     anonymous usage counts (see What we collect)
+js/stats.js         the public stats page (stats.html)
 js/vendor/          GoatCounter's counting script (ISC license)
 js/core.js          event bus, save state, toasts, achievements, desktop environment list
 js/fs.js            virtual filesystem with owners and permissions

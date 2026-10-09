@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuxplore stats</title>
+  <meta name="description" content="Public, anonymous usage counts for Tuxplore: no cookies, no IDs, no IP addresses.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 74'%3E%3Cellipse cx='32' cy='46' rx='21' ry='25' fill='%231b1b1f'/%3E%3Cellipse cx='32' cy='50' rx='14.5' ry='19' fill='%23f4f1ea'/%3E%3Ccircle cx='32' cy='21' r='15.5' fill='%231b1b1f'/%3E%3Cellipse cx='26.5' cy='19' rx='4.6' ry='5.6' fill='%23fff'/%3E%3Cellipse cx='37.5' cy='19' rx='4.6' ry='5.6' fill='%23fff'/%3E%3Cpath d='M24.5 26.5 Q32 22.5 39.5 26.5 Q32 33.5 24.5 26.5Z' fill='%23f5a524'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+  <main>
+    <header class="head">
+      <div class="head-tux" id="tux" aria-hidden="true"></div>
+      <div>
+        <h1>Tuxplore stats</h1>
+        <p class="lead">Everything Tuxplore counts, in public. Just totals per day: no cookies, no IDs, no IP addresses, nothing that says who you are.</p>
+      </div>
+    </header>
+
+    <p class="status" id="status">Loading the numbers…</p>
+
+    <section class="tiles" id="tiles" aria-label="Last 30 days"></section>
+
+    <section class="card" id="boots-card" hidden>
+      <h2>Boots per day</h2>
+      <p class="sub">Every time TuxOS starts on a computer, last 30 days.</p>
+      <div class="chart" id="boots"></div>
+      <details class="table-view">
+        <summary>Show as a table</summary>
+        <table id="boots-table"><thead><tr><th>Day</th><th>Boots</th></tr></thead><tbody></tbody></table>
+      </details>
+    </section>
+
+    <section class="card" id="quests-card" hidden>
+      <h2>How far players get</h2>
+      <p class="sub" id="quests-sub">Players who finished each quest, all time.</p>
+      <div class="bars" id="quests"></div>
+    </section>
+
+    <div class="pair">
+      <section class="card" id="des-card" hidden>
+        <h2>Desktop environments</h2>
+        <p class="sub">Switches to each desktop in Settings, all time.</p>
+        <div class="bars" id="des"></div>
+      </section>
+      <section class="card" id="distros-card" hidden>
+        <h2>Distro matches</h2>
+        <p class="sub">What the Try Linux quiz suggested, all time.</p>
+        <div class="bars" id="distros"></div>
+      </section>
+    </div>
+
+    <section class="card collect">
+      <h2>What we collect</h2>
+      <p>When TuxOS runs, it can send these events to its own server. The server only adds one to that day's count for the event, and stores nothing else.</p>
+      <dl id="events"></dl>
+      <p><strong>Page views</strong> are counted by <a href="https://www.goatcounter.com" rel="noopener">GoatCounter</a>, an open-source analytics service that uses no cookies. Its numbers are public too: <a href="https://tuxplore.goatcounter.com" rel="noopener">tuxplore.goatcounter.com</a>.</p>
+      <p><strong>Nothing is sent</strong> if you turn off "Share anonymous usage counts" in TuxOS Settings, or if your browser asks sites not to track you (Do Not Track or Global Privacy Control).</p>
+      <p class="sub">The code for all of this is open: <a href="https://github.com/akashanil-dev/tuxplore" rel="noopener">github.com/akashanil-dev/tuxplore</a> (see <code>js/analytics.js</code> and <code>api/src/index.js</code>).</p>
+    </section>
+
+    <footer><a href="./">← Back to Tuxplore</a></footer>
+  </main>
+  <div class="tip" id="tip" role="tooltip" hidden></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/tux.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/stats.js"></script>
+</body>
+</html>

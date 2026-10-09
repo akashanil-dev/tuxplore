@@ -1,0 +1,85 @@
+/* Plain pages around the game, like stats.html. Dark, like TuxOS itself. */
+
+:root {
+  --bg: #161c1e;
+  --surface: #1f272a;
+  --line: rgba(255, 255, 255, 0.08);
+  --grid: rgba(255, 255, 255, 0.07);
+  --axis: rgba(255, 255, 255, 0.22);
+  --text: #eceff1;
+  --muted: #9aa5ab;
+  --accent: #3584e4;
+  --link: #8cbcf5;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--link); }
+code { font: 13px 'JetBrains Mono', ui-monospace, monospace; }
+main { width: min(960px, 100%); margin: 0 auto; padding: 40px 16px 56px; }
+
+.head { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+.head-tux { flex: none; display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #f6f5f4; }
+.head-tux svg { width: 42px; height: 49px; display: block; }
+h1 { margin: 0; font-size: 30px; letter-spacing: -0.5px; }
+.lead { margin: 4px 0 0; color: var(--muted); max-width: 640px; }
+.status { margin: 18px 0; color: var(--muted); font-size: 13.5px; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.tile { display: flex; flex-direction: column; gap: 2px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.tile-label { color: var(--muted); font-size: 13px; }
+.tile strong { font-size: 32px; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.tile small { color: var(--muted); font-size: 12.5px; }
+
+.card { margin-bottom: 16px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.card h2 { margin: 0; font-size: 18px; }
+.sub { margin: 2px 0 14px; color: var(--muted); font-size: 13.5px; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.pair .card { margin-bottom: 0; }
+.pair + .card { margin-top: 16px; }
+
+/* Boots per day */
+.chart svg { display: block; width: 100%; height: 220px; }
+.chart .grid { stroke: var(--grid); }
+.chart .axis { stroke: var(--axis); }
+.chart .tick { fill: var(--muted); font: 11px 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+.chart .col { fill: var(--accent); }
+.chart .hit { fill: transparent; }
+.chart .hit:hover { fill: rgba(255, 255, 255, 0.05); }
+.table-view { margin-top: 10px; font-size: 13.5px; }
+.table-view summary { color: var(--link); cursor: pointer; }
+.table-view table { margin-top: 8px; border-collapse: collapse; }
+.table-view th, .table-view td { padding: 3px 18px 3px 0; text-align: left; font-variant-numeric: tabular-nums; }
+.table-view th { color: var(--muted); font-weight: 600; }
+
+/* Horizontal bars, value written at the end */
+.bars { display: flex; flex-direction: column; gap: 2px; }
+.bar-row { display: grid; grid-template-columns: minmax(130px, 34%) 1fr auto; align-items: center; gap: 12px; padding: 5px 6px; border-radius: 6px; }
+.bar-row:hover { background: rgba(255, 255, 255, 0.04); }
+.bar-label { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { height: 12px; }
+.bar-fill { display: block; height: 100%; min-width: 2px; border-radius: 0 4px 4px 0; background: var(--accent); }
+.bar-value { min-width: 64px; color: var(--muted); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.collect dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 14px 0; }
+.collect dt code { color: var(--text); background: rgba(255, 255, 255, 0.06); padding: 1px 6px; border-radius: 4px; }
+.collect dd { margin: 0; color: var(--muted); }
+.collect p { max-width: 720px; }
+
+footer { margin-top: 24px; font-size: 14px; }
+
+.tip { position: fixed; z-index: 10; padding: 6px 10px; border-radius: 8px; background: #0d1112; border: 1px solid var(--line); color: var(--text); font-size: 13px; pointer-events: none; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); }
+
+@media (max-width: 560px) {
+  main { padding-top: 24px; }
+  .head { align-items: flex-start; }
+  .head-tux { width: 56px; height: 56px; }
+  .head-tux svg { width: 32px; height: 38px; }
+  h1 { font-size: 24px; }
+  .bar-row { grid-template-columns: 1fr auto; }
+  .bar-track { grid-column: 1 / -1; grid-row: 2; }
+  .collect dl { grid-template-columns: 1fr; }
+  .collect dd { margin-bottom: 6px; }
+}
+
