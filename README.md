@@ -148,6 +148,8 @@ Some files belong to other projects and keep their own licenses: the app icons
 ([`images/icons/CREDITS.md`](images/icons/CREDITS.md)), the distro logos
 ([`images/distros/CREDITS.md`](images/distros/CREDITS.md)) and GoatCounter's script (`js/vendor/`, ISC).
 
+Contributing? See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Credits
 
 - **Know Your Distro** started as a standalone game in this repository. The original version is kept on the
